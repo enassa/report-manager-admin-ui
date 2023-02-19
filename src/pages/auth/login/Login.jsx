@@ -59,12 +59,12 @@ export default function Login() {
           </div>
         </div>
         <div className="w-full md:w-[35%] h-full bg-transparent bg-[#F2F3F3] animate-rise md:p-[30px] p-[10px]  flex justify-center flex-col shadow-neuroInsert rounded-lg overflow-hidden">
-          <span
+          {/* <span
             onClick={() => navigate(ROUTES.dashboard.url)}
             className="text-blue-600"
           >
             Dashboard
-          </span>
+          </span> */}
           <div className="w-full absolute top-0 left-0  h-[5px]">
             {loading && <SlimLoader />}
           </div>
