@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TFormValidator from "./../../../components/form-validator/FormValidator";
 import { images } from "./../../../assets/images/images";
 import { svgs } from "./../../../assets/svg/svg";
@@ -14,10 +14,16 @@ import {
 } from "@mui/icons-material";
 import { ROUTES } from "../../../constants/route-links";
 import { useNavigate } from "react-router-dom";
+import { Routes } from "react-router";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const handleSubmit = (data) => {
+    setLoading(true);
+    setTimeout(() => {
+      navigate(ROUTES.reports.url);
+    }, 3000);
     // mockMode ? loginMock(data) : loginAsync(data)();
   };
 
@@ -43,7 +49,7 @@ export default function Login() {
             <img
               alt="toukanya logo"
               className="h-[15%]"
-              src={images.toukanyaLogo}
+              src={images.koinoReportMgr}
             />
             {svgs.loginSvg}
             <div className="absolute top-[300px]">{svgs.ladySvg}</div>
@@ -60,7 +66,7 @@ export default function Login() {
             Dashboard
           </span>
           <div className="w-full absolute top-0 left-0  h-[5px]">
-            {true && <SlimLoader />}
+            {loading && <SlimLoader />}
           </div>
           <h1 className="md:text-3xl text-2xl font-bold">Welcome back!</h1>
           <span className="md:text-xl text-sm">
@@ -70,7 +76,7 @@ export default function Login() {
             validationSchema={validationSchema}
             initialValues={initialValues}
             onSubmit={handleSubmit}
-            isSubmitting={true}
+            isSubmitting={loading}
             className="mt-[20px] flex justify-center flex-col"
           >
             {({ errors }) => {
@@ -100,6 +106,12 @@ export default function Login() {
                     }}
                     className={`mt-[40px] `}
                     icon={<LoginSharp />}
+                    // onClick={() => {
+                    //   setLoading(true);
+                    //   setTimeout(() => {
+                    //     navigate(ROUTES.reports.url);
+                    //   }, 1000);
+                    // }}
                   >
                     Login
                   </TButton>

@@ -23,7 +23,7 @@ function App() {
     <Router>
       <ToastContainer />
       <Routes>
-        <Route path={ROUTES.base.route} element={<LandingPage />} />
+        <Route path={ROUTES.base.route} element={<Login />} />
         <Route path={ROUTES.login.route} element={<Login />} />
 
         <Route element={<ProtectedRoutes />}>
