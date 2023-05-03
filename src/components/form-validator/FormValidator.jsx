@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const FormConText = React.createContext();
 export default function TFormValidator({
@@ -14,16 +14,20 @@ export default function TFormValidator({
   const [listenForSubmit, setListenForSubmit] = useState(0);
   const [disableOnSubmit] = useState([]);
   const formRef = React.createRef();
+  const stateCache = useRef(states);
 
   const checkRegexPattern = (myString, pattern) => {
     let regex = new RegExp(pattern);
     let regexState = regex.test(myString);
     return regexState;
   };
+
   let myErrors = { ...states.errors };
   let myValues = { ...states.values };
 
   const validateInput = (inputElement, calledFrom) => {
+    // myErrors = stateCache.current.errors;
+    // myValues = stateCache.current.values;
     const fieldsToValidate = Object.keys(validationSchema);
     const fieldName = inputElement?.name;
 
@@ -56,7 +60,16 @@ export default function TFormValidator({
       ? (errorLog = { ...errorLog, patternErr: true })
       : (errorLog = { ...errorLog, patternErr: false });
 
-    myValues = { ...myValues, [fieldName]: inputElement.value };
+    //  ================== set value for input ===========================
+    if (calledFrom === "initial") {
+      myValues = { ...myValues, [fieldName]: inputElement.value };
+    } else {
+      myValues = {
+        ...stateCache.current.values,
+        [fieldName]: inputElement.value,
+      };
+    }
+    //  ================== set errors for input ===========================
 
     if (
       errorLog?.requiredErr ||
@@ -64,16 +77,38 @@ export default function TFormValidator({
       errorLog?.maxCharLengthErr ||
       errorLog?.minCharLengthErr
     ) {
-      myErrors = { ...myErrors, [fieldName]: errorLog };
+      //If
+      if (calledFrom === "initial") {
+        myErrors = { ...myErrors, [fieldName]: errorLog };
+      } else {
+        myErrors = { ...stateCache.current.errors, [fieldName]: errorLog };
+      }
     } else {
-      let allErrors = { ...myErrors };
+      let allErrors;
+      if (calledFrom === "initial") {
+        allErrors = { ...myErrors };
+      } else {
+        allErrors = { ...stateCache.current.errors };
+      }
       delete allErrors[fieldName];
       myErrors = allErrors;
     }
 
+    //  ================== update state only when it is not on initial page load===========================
     calledFrom !== "initial" &&
-      setStates({ ...states, errors: { ...myErrors }, values: myValues });
+      setStates({
+        ...stateCache.current,
+        errors: { ...myErrors },
+        values: myValues,
+      });
   };
+  useEffect(() => {
+    console.log("validate input", stateCache.current.errors);
+
+    // myErrors = states.errors;
+    // myValues = states.values;
+    stateCache.current = states;
+  }, [states]);
 
   useEffect(() => {
     const errorState = Object.keys(states.errors)?.length;
@@ -113,7 +148,11 @@ export default function TFormValidator({
 
       // ==================== set initial values and errors in them so that user can show validation errors on load ====================
       if (index + 1 === inputs.length) {
-        setStates({ ...states, errors: myErrors, values: myValues });
+        setStates({
+          ...states,
+          errors: { ...myErrors },
+          values: { ...myValues },
+        });
         myErrors = {};
         myValues = {};
       }
@@ -121,10 +160,11 @@ export default function TFormValidator({
       // ==================== add event listener to all input fields ====================
       let delayId = undefined;
       input.addEventListener("input", (e) => {
+        console.log(myErrors);
         clearTimeout(delayId);
         // ==================== validate input only when user stops typing: debouncing ====================
         delayId = setTimeout(() => {
-          input?.name !== undefined && validateInput(input);
+          input?.name !== undefined && validateInput(input, "eventListener");
         }, 190);
       });
     });

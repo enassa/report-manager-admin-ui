@@ -1,6 +1,6 @@
 export const END_POINTS = {
   // AUTH
-  login: "/api/v1/auth/login",
+  login: "/api/login",
   register: "/api/v1/auth/register",
   home: "/api/v1/home",
   // ORDER

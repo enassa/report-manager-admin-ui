@@ -140,7 +140,7 @@ export default function TAuthInput({
         </div>
       ) : (
         <div
-          className={` ${className} h-[40px] max-h-[40px]  flex w-full border-[#8b8b8b]  border-[1px] rounded-[5px] outline-none  p-2 `}
+          className={` ${className} h-[40px] max-h-[40px]  flex w-full border-[#8b8b8b]  rounded-[5px] outline-none  p-2 `}
         >
           {leftIcon && (
             <span className="mr-2 text-gray-500 cursor-pointer h-full flex items-center">

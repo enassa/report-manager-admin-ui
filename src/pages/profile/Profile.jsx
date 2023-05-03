@@ -29,39 +29,42 @@ import {
   PermContactCalendar,
 } from "@mui/icons-material";
 import { replaceUnderscoreWithSpace } from "../../constants/reusable-functions";
+import { useAuthService } from "./../../store/slices/auth-slice/auth-service";
 
 export default function Profile() {
+  const { userData } = useAuthService();
+
   const ejectUserInfo = () => {
-    const userData = [
+    const userInfo = [
       {
         title: "First name",
-        value: "Nathaniel",
+        value: userData?.First_Name,
         icon: <PermIdentityOutlined />,
         color: "",
       },
       {
         title: "Last name",
-        value: "Assan",
+        value: userData?.Surname,
         icon: <PeopleAltOutlined />,
       },
       {
         title: "Other names",
-        value: "Ewudzi",
+        value: userData?.Other_Names,
         icon: <PersonAddAltOutlined />,
       },
       {
         title: "Date of birth",
-        value: "11 January 2022",
+        value: userData?.DOB,
         icon: <PermContactCalendarOutlined />,
       },
       {
         title: "Gurdian contact",
-        value: "0549546822",
+        value: userData?.Guardians_Contact,
         icon: <PhoneOutlined />,
       },
       {
         title: "Digital Address",
-        value: "GH-34-43-432",
+        value: userData?.Digital_Address,
         icon: <LocationOnOutlined />,
       },
     ];
@@ -76,9 +79,12 @@ export default function Profile() {
     //   cohort: "Green",
     //   };
     // const userInfo = Object.keys(userData);
-    return userData.map((item, index) => {
+    return userInfo.map((item, index) => {
       return (
-        <div className=" flex justify-start h-[40px] min-h-[40px] mb-[12%]">
+        <div
+          key={index + "profile"}
+          className=" flex justify-start h-[40px] min-h-[40px] mb-[12%]"
+        >
           <div className="h-full flex justify-center items-center mr-[10px]">
             <span className="rounded-full w-[40px] text-blue-900 h-40px] min-w-[40px] min-h-[40px] shadow-md flex justify-center items-center">
               {item?.icon}
@@ -100,57 +106,59 @@ export default function Profile() {
       );
     });
   };
+
   const ejectSchoolInfo = () => {
-    const userData = [
+    console.log(userData);
+    const schoolInfo = [
       {
         title: "Programme",
-        value: "General Science",
+        value: userData?.Programme,
         icon: <PermIdentityOutlined />,
         color: "",
       },
       {
         title: "Cohort",
-        value: "Green",
+        value: userData?.Track,
         icon: <PeopleAltOutlined />,
       },
       {
         title: "Class",
-        value: "2 Arts 2 Green",
+        value: userData?.Class,
         icon: <PersonAddAltOutlined />,
       },
       {
         title: "Year",
-        value: "2",
+        value: userData?.Current_Year, //sss
         icon: <PermContactCalendarOutlined />,
       },
       {
         title: "Residency Status",
-        value: "Boarder",
+        value: userData?.Residential_Status,
         icon: <BusinessOutlined />,
       },
       {
         title: "House name",
-        value: "Slessor House",
+        value: userData?.House,
         icon: <HouseOutlined />,
       },
       {
-        title: "Class teacher",
-        value: "Eugene Nunoo",
+        title: "Class teacher", //sss
+        value: userData?.Class_teacher,
         icon: <EmojiPeopleOutlined />,
       },
       {
-        title: "Class teacher contact",
-        value: "0549546822",
+        title: "Class teacher contact", //sss
+        value: userData?.Class_teacher_contact,
         icon: <PhoneOutlined />,
       },
       {
-        title: "Enrollment date",
-        value: "20th July 2020",
+        title: "Enrollment date", //ss
+        value: userData?.Enrollment_year,
         icon: <CalendarMonthOutlined />,
       },
       {
-        title: "Grduation date",
-        value: "20th June 2023",
+        title: "Graduation Year",
+        value: userData?.Graduation_Year,
         icon: <SchoolOutlined />,
       },
     ];
@@ -165,9 +173,12 @@ export default function Profile() {
     //   cohort: "Green",
     //   };
     // const userInfo = Object.keys(userData);
-    return userData.map((item, index) => {
+    return schoolInfo.map((item, index) => {
       return (
-        <div className=" flex justify-start h-[40px] min-h-[40px] mb-[12%]">
+        <div
+          key={index + "school"}
+          className=" flex justify-start h-[40px] min-h-[40px] mb-[12%]"
+        >
           <div className="h-full flex justify-center items-center mr-[10px]">
             <span className="rounded-full w-[40px] text-blue-900 h-40px] min-w-[40px] min-h-[40px] shadow-md flex justify-center items-center">
               {item?.icon}
@@ -181,7 +192,7 @@ export default function Profile() {
               <input
                 className="w-full flex items-center border-b-[1px] border-transparent bg-transparent outline-none"
                 disabled={true}
-                value={item?.value}
+                value={item?.value || "--"}
                 onChange={() => {}}
               />
             </span>

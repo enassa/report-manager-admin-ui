@@ -29,7 +29,7 @@ function TButton({
       button={disabled}
       style={{ ...styles }}
       onClick={(e) => (onClick ? onClick(e) : e.preventDefault())}
-      className={`bg-bgTrade hover:bg-blue-900 h-[47px]  w-full rounded-[5px] flex justify-center border border-[#8b8b8b] text-white overflow-hidden ${className}`}
+      className={`bg-bgTrade b hover:bg-blue-900 h-[47px]  w-full rounded-[5px] flex justify-center border border-[#8b8b8b] text-white overflow-hidden ${className}`}
     >
       {icon && (
         <>

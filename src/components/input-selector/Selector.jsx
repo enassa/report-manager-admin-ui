@@ -61,7 +61,7 @@ export default function TSelector({
   const errorClass = "text-red-400 text-xs mt-1 ";
 
   return (
-    <div className="w-full flex flex-col justify-start mb-2 relative">
+    <div className="w-full flex flex-col justify-start relative">
       <label
         htmlFor={name}
         className="w-full text-gray-900 relative b-[30px] text-[18px]"

@@ -15,6 +15,17 @@ import Reports from "./pages/reports/Reports";
 import Bill from "./pages/bill/Bill";
 import Profile from "./pages/profile/Profile";
 import Payment from "./pages/payment/Payment";
+import Admin from "./pages/admin/Admin";
+import { API_HANDLER } from "./util/api-handler";
+import { ConnectingAirportsOutlined } from "@mui/icons-material";
+
+const BASE_URL =
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_DEV_BASE_URL
+    : import.meta.env.VITE_PROD_BASE_URL;
+
+console.log(BASE_URL);
+export const API = new API_HANDLER(BASE_URL);
 
 function App() {
   const [count, setCount] = useState(0);
@@ -32,6 +43,7 @@ function App() {
           <Route path={ROUTES.bills.route} element={<Bill />} />
           <Route path={ROUTES.profile.route} element={<Profile />} />
           <Route path={ROUTES.payment.route} element={<Payment />} />
+          <Route path={ROUTES.admin.route} element={<Admin />} />
         </Route>
       </Routes>
     </Router>

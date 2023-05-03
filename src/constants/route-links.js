@@ -49,5 +49,13 @@ export const ROUTES = {
     url: "/dashboard",
   },
 
+  //===============  ADMIN ROUTES ===============
+  admin: {
+    route: "/admin",
+    url: "/admin",
+  },
+ 
+
+
   notFound: "*",
 };
