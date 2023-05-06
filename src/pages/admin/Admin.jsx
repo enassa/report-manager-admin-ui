@@ -76,7 +76,7 @@ export default class Admin extends Component {
         className: this.state.uploadClass.toLowerCase(),
         schoolName: "Achimota secondary".replace(/ /g, "_"),
         schoolCode: "0010110",
-        semester: 1,
+        semester: 2,
         formNumber: 2,
       })
     );
@@ -85,7 +85,7 @@ export default class Admin extends Component {
     }
     // formData.append("file", this.state.reportCards);
     axios
-      .post("http://localhost:3032/api/reports", formData, {
+      .post("http://localhost:3032/api/upload-reports", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

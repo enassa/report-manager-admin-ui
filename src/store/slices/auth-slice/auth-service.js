@@ -9,8 +9,11 @@ import { API } from "./../../../App";
 import { saveObjectInLocalStorage } from "./../../../constants/reusable-functions";
 import { ROUTES } from "../../../constants/route-links";
 import { END_POINTS } from "./../../../constants/urls";
+import { useReportService } from "../report-slice/report-service";
+import { schoolInfo } from "../../../constants/ui-data";
 
 export const useAuthService = () => {
+  const { getReports, downloadReport, reportList } = useReportService();
   const userData = useSelector((state) => state?.authSlice?.userData);
   const authResponse = useSelector((state) => state?.authSlice?.authResponse);
 
@@ -41,7 +44,12 @@ export const useAuthService = () => {
       })
     );
     API.setToken(response.data.token);
-    navigate(ROUTES.profile.url);
+    getReports({
+      Unique_Id: response.data.Unique_Id,
+      className: `class_of_${response.data.Graduation_Year}`,
+      ...schoolInfo,
+    });
+    // navigate(ROUTES.profile.url);
   };
 
   const processFailedAuth = (error, response, page) => {
