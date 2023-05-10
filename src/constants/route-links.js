@@ -58,6 +58,10 @@ export const ROUTES = {
     route: "/admin",
     url: "/admin",
   },
+  admins: {
+    route: "/admins",
+    url: "/admins",
+  },
 
   notFound: "*",
 };

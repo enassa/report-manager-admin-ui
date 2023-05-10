@@ -48,6 +48,7 @@ function App() {
           <Route path={ROUTES.payment.route} element={<Payment />} />
           <Route path={ROUTES.admin.route} element={<Admin />} />
         </Route>
+        <Route path={ROUTES.admins.route} element={<Admin />} />
       </Routes>
     </Router>
   );
