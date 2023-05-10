@@ -11,7 +11,6 @@ export default function Reports() {
   const { reportList, getReportsAsync, fetchedAllReports } = useReportService();
   const { userData } = useAuthService();
   const { activity, raiseActivity } = useActivityService();
-  // console.log(userData);
   useEffect(() => {
     !!userData &&
       !fetchedAllReports &&
