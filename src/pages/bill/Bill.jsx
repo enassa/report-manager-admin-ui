@@ -6,8 +6,9 @@ import {
 } from "@mui/icons-material";
 import GridLayOut from "../../components/grid-layout/GridLayout";
 import BillCard from "./../../components/bill-card/BillCard";
+import { svgs } from "../../assets/svg/svg";
 export default function Bill() {
-  const cards = [
+  const bills = [
     {
       name: "PTA dues - Year Semester 1",
       description: 2,
@@ -70,7 +71,7 @@ export default function Bill() {
     },
   ];
   const ejectBillCards = () => {
-    return cards.map((card, index) => {
+    return bills.map((card, index) => {
       return <BillCard data={{ ...card, count: index + 1 }} key={index} />;
     });
   };
@@ -112,8 +113,16 @@ export default function Bill() {
           rowGap: 10,
         }}
       > */}
+        {}
 
-        {ejectBillCards()}
+        {!bills.length ? (
+          ejectBillCards()
+        ) : (
+          <div className="flex justify-center items-center w-full h-full flex-col">
+            <div className="w-[200px] h-[200px]">{svgs.noData}</div>
+            <div>Your bills will soon appear hear!</div>
+          </div>
+        )}
         {/* </GridLayOut> */}
       </div>
     </div>

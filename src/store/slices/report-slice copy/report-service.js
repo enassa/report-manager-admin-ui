@@ -2,18 +2,13 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { API } from "./../../../App";
-import { END_POINTS } from "./../../../constants/urls";
+import { API } from "../../../App";
+import { END_POINTS } from "../../../constants/urls";
 import { saveReports, updateReport } from "./report-slice";
-import { useActivityService } from "../activity-slice/activity-service";
-import { errorToast, successToast } from "../../../components/toast/toastify";
 
 export const useReportService = () => {
-  const { raiseActivity, endActivity } = useActivityService();
   const reportList = useSelector((state) => state?.reportSlice?.reports);
-  const fetchedAllReports = useSelector(
-    (state) => state?.reportSlice?.fetchedAllReports
-  );
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -22,25 +17,20 @@ export const useReportService = () => {
   // MOCKED FUNCTIONALITY
   const getReportsAsync = async (data) => {
     setLoading(true);
-    raiseActivity("Fetching reports");
     return API.POST(END_POINTS.getAllReports, data)
       .then(async (response) => {
         if (response.data.success) {
           dispatch(saveReports(response.data.data));
-          successToast("Checked for reports succesfully");
         }
         console.log(response, response.data.success);
       })
-      .catch((error) => {
-        errorToast("Could not unlock report. Please contact the school");
-      })
+      .catch((error) => {})
       .finally(() => {
-        endActivity();
+        setLoading(false);
       });
   };
 
   const downloadReportAsync = async (data, allData) => {
-    raiseActivity("Downloading report");
     setLoading(true);
     return API.POST(END_POINTS.downloadReport, data, "blob")
       .then(async (response) => {
@@ -70,7 +60,7 @@ export const useReportService = () => {
         console.error("File download error:", error);
       })
       .finally(() => {
-        endActivity();
+        setLoading(false);
       });
   };
 
@@ -78,6 +68,5 @@ export const useReportService = () => {
     getReportsAsync,
     downloadReportAsync,
     reportList,
-    fetchedAllReports,
   };
 };

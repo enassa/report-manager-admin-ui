@@ -783,3 +783,71 @@ export const tradeHistory = [
     status: "fulfilled",
   },
 ];
+const cards = [
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+  {
+    year: 1,
+    semester: 2,
+    class: 2022,
+    url: "",
+  },
+];

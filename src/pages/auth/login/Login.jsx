@@ -56,13 +56,13 @@ export default function Login() {
     index_number: {
       required: true,
       maxCharLength: 7,
-      minCharLength: 1,
+      minCharLength: 7,
       //   regexPattern: emailRegex(),zz
     },
     password: {
       required: true,
       maxCharLength: 10,
-      minCharLength: 1,
+      minCharLength: 10,
     },
     graduation_year: {
       required: true,
@@ -118,14 +118,16 @@ export default function Login() {
                     label="Index number*"
                     required={true}
                     // regexPattern={emailRegex(5)}
-                    minCharLength={1}
+                    minCharLength={7}
+                    maxCharLength={7}
                     name="index_number"
                     className="mb-[5px] shadow-neuroInsert border-0 outline-none"
                   />
                   <TAuthInput
                     leftIcon={<LockOutlined />}
                     label="Password*"
-                    minCharLength={1}
+                    minCharLength={10}
+                    maxCharLength={10}
                     required={true}
                     type="password"
                     name="password"

@@ -48,14 +48,16 @@ export const ROUTES = {
     route: "/dashboard",
     url: "/dashboard",
   },
+  pay: {
+    route: "/pay",
+    url: "/pay",
+  },
 
   //===============  ADMIN ROUTES ===============
   admin: {
     route: "/admin",
     url: "/admin",
   },
- 
-
 
   notFound: "*",
 };

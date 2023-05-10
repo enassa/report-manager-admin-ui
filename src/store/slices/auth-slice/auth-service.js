@@ -44,12 +44,8 @@ export const useAuthService = () => {
       })
     );
     API.setToken(response.data.token);
-    getReports({
-      Unique_Id: response.data.Unique_Id,
-      className: `class_of_${response.data.Graduation_Year}`,
-      ...schoolInfo,
-    });
-    // navigate(ROUTES.profile.url);
+
+    navigate(ROUTES.reports.url);
   };
 
   const processFailedAuth = (error, response, page) => {
@@ -123,12 +119,15 @@ export const useAuthService = () => {
   };
 
   // MOCKED FUNCTIONALITY
-  const loginAsync = async (data) => {
+  const loginAsync = async (data, callBack) => {
     setLoading(true);
     return API.POST(END_POINTS.login, data)
       .then(async (response) => {
         if (response.data.success) {
           processLoginSuccess(response.data);
+          if (callBack) {
+            callBack(response.data);
+          }
         } else {
           processFailedAuth("credentials", response.data);
         }

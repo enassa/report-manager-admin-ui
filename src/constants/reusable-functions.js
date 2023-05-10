@@ -43,6 +43,12 @@ export const emailRegex = (max = 50) => {
 export const onlyPositiveNumbersRegex = (max = 50) => {
   return "^[1-9]+[0-9]*$";
 };
+export const generateSuperShortId = () => {
+  var S4 = function () {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  };
+  return S4() + S4();
+};
 
 export const onlyNumbersRegex = (max = 50) => {
   return "^[1-9]+[0-9]*$";

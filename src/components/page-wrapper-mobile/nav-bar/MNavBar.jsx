@@ -10,7 +10,7 @@ export default function MNavBar() {
           <MLogo />
         </div>
       </div>
-      <div className="flex  min-w-[300px] justify-end">
+      <div className="flex  w-full justify-end">
         <MUserProfile />
       </div>
     </div>

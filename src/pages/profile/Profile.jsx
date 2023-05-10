@@ -207,9 +207,13 @@ export default function Profile() {
         <div className="w-full flex justify-center">
           <div className="w-[80%] flex flex-col justify-center items-center py-[20px] border-dotted border-2 border-gray-200 md:py-[20px]  md:mt-[20px] mt-[5px]">
             <div
-              style={{ backgroundImage: `url(${images.myPassport})` }}
-              className="min-w-[150px] min-h-[150px] w-[150px] h-[150px] fit-bg flex rounded-full bg-gray-300 shadow-lg"
-            ></div>
+              style={{ backgroundImage: `url(${""})` }}
+              className="min-w-[150px] min-h-[150px] w-[150px] h-[150px]  fit-bg flex justify-center items-center rounded-full bg-gray-300 shadow-lg"
+            >
+              <span className="text-9xl text-blue-500 font-bold">
+                {userData?.First_Name?.charAt(0)}
+              </span>
+            </div>
             <span className="w-full justify-center text-xs text-gray-400 mt-[10px]">
               Your wards picture
             </span>
@@ -218,7 +222,7 @@ export default function Profile() {
         <div className="w-full flex justify-center flex-col px-[30px] mt-[10px]">
           <div className="w-full relative">
             <button className="w-[60px] h-[30px] min-h-[30px] min-w-[30px] hover:bg-gray-500 hover:text-white absolute right-0 top-[0px]  bg-gray-600 text-gray-50  shadow-neumoNav rounded-full  flex items-center justify-center">
-              <span className="mr-[2px] text-sm">Edit</span>
+              <span className="mr-[2px] text-sm ">Edit</span>
               <Edit style={{ fontSize: 15 }} />
             </button>
             {/* <button className="w-[60px] h-[30px] min-h-[30px] min-w-[30px] hover:bg-gray-500 hover:text-white absolute right-0 top-[0px]  bg-white text-gray-600 shadow-neumoNav rounded-full  flex items-center justify-center">

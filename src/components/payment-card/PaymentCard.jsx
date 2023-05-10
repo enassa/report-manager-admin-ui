@@ -13,6 +13,8 @@ import {
   WatchLaterOutlined,
   HourglassTopOutlined,
   ReplayOutlined,
+  Report,
+  Check,
 } from "@mui/icons-material";
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import React, { useState, useEffect } from "react";
@@ -30,47 +32,77 @@ export default function PaymentCard({ data }) {
     "md:mr-[20px] mr-2 cursor-pointer rounded-full  text-bgTrade hover:bg-bgTrade hover:text-white  border-bgTrade border-2 transition-all duration-100 md:min-h-[40px] md:min-w-[40px] md:w-[40px] md:h-[40px] w-[30px] h-[30px] px-3 flex justify-center items-center";
   const iconStyle = { fontSize: "1.2em" };
   return (
-    <div className="w-full md:min-h-[100px] min-h-[80px] bg-white h-[60px] md:shadow-md shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm md:py-[] py-[12px] p-[5px]">
+    <div className="w-full md:min-h-[100px] min-h-[80px] relative bg-white h-[60px] md:shadow-md shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm md:py-[] py-[12px] p-[5px]">
+      {data?.new ? (
+        <div className="w-[25px] h-[25px] absolute text-[50%] text-white top-[-5px] right-0 rounded-full bg-green-500 flex justify-center items-center">
+          New
+        </div>
+      ) : null}
       <div className="w-full h-full flex  cursor-pointer ">
         <div className="h-full flex items-center ">
           <span className="min-w-[30px] min-h-[30px] flex justify-center items-center rounded-lg bg-blue-400 text-white mr-[20px]">
             <HourglassTopOutlined style={iconStyle} />
           </span>
         </div>
-        <div className="flex flex-col w-full h-full justify-between">
-          <span className=" w-full  text-sm md:text-xl flex">{data?.bill}</span>
-          <div className="font-extrabold text-xs text-gray-900 w-full justify-end flex md:hidden ">
-            <span className="p-1 px-2 bg-gray-50 text-blue-900 rounded-full">
-              GHS2000
-            </span>
+        <div className="flex flex-col w-full h-full justify-between relative">
+          <div className="w-full md:max-w-[80%] max-w-[80%]  text-sm md:text-xl text-left whitespace-nowrap overflow-hidden text-ellipsis">
+            {data?.bill}
           </div>
+
           <span className="w-full flex items-center md:text=[50px]  text-[10px]">
             <WatchLaterOutlined
               style={{ fontSize: 15, marginRight: 2, color: "#333" }}
             />
-            <span className="h-full items-center flex ">
-              20th Jan 2021 | 10:54 AM
+            <span className="w-full max-w-[60%] md:max-w-[80%] overflow-hidden whitespace-nowrap text-ellipsis  text-left">
+              {data?.date}
             </span>
           </span>
         </div>
       </div>
-      <div className="w-full cursor-pointer h-full md:flex items-center justify-end relative hidden">
-        <Tooltip title="Edit detail">
+      <div className="font-extrabold absolute right-2 text-xs  text-gray-900 w-full justify-end flex md:hidden ">
+        <span className="p-1 px-2 bg-gray-50 text-blue-900 rounded-full">
+          GHS {data?.amount}
+        </span>
+      </div>
+      {/* 20th Jan 2021 | 10:54 AM */}
+      <div className="w-full cursor-pointer  h-full md:flex items-center justify-end relative hidden">
+        <Tooltip title="">
           <div
-            onClick={() => openEditPortfolioForm(data?.title)}
-            className={iconContainerClass + " md:min-w-[100px] md:w-[100px]"}
+            onClick={() => showDrop(true)}
+            style={{ minWidth: 120 }}
+            className={
+              iconContainerClass +
+              " px- whitespace-nowrap border-green-400 text-green-600 hover:bg-white hover:text-green-600"
+            }
           >
-            $500
+            GHS {data.amount}
           </div>
         </Tooltip>
-        <Tooltip title="Download">
-          <div onClick={() => showDrop(true)} className={iconContainerClass}>
-            <ReplayOutlined
+        <Tooltip title="">
+          <div
+            onClick={() => showDrop(true)}
+            className={
+              iconContainerClass + " bg-green-400 text-white border-transparent"
+            }
+          >
+            <Check
               style={iconStyle}
               className="pointer-events-none text-[10px!important] w-[5px] h-[5px]"
             />
           </div>
         </Tooltip>
+        <Tooltip title="">
+          <div
+            onClick={() => showDrop(true)}
+            className={
+              iconContainerClass +
+              " md:min-w-[100px] md:w-[100px] md:mr-[0px] border-transparent hover:bg-transparent hover:text-black"
+            }
+          >
+            <MoreVert />
+          </div>
+        </Tooltip>
+
         {drop && (
           <ClickAwayListener onClickAway={() => showDrop(false)}>
             <div className="w-[170px] z-[20] flex flex-col  absolute bg-white top-[70px]  shadow-neuroFlat animate-rise">
@@ -79,35 +111,13 @@ export default function PaymentCard({ data }) {
                   showDrop(false);
                   closePortfolio();
                 }}
-                className=" w-full h-[60px] hover:bg-gray-50 hover:text-red-400  flex items-center justify-start px-[10px]"
+                className=" w-full text-red-500 h-[60px] hover:bg-gray-50 hover:text-red-400  flex items-center justify-start px-[10px]"
               >
-                <Delete className="" /> <span>Close portfolio</span>
+                <Report className=" mr-1" /> <span>Raise a complain</span>
               </div>
             </div>
           </ClickAwayListener>
         )}
-      </div>
-      <div className="h-full flex md:hidden  items-center  justify-center relative">
-        <ReplayOutlined
-          onClick={() => showDrop(true)}
-          style={{ fontSize: 20 }}
-          className="text-red-800"
-        />
-        {/* {drop && (
-          <ClickAwayListener onClickAway={() => showDrop(false)}>
-            <div className="w-[170px] z-[20] flex flex-col  absolute bg-white top-[10px]  shadow-neuroFlat animate-rise right-[0px]">
-              <div
-                onClick={() => {
-                  showDrop(false);
-                  closePortfolio();
-                }}
-                className=" w-full h-[60px] hover:bg-gray-50 hover:text-red-400  flex items-center justify-start px-[10px]"
-              >
-                <Delete className="" /> <span>Close portfolio</span>
-              </div>
-            </div>
-          </ClickAwayListener>
-        )} */}
       </div>
     </div>
   );

@@ -5,9 +5,11 @@ export const END_POINTS = {
   home: "/api/v1/home",
   // ORDER
   getAllReports: "/api/reports",
-  downloadReport: "/api/order",
-  payForReport: "/api/payReport",
-
+  downloadReport: "/api/dr",
+  payWithPayStack: "https://api.paystack.co/checkout/request_inline",
+  recordTransation: "/api/recp",
+  getTransactions: "/api/transactions",
+  // recordReportPayment: "/api/pay-report",
   // PORTFOLIO
   // getAllPortfolio: "/api/v1/portfolio",
   // createPortfolio: "/api/v1/portfolio",

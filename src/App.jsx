@@ -9,6 +9,8 @@ import LandingPage from "./pages/landing/LandingPage";
 import Login from "./pages/auth/login/Login";
 import Home from "./pages/home/Home";
 import Dashboard from "./pages/dashboard/Dashboard";
+import "react-toastify/dist/ReactToastify.css";
+
 import { ProtectedRoutes } from "./components/protected-routes/ProtectedRoutes";
 // import { ProtectedRoutes } from "./components/protected-routes/ProtectedRoutes";
 import Reports from "./pages/reports/Reports";
@@ -18,6 +20,8 @@ import Payment from "./pages/payment/Payment";
 import Admin from "./pages/admin/Admin";
 import { API_HANDLER } from "./util/api-handler";
 import { ConnectingAirportsOutlined } from "@mui/icons-material";
+import { ClientPay } from "./pages/payment/ClientPay";
+import { useActivityService } from "./store/slices/activity-slice/activity-service";
 
 const BASE_URL =
   import.meta.env.MODE === "development"
@@ -28,13 +32,13 @@ export const API = new API_HANDLER(BASE_URL);
 
 function App() {
   const [count, setCount] = useState(0);
-
   return (
     <Router>
       <ToastContainer />
       <Routes>
         <Route path={ROUTES.base.route} element={<Login />} />
         <Route path={ROUTES.login.route} element={<Login />} />
+        <Route path={ROUTES.pay.route} element={<ClientPay />} />
 
         <Route element={<ProtectedRoutes />}>
           <Route path={ROUTES.dashboard.route} element={<Dashboard />} />

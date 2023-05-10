@@ -55,6 +55,12 @@ export class API_HANDLER {
               ok: true,
               status: response.status,
             };
+          if (responseType === "blob")
+            return {
+              data: await response.blob(),
+              ok: true,
+              status: response.status,
+            };
         }
         return { ok: false, error: response, status: response.status };
       })
