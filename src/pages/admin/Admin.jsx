@@ -24,6 +24,10 @@ export default class Admin extends Component {
       uploadClass: "",
       uploadProgramme: "",
       uploadClicked: false,
+      baseUrl:
+        import.meta.env.MODE === "development"
+          ? import.meta.env.VITE_DEV_BASE_URL
+          : import.meta.env.VITE_PROD_BASE_URL,
     };
     this.inputRefExcel = React.createRef();
     this.inputReportFile = React.createRef();
@@ -32,6 +36,7 @@ export default class Admin extends Component {
   // const worksheet = workbook.Sheets[sheetName];
   //             const json = XLSX.utils.sheet_to_json(worksheet);
   //             console.log(json);
+
   uploadStudentData = () => {
     // alert('hello')
     var formData = new FormData();
@@ -47,7 +52,7 @@ export default class Admin extends Component {
     );
     formData.append("file", this.state.file);
     axios
-      .post("http://localhost:3032/api/students", formData, {
+      .post(this.state.baseUrl, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
