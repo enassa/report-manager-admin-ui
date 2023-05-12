@@ -134,7 +134,7 @@ export const ClientPay = () => {
       embed={false}
       reference={() => `ref-${generateSuperShortId()}`} // Generate a unique reference for each transaction
       email="customer@example.com" // Replace with the customer's email
-      amount={50} // Replace with the payment amount in kobo (e.g., 5000 for ₦50.00)
+      amount={500} // Replace with the payment amount in kobo (e.g., 5000 for ₦50.00)
       publicKey={paystackPublicKey}
       tag="button"
     />

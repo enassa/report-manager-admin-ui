@@ -100,11 +100,8 @@ export default function Bill() {
           <span>GHS500</span>
         </div>
       </div> */}
-      <div
-        style={{ justifyItems: "center", alignItems: "start" }}
-        className="h-full w-full overflow-y-auto   justify-start  pt-3 flex-col pb-[100px] inline-grid  md:grid-cols-4 gap-4 grid-cols-1"
-      >
-        {/* <GridLayOut
+
+      {/* <GridLayOut
         style={{
           // gridTemplateColumns: `repeat(${small ? "4" : "5"},1fr)`,
           gridTemplateColumns: "repeat(4,1fr)",
@@ -113,18 +110,22 @@ export default function Bill() {
           rowGap: 10,
         }}
       > */}
-        {}
+      {}
 
-        {!bills.length ? (
+      {!bills.length ? (
+        <div
+          style={{ justifyItems: "center", alignItems: "start" }}
+          className="h-full w-full overflow-y-auto   justify-start  pt-3 flex-col pb-[100px] inline-grid  md:grid-cols-4 gap-4 grid-cols-1"
+        >
           ejectBillCards()
-        ) : (
-          <div className="flex justify-center items-center w-full h-full flex-col">
-            <div className="w-[200px] h-[200px]">{svgs.noData}</div>
-            <div>Your bills will soon appear hear!</div>
-          </div>
-        )}
-        {/* </GridLayOut> */}
-      </div>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center w-full h-full flex-col">
+          <div className="w-[200px] h-[200px]">{svgs.noData}</div>
+          <div>Your bills will soon appear hear!</div>
+        </div>
+      )}
+      {/* </GridLayOut> */}
     </div>
   );
 }

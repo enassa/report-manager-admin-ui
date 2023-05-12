@@ -52,7 +52,7 @@ export default class Admin extends Component {
     );
     formData.append("file", this.state.file);
     axios
-      .post(this.state.baseUrl, formData, {
+      .post(this.state.baseUrl + "/api/students", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -90,7 +90,7 @@ export default class Admin extends Component {
     }
     // formData.append("file", this.state.reportCards);
     axios
-      .post("http://localhost:3032/api/upload-reports", formData, {
+      .post(this.state.baseUrl + "/api/upload-reportss", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
