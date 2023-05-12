@@ -89,7 +89,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="w-full md:w-[35%] h-full bg-transparent  bg-[rgb(242,243,243)] animate-rise md:p-[30px] p-[10px]  flex justify-center flex-col shadow-neuroInsert rounded-lg overflow-hidden">
+        <div className="w-full md:w-[35%] h-full bg-transparent  md:bg-[rgb(242,243,243)] animate-rise md:p-[30px] p-[10px]  flex justify-center flex-col shadow-neuroInsert rounded-lg overflow-hidden">
           {/* <span
             onClick={() => navigate(ROUTES.dashboard.url)}
             className="text-blue-600"
