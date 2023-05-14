@@ -26,19 +26,12 @@ export const ROUTES = {
     route: "/reset-password",
     url: "/reset-password",
   },
-  profile: {
-    route: "/profile",
-    url: "/profile",
-  },
 
   //===============  PROTECTED ROUTES ===============
-  reports: {
-    route: "/reports",
-    url: "/reports",
-  },
-  bills: {
-    route: "/bills",
-    url: "/bills",
+
+  donations: {
+    route: "/donations",
+    url: "/donations",
   },
   payment: {
     route: "/payment",
@@ -51,6 +44,32 @@ export const ROUTES = {
   pay: {
     route: "/pay",
     url: "/pay",
+  },
+  apps: {
+    route: "/apps",
+    url: "/apps",
+  },
+  profile: {
+    route: "/profile",
+    url: "/profile",
+  },
+
+  //===============  SERVICE/APPS ROUTES ===============
+  reports: {
+    route: "/apps/reports",
+    url: "/apps/reports",
+  },
+  superMarket: {
+    route: "/apps/market",
+    url: "/apps/market",
+  },
+  documentRequest: {
+    route: "/apps/documents",
+    url: "/apps/documents",
+  },
+  sendMoney: {
+    route: "/apps/send-money",
+    url: "/apps/send-money",
   },
 
   //===============  ADMIN ROUTES ===============

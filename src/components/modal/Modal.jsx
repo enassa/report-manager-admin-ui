@@ -20,11 +20,11 @@ export default function Modal() {
           }flex justify-center  items-center bg-[rgb(0,0,0,0.5)] pointer-events-auto`}
         >
           <div
-            className={`w-[500px] ${
+            className={`md:w-auto ${
               viewModal ? "animate-rise " : "animate-descend"
-            } h-[270px] bg-white shadow-md rounded-md relative  flex justify-start flex-col p-[20px] pointer-events-none`}
+            } h-[200px]  w-[90%] bg-white shadow-md rounded-md relative  flex justify-start flex-col p-[20px] pointer-events-none`}
           >
-            <div className="w-full h-full flex justify-center items-center text-xl pointer-events-none">
+            <div className="w-full text-left h-full flex justify-center items-center text-xl pointer-events-none">
               {modalState.message ?? "Do you really want to do this?"}
             </div>
             <div className="w-full flex justify-end right-[15px]  pointer-events-none">
@@ -33,7 +33,7 @@ export default function Modal() {
                   e.stopPropagation();
                   handleUserClick(true);
                 }}
-                className="w-[80px] border-0 mr-[10px] pointer-events-auto"
+                className="w-[50px] border-0 mr-[10px] pointer-events-auto"
               >
                 Yes
               </TButton>
@@ -42,7 +42,7 @@ export default function Modal() {
                   e.stopPropagation();
                   handleUserClick(false);
                 }}
-                className="w-[80px] bg-red-400 border-0 pointer-events-auto"
+                className="w-[50px] bg-red-400 border-0 pointer-events-auto"
               >
                 No
               </TButton>

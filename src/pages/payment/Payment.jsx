@@ -1,14 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PaymentCard from "../../components/payment-card/PaymentCard";
 import ReportCard from "../../components/report-card/ReportCard";
 import { usePaymentService } from "../../store/slices/payment/payement-service";
 import { useAuthService } from "../../store/slices/auth-slice/auth-service";
-import { schoolInfo } from "../../constants/ui-data";
+import { SCHOOL_INFO } from "../../constants/ui-data";
 import { svgs } from "../../assets/svg/svg";
+import TransactionDetails from "./TransactionDetails";
+import ComplainForm from "./ComplainForm";
+import { Description } from "@mui/icons-material";
 
 export default function Payment() {
-  const { transactionsList, fetchedAllTransactions, getTransactionsAsync } =
-    usePaymentService();
+  const {
+    transactionsList,
+    raiseComplaint,
+    fetchedAllTransactions,
+    getTransactionsAsync,
+  } = usePaymentService();
   const { userData } = useAuthService();
   console.log(userData);
   useEffect(() => {
@@ -17,7 +24,7 @@ export default function Payment() {
       getTransactionsAsync({
         Unique_Id: userData?.Unique_Id,
         className: `class_of_${userData?.Graduation_Year}`,
-        ...schoolInfo,
+        ...SCHOOL_INFO,
       });
   }, []);
   const cards = [
@@ -46,11 +53,31 @@ export default function Payment() {
       date: "30th June 2020 | 10:32AM",
     },
   ];
+  const [showDetails, setShowDetails] = useState(false);
+  const [showComplainForm, setShowComplainForm] = useState(false);
   const ejectTransactions = () => {
     console.log(transactionsList);
     return transactionsList.map((card, index) => {
       return (
         <PaymentCard
+          handleOpenDetails={(data) => {
+            console.log(data);
+            setShowDetails({
+              Payment_Reference: data.PayementRef,
+              Amount_Paid: data.AmountPaid,
+              Description: data.ActivityDesc,
+              Date: data.Date,
+            });
+          }}
+          handleOpenComplainForm={(data) =>
+            setShowComplainForm({
+              Payment_Reference: data.PayementRef,
+              Amount_Paid: data.AmountPaid,
+              Description: data.ActivityDesc,
+              Date: data.Date,
+              Unique_Id: data.Unique_Id,
+            })
+          }
           data={{
             ...card,
             bill: card.ActivityDesc,
@@ -64,7 +91,7 @@ export default function Payment() {
     });
   };
   return (
-    <div className="h-full w-full overflow-x-hidden overflow-y-auto flex justify-start md:px-[20px] px-[10px] pt-3 flex-col pb-[100px]">
+    <div className="h-full relative w-full animate-rise overflow-x-hidden overflow-y-auto flex justify-start md:px-[20px] px-[10px] pt-3 flex-col pb-[100px]">
       {transactionsList?.length ? (
         ejectTransactions()
       ) : (
@@ -74,57 +101,31 @@ export default function Payment() {
         </div>
       )}
       <div className="h-[30px] min-h-[30px] "></div>
+      {!!showDetails && (
+        <TransactionDetails
+          activeTransaction={showDetails}
+          handleClose={() => setShowDetails(null)}
+        />
+      )}
+      {!!showComplainForm && (
+        <ComplainForm
+          activeTransaction={showComplainForm}
+          handleClose={() => setShowComplainForm(null)}
+          handleSubmit={(complain) =>
+            raiseComplaint({
+              Complain: complain,
+              ...showComplainForm,
+              ...SCHOOL_INFO,
+              DateOfTransaction: showComplainForm.Date,
+              ActivityDesc: showComplainForm.Description,
+              PayementRef: showComplainForm.Payment_Reference,
+              AmountPaid: showComplainForm.Amount_Paid,
+            }).finally(() => {
+              setShowComplainForm(null);
+            })
+          }
+        />
+      )}
     </div>
   );
 }
-// import React, { useState } from "react";
-// import { PaystackButton } from "react-paystack";
-// import { generateSuperShortId } from "../../constants/reusable-functions";
-
-// const Payment = () => {
-//   const [paymentStatus, setPaymentStatus] = useState("");
-
-//   const handlePaymentSuccess = (response) => {
-//     // Process successful payment here
-//     console.log(response);
-//     setPaymentStatus("Payment successful!");
-//   };
-
-//   const handlePaymentError = (error) => {
-//     // Handle payment error here
-//     console.error(error);
-//     setPaymentStatus("Payment failed. Please try again.");
-//   };
-
-//   const handlePaymentClose = () => {
-//     // Handle payment modal closed here
-//     setPaymentStatus("Payment canceled.");
-//   };
-
-//   const paystackPublicKey = "pk_test_bc733043a2fa14aaab884ca767c9100508df31f8"; // Replace with your Paystack public key
-
-//   return (
-//     <div className="container mx-auto px-4 py-8">
-//       <h1 className="text-2xl font-bold mb-4">Payment Page</h1>
-//       <div className="max-w-sm mx-auto">
-//         <PaystackButton
-//           text="Make Payment"
-//           currency="GHS"
-//           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-//           callback={handlePaymentSuccess}
-//           close={handlePaymentClose}
-//           disabled={false}
-//           embed={false}
-//           reference={`ref-${generateSuperShortId()}`} // Generate a unique reference for each transaction
-//           email="customer@example.com" // Replace with the customer's email
-//           amount={50} // Replace with the payment amount in kobo (e.g., 5000 for ₦50.00)
-//           publicKey={paystackPublicKey}
-//           tag="button"
-//         />
-//         {paymentStatus && <p className="text-center mt-4">{paymentStatus}</p>}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Payment;

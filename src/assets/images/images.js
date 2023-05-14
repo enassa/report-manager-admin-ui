@@ -17,6 +17,10 @@ import achimotaLogo from "./achimotaLogo.png";
 import myPassport from "./mypassport.jpg";
 import koinoLogo from "./koinoLogo.png";
 import koinoReportMgr from "./koinoreportmgr.png";
+import report from "./report.png";
+import documents from "./documents.jpeg";
+import documents2 from "./document2.jpg";
+import market from "./market.jpg";
 export const images = {
   logoPng,
   logoIco,
@@ -37,4 +41,7 @@ export const images = {
   myPassport,
   koinoLogo,
   koinoReportMgr,
+  report,
+  documents,
+  market,
 };

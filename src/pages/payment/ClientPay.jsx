@@ -84,25 +84,37 @@ import {
   getAsObjectFromLocalStorage,
 } from "../../constants/reusable-functions";
 import { usePaymentService } from "../../store/slices/payment/payement-service";
-import { schoolInfo } from "../../constants/ui-data";
+import {
+  LOCAL_STORAGE_KEYS,
+  RATE_AMOUNTS,
+  SCHOOL_INFO,
+} from "../../constants/ui-data";
 import { useAuthService } from "../../store/slices/auth-slice/auth-service";
 
 export const ClientPay = () => {
-  const { recordPayment, getTransactions, transactionsList, activeReport } =
-    usePaymentService();
+  const {
+    recordReportPayment,
+    getTransactions,
+    transactionsList,
+    activeReport,
+  } = usePaymentService();
   const { userData } = useAuthService();
 
-  console.log(userData);
+  console.log(activeReport);
+
   const handlePaymentSuccess = (response) => {
-    const activeReport = getAsObjectFromLocalStorage("4351activeReport");
+    const activeReport = getAsObjectFromLocalStorage(
+      LOCAL_STORAGE_KEYS.activeReport
+    );
     console.log(activeReport);
-    recordPayment({
+    recordReportPayment({
       ...activeReport,
+      ActivityDesc: "Excess dowloads fee",
       PayementRef: response?.reference,
-      AmountPaid: 5,
+      AmountPaid: RATE_AMOUNTS.downloadReport,
       PaymentMode: `Momo_${response.transaction}`,
       Graduation_Year: userData.Graduation_Year,
-      ...schoolInfo,
+      ...SCHOOL_INFO,
     });
     // setPaymentStatus("Payment successful!");
   };
@@ -134,7 +146,7 @@ export const ClientPay = () => {
       embed={false}
       reference={() => `ref-${generateSuperShortId()}`} // Generate a unique reference for each transaction
       email="customer@example.com" // Replace with the customer's email
-      amount={500} // Replace with the payment amount in kobo (e.g., 5000 for ₦50.00)
+      amount={`${RATE_AMOUNTS.downloadReport}00`} // Replace with the payment amount in kobo (e.g., 5000 for ₦50.00)
       publicKey={paystackPublicKey}
       tag="button"
     />

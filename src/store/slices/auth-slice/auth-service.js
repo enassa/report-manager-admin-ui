@@ -3,19 +3,29 @@ import { useModal } from "../../../components/modal/modal-context";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { getAsObjectFromLocalStorage } from "../../../constants/reusable-functions";
-import { setAuthResponse, setUpUser } from "./auth-slice";
+import {
+  getAsObjectFromLocalStorage,
+  removeItemsFromLocalStorage,
+  removeItemsFromSessionStorage,
+} from "../../../constants/reusable-functions";
+import {
+  setAuthResponse,
+  setUpSubscription,
+  setUpUser,
+  updateSubscriptions,
+} from "./auth-slice";
 import { API } from "./../../../App";
 import { saveObjectInLocalStorage } from "./../../../constants/reusable-functions";
 import { ROUTES } from "../../../constants/route-links";
 import { END_POINTS } from "./../../../constants/urls";
 import { useReportService } from "../report-slice/report-service";
-import { schoolInfo } from "../../../constants/ui-data";
+import { LOCAL_STORAGE_KEYS, SCHOOL_INFO } from "../../../constants/ui-data";
 
 export const useAuthService = () => {
   const { getReports, downloadReport, reportList } = useReportService();
   const userData = useSelector((state) => state?.authSlice?.userData);
   const authResponse = useSelector((state) => state?.authSlice?.authResponse);
+  const subscriptions = useSelector((state) => state?.authSlice?.subscriptions);
 
   const { showModal } = useModal();
   const navigate = useNavigate();
@@ -25,24 +35,26 @@ export const useAuthService = () => {
 
   const userIsLoggedIn = () => {
     if (!!userData) return true;
-    const localUserData = getAsObjectFromLocalStorage("tfx3213UserData");
+    const localUserData = getAsObjectFromLocalStorage(
+      LOCAL_STORAGE_KEYS.userData
+    );
+    const subscriptions = getAsObjectFromLocalStorage(
+      LOCAL_STORAGE_KEYS.subscriptions
+    );
     !!localUserData && dispatch(setUpUser(localUserData));
+    !!subscriptions && dispatch(setUpSubscription(subscriptions));
     !!localUserData && API.setToken(localUserData.token);
     return !!localUserData;
   };
 
   const processLoginSuccess = (response) => {
-    saveObjectInLocalStorage("tfx3213UserData", {
-      ...response.data,
-      token: response.data.token,
-    });
-    console.log(response.data);
     dispatch(
       setUpUser({
-        ...response.data,
+        ...response.data.userData,
         token: response?.data?.token,
       })
     );
+    dispatch(setUpSubscription(response.data.subscriptions));
     API.setToken(response.data.token);
 
     navigate(ROUTES.reports.url);
@@ -107,9 +119,24 @@ export const useAuthService = () => {
   const logOut = (data) => {
     showModal("Do you really want to logout?", (response) => {
       if (response) {
-        localStorage.removeItem("tfx3213UserData");
-        dispatch(setUpUser(undefined));
-        navigate(ROUTES.base.url);
+        // localStorage.removeItem(LOCAL_STORAGE_KEYS.userData);
+        // localStorage.removeItem(LOCAL_STORAGE_KEYS.activeReport);
+        // localStorage.removeItem(LOCAL_STORAGE_KEYS.subscriptions);
+        console.log(getAsObjectFromLocalStorage(LOCAL_STORAGE_KEYS.userData));
+        const clearAction1 = removeItemsFromLocalStorage([
+          LOCAL_STORAGE_KEYS.userData,
+          LOCAL_STORAGE_KEYS.activeReport,
+          LOCAL_STORAGE_KEYS.subscriptions,
+        ]);
+        console.log(getAsObjectFromLocalStorage(LOCAL_STORAGE_KEYS.userData));
+
+        const clearAction2 = removeItemsFromSessionStorage([
+          LOCAL_STORAGE_KEYS.subscriptions,
+        ]);
+        if (clearAction1 && clearAction2) {
+          dispatch(setUpUser(undefined));
+          navigate(ROUTES.base.url);
+        }
       }
     });
   };
@@ -148,6 +175,7 @@ export const useAuthService = () => {
     loadingAuth,
     authResponse,
     userData,
+    subscriptions,
     resetAuthResponse,
   };
 };

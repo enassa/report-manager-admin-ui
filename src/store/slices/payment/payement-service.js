@@ -12,6 +12,12 @@ import {
 } from "./payment-slice";
 import { useActivityService } from "../activity-slice/activity-service";
 import { errorToast, successToast } from "./../../../components/toast/toastify";
+import { ROUTES } from "../../../constants/route-links";
+import { updateSubscriptions } from "../auth-slice/auth-slice";
+import {
+  saveObjectInLocalStorage,
+  saveObjectInSession,
+} from "../../../constants/reusable-functions";
 
 export const usePaymentService = () => {
   const { raiseActivity, endActivity } = useActivityService();
@@ -33,8 +39,7 @@ export const usePaymentService = () => {
     dispatch(setPayingReport(report));
   };
 
-  // MOCKED FUNCTIONALITY
-  const recordPayment = async (data) => {
+  const recordReportPayment = async (data) => {
     raiseActivity("Unlocking report...");
     setLoading(true);
     return API.POST(END_POINTS.recordTransation, data)
@@ -47,6 +52,33 @@ export const usePaymentService = () => {
       })
       .catch((error) => {
         errorToast("Could not unlock report. Please contact the school");
+      })
+      .finally(() => {
+        endActivity();
+        setLoading(false);
+      });
+  };
+
+  const recordReportSubscription = async (data) => {
+    raiseActivity("Completing suscription");
+    setLoading(true);
+    return API.POST(END_POINTS.recordSubscription, data)
+      .then(async (response) => {
+        if (response.data.success) {
+          dispatch(addOneTransaction(response.data.data.transactions));
+          dispatch(
+            updateSubscriptions({
+              ...response.data.data.subscriptions,
+            })
+          );
+          navigate(ROUTES.reports.url);
+          // successToast("Subscription completed");
+        }
+      })
+      .catch((error) => {
+        errorToast(
+          "Could not complet subscription request. Please contact the school"
+        );
       })
       .finally(() => {
         endActivity();
@@ -77,9 +109,55 @@ export const usePaymentService = () => {
       });
   };
 
+  const launchService = (subscriptionData, serviceUrl) => {
+    console.log(subscriptionData);
+    raiseActivity("Launching application");
+    setLoading(true);
+    return API.POST(END_POINTS.launchService, subscriptionData)
+      .then(async (response) => {
+        if (response.data.success) {
+          dispatch(
+            updateSubscriptions({
+              ...response.data.data.subscriptions,
+            })
+          );
+          navigate(serviceUrl);
+        }
+      })
+      .catch((error) => {
+        errorToast("Could not launch application");
+      })
+      .finally(() => {
+        endActivity();
+        setLoading(false);
+      });
+  };
+
+  const raiseComplaint = (data) => {
+    raiseActivity("Submiting your complaint");
+    return API.POST(END_POINTS.raisComplaint, data)
+      .then(async (response) => {
+        if (response.data.success) {
+          successToast("Your complaint has been submitted");
+        }
+        return true;
+      })
+      .catch((error) => {
+        errorToast("Could not submit your complaint");
+        return false;
+      })
+      .finally(() => {
+        endActivity();
+        setLoading(false);
+      });
+  };
+
   return {
-    recordPayment,
+    recordReportPayment,
+    recordReportSubscription,
     getTransactionsAsync,
+    launchService,
+    raiseComplaint,
     transactionsList,
     activeReport,
     fetchedAllTransactions,

@@ -5,13 +5,13 @@ import { images } from "../../../assets/images/images";
 // import { useAuthService } from "../../../store-and-services/auth-slice/auth-service";
 import { useTheme } from "@emotion/react";
 import MLogo from "../nav-bar/logo-container/MLogo";
+import { useAuthService } from "../../../store/slices/auth-slice/auth-service";
 
 export default function MSideBar({ menuItems = [] }) {
-  const { theme } = useTheme();
+  // const { theme } = useTheme();
   const navigate = useNavigate();
-  // const { logOut, userData } = useAuthService();
+  const { logOut } = useAuthService();
   // ================ get active route from url ================
-  const logOut = () => {};
   const activeMenu = useLocation().pathname.split("/")[1];
   console.log(activeMenu);
   const menuList =

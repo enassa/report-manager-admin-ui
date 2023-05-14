@@ -9,25 +9,27 @@ import {
   MoneyOutlined,
   AccountBoxOutlined,
   AccountCircleOutlined,
+  Menu,
+  Apps,
 } from "@mui/icons-material";
 import { ROUTES } from "../../../../constants/route-links";
 
 export const MSideBarData = [
   {
-    title: "Reports",
-    url: ROUTES.reports.url,
-    route: ROUTES.reports.route,
-    icon: <DownloadingOutlined />,
+    title: "Apps",
+    url: ROUTES.apps.url,
+    route: ROUTES.apps.route,
+    icon: <Apps />,
     group: 1,
-    text: "reports",
+    text: "apps",
   },
   {
-    title: "Bills",
-    url: ROUTES.bills.url,
-    route: ROUTES.bills.route,
+    title: "Donations",
+    url: ROUTES.donations.url,
+    route: ROUTES.donations.route,
     icon: <MoneyOutlined />,
     group: 1,
-    text: "bills",
+    text: "donations",
   },
   {
     title: "Payment",

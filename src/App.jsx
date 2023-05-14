@@ -22,6 +22,8 @@ import { API_HANDLER } from "./util/api-handler";
 import { ConnectingAirportsOutlined } from "@mui/icons-material";
 import { ClientPay } from "./pages/payment/ClientPay";
 import { useActivityService } from "./store/slices/activity-slice/activity-service";
+import AppsList from "./pages/apps/AppsList";
+import ServiceUnvailable from "./pages/service-unavailble/ServiceUnvailable";
 
 const BASE_URL =
   import.meta.env.MODE === "development"
@@ -42,12 +44,29 @@ function App() {
 
         <Route element={<ProtectedRoutes />}>
           <Route path={ROUTES.dashboard.route} element={<Dashboard />} />
-          <Route path={ROUTES.reports.route} element={<Reports />} />
-          <Route path={ROUTES.bills.route} element={<Bill />} />
+          <Route path={ROUTES.donations.route} element={<Bill />} />
           <Route path={ROUTES.profile.route} element={<Profile />} />
           <Route path={ROUTES.payment.route} element={<Payment />} />
           <Route path={ROUTES.admin.route} element={<Admin />} />
+          <Route path={ROUTES.apps.route} element={<AppsList />} />
+
+          {/* Services Routes */}
+          <Route path={ROUTES.reports.route} element={<Reports />} />
+          <Route
+            path={ROUTES.documentRequest.route}
+            element={<ServiceUnvailable />}
+          />
+          <Route
+            path={ROUTES.sendMoney.route}
+            element={<ServiceUnvailable />}
+          />
+          <Route
+            path={ROUTES.superMarket.route}
+            element={<ServiceUnvailable />}
+          />
         </Route>
+
+        {/* External routes */}
         <Route path={ROUTES.admins.route} element={<Admin />} />
       </Routes>
     </Router>

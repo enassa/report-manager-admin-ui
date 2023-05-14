@@ -15,13 +15,18 @@ import {
   ReplayOutlined,
   Report,
   Check,
+  Article,
 } from "@mui/icons-material";
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../constants/route-links";
 
-export default function PaymentCard({ data }) {
+export default function PaymentCard({
+  data,
+  handleOpenDetails,
+  handleOpenComplainForm,
+}) {
   const { closePortfolio, openEditPortfolioForm } = {
     a: () => {},
     b: () => {},
@@ -32,7 +37,10 @@ export default function PaymentCard({ data }) {
     "md:mr-[20px] mr-2 cursor-pointer rounded-full  text-bgTrade hover:bg-bgTrade hover:text-white  border-bgTrade border-2 transition-all duration-100 md:min-h-[40px] md:min-w-[40px] md:w-[40px] md:h-[40px] w-[30px] h-[30px] px-3 flex justify-center items-center";
   const iconStyle = { fontSize: "1.2em" };
   return (
-    <div className="w-full md:min-h-[100px] min-h-[80px] relative bg-white h-[60px] md:shadow-md shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm md:py-[] py-[12px] p-[5px]">
+    <div
+      onClick={() => showDrop(true)}
+      className="w-full cursor-pointer md:min-h-[100px] min-h-[80px] relative bg-white h-[60px] md:shadow-md shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm md:py-[] py-[12px] p-[5px]"
+    >
       {data?.new ? (
         <div className="w-[25px] h-[25px] absolute text-[50%] text-white top-[-5px] right-0 rounded-full bg-green-500 flex justify-center items-center">
           New
@@ -72,7 +80,7 @@ export default function PaymentCard({ data }) {
             style={{ minWidth: 120 }}
             className={
               iconContainerClass +
-              " px- whitespace-nowrap border-green-400 text-green-600 hover:bg-white hover:text-green-600"
+              " px- whitespace-nowrap border-bgTrade text-white bg-bgTrade "
             }
           >
             GHS {data.amount}
@@ -82,7 +90,8 @@ export default function PaymentCard({ data }) {
           <div
             onClick={() => showDrop(true)}
             className={
-              iconContainerClass + " bg-green-400 text-white border-transparent"
+              iconContainerClass +
+              " bg-green-400 text-white border-transparent hover:bg-green-400"
             }
           >
             <Check
@@ -102,23 +111,31 @@ export default function PaymentCard({ data }) {
             <MoreVert />
           </div>
         </Tooltip>
-
-        {drop && (
-          <ClickAwayListener onClickAway={() => showDrop(false)}>
-            <div className="w-[170px] z-[20] flex flex-col  absolute bg-white top-[70px]  shadow-neuroFlat animate-rise">
-              <div
-                onClick={() => {
-                  showDrop(false);
-                  closePortfolio();
-                }}
-                className=" w-full text-red-500 h-[60px] hover:bg-gray-50 hover:text-red-400  flex items-center justify-start px-[10px]"
-              >
-                <Report className=" mr-1" /> <span>Raise a complain</span>
-              </div>
-            </div>
-          </ClickAwayListener>
-        )}
       </div>
+      {drop && (
+        <ClickAwayListener onClickAway={() => showDrop(false)}>
+          <div className="w-[170px] z-[20] flex flex-col  absolute bg-white top-[20px] right-0 shadow-neuroFlat animate-rise">
+            <div
+              onClick={() => {
+                showDrop(false);
+                handleOpenDetails(data);
+              }}
+              className=" w-full text-gray-500 h-[60px] hover:bg-gray-50 hover:text-black flex items-center justify-start px-[10px]"
+            >
+              <Article className=" mr-1" /> <span>View details</span>
+            </div>
+            <div
+              onClick={() => {
+                showDrop(false);
+                handleOpenComplainForm(data);
+              }}
+              className=" w-full text-red-500 h-[60px] hover:bg-gray-50 hover:text-red-400  flex items-center justify-start px-[10px]"
+            >
+              <Report className=" mr-1" /> <span>Raise a complain</span>
+            </div>
+          </div>
+        </ClickAwayListener>
+      )}
     </div>
   );
 }

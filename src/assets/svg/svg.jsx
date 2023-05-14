@@ -5,6 +5,7 @@ import { ReactComponent as SpinTarget } from "./targetArrowSVG.svg";
 import { ReactComponent as NoData } from "./noData.svg";
 import { ReactComponent as NoReport } from "./NoReports.svg";
 import { ReactComponent as NoTransaction } from "./Transactions.svg";
+import { ReactComponent as ServiceInProgress } from "./ServiceInProgress.svg";
 
 export const svgs = {
   loginSvg: <SVGImage className="" />,
@@ -13,4 +14,5 @@ export const svgs = {
   noData: <NoData className="w-full h-full" />,
   NoReport: <NoReport className="w-full h-full" />,
   NoTransaction: <NoTransaction className="w-full h-full" />,
+  ServiceInProgress: <ServiceInProgress className="w-full h-full" />,
 };

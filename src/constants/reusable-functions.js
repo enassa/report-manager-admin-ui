@@ -109,6 +109,14 @@ export const saveObjectInLocalStorage = (key, value) => {
   }
 };
 
+export const getLightRGBColor = (rgbColor, opacity) => {
+  const rgbArr = rgbColor.split(",");
+  const firstValue = rgbArr[0].slice(4);
+  const secondValue = rgbArr[1];
+  const thirdValue = rgbArr[2].replace(")", "");
+  return `rgb(${firstValue}, ${secondValue}, ${thirdValue}, ${opacity})`;
+};
+
 export const getImageFromSymbol = (symbol) => {
   switch (symbol) {
     case "GOOGL":
@@ -130,4 +138,58 @@ export const getImageFromSymbol = (symbol) => {
     default:
       break;
   }
+};
+
+export const getAsObjectFromSession = (index) => {
+  try {
+    const serializedData = sessionStorage.getItem(index);
+    if (serializedData === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedData);
+  } catch (err) {
+    return err;
+  }
+};
+export const saveObjectInSession = (key, value) => {
+  try {
+    const serializedData = JSON.stringify(value);
+    sessionStorage.setItem(key, serializedData);
+  } catch (err) {
+    return err;
+  }
+};
+export const sessionSave = (key, value) => {
+  sessionStorage.setItem(key, value);
+};
+export const sessionGet = (key) => {
+  const value = localStorage.getItem(key);
+  return value;
+};
+export const clearSessionStorage = () => {
+  let value = sessionStorage.clear();
+  return value;
+};
+export const clearLocalStorage = () => {
+  let value = localStorage.clear();
+
+  return value;
+};
+export const removeItemsFromLocalStorage = (itemsArr) => {
+  if (!!itemsArr) {
+    for (let i = 0; i < itemsArr.length; i++) {
+      localStorage.removeItem(itemsArr[i]);
+    }
+    return true;
+  }
+  return false;
+};
+export const removeItemsFromSessionStorage = (itemsArr) => {
+  if (!!itemsArr) {
+    for (let i = 0; i < itemsArr.length; i++) {
+      sessionStorage.removeItem(itemsArr[i]);
+    }
+    return true;
+  }
+  return false;
 };

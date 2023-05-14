@@ -4,10 +4,10 @@ module.exports = {
     screens: {
       xsm: "300px",
       sm: "640px",
-      md: "768px",
-      lg: "1024",
-      xl: "1280",
-      xlg: "1536",
+      md: "868px",
+      lg: "1219px",
+      xl: "1280px",
+      xlg: "1596px",
     },
 
     extend: {
@@ -86,7 +86,8 @@ module.exports = {
         },
         bgChange: {
           from: {
-            background: "linear-gradient(326deg, #a4508b 0%, #5f0a87 74%)",
+            background:
+              "linear-gradient(326deg, rgb(55,79,99) 0%, #5f0a87 74%)",
           },
           to: {
             background: "linear-gradient(326deg, #5f0a87 0%, #db5151 74%)",

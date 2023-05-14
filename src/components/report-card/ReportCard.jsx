@@ -1,38 +1,31 @@
 import {
-  BusinessCenter,
   Delete,
-  Edit,
-  MoreVert,
-  Settings,
-  ShowChart,
-  AssessmentOutlined,
-  DownloadForOfflineOutlined,
   FileDownloadOutlined,
   FileOpenOutlined,
-  ShareOutlined,
   Lock,
-  LockOpen,
 } from "@mui/icons-material";
 import { ClickAwayListener, Tooltip } from "@mui/material";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../../constants/route-links";
 import { ClientPay } from "../../pages/payment/ClientPay";
 import { usePaymentService } from "../../store/slices/payment/payement-service";
 import { saveObjectInLocalStorage } from "../../constants/reusable-functions";
 import { useReportService } from "../../store/slices/report-slice/report-service";
-import { schoolInfo } from "../../constants/ui-data";
+import { LOCAL_STORAGE_KEYS, SCHOOL_INFO } from "../../constants/ui-data";
 
-export default function ReportCard({ data, allData, handleDownloadClick }) {
-  const { recordPayment, getTransactions, transactionsList, setActiveReport } =
-    usePaymentService();
+export default function ReportCard({ data, allData, handleOpenFileClick }) {
   const { Unique_Id, FormNumber, Semester, File_Name, _id, Graduation_Year } =
     allData;
-  const { downloadReportAsync } = useReportService();
+
+  const { setActiveReport } = usePaymentService();
+  const { downloadReportAsync, isfileInCache } = useReportService();
+
+  const [newOpen, setNewOpen] = useState(false);
+  const [drop, showDrop] = useState(true);
 
   const handleClick = () => {
-    if (allData.Locked) {
-      saveObjectInLocalStorage("4351activeReport", {
+    if (allData.Locked && !isfileInCache(data.File_Name)) {
+      saveObjectInLocalStorage(LOCAL_STORAGE_KEYS.activeReport, {
         ...allData,
         ActivityDesc: `Payment for report ${allData.Unique_Id} F${allData.FormNumber} S${allData.Semester}`,
       });
@@ -47,27 +40,43 @@ export default function ReportCard({ data, allData, handleDownloadClick }) {
         File_Name,
         Graduation_Year,
         ReportId: _id,
-        ...schoolInfo,
+        ...SCHOOL_INFO,
       },
       allData
-    );
+    ).then(() => {
+      setNewOpen(true);
+      setTimeout(() => {
+        setNewOpen(false);
+      }, 10000);
+    });
   };
-  const navigate = useNavigate();
-  const [drop, showDrop] = useState(false);
+
+  const handleOpenClick = () => {
+    if (allData.Locked && isfileInCache(data.File_Name)) {
+      return;
+    }
+    setNewOpen(false);
+    handleOpenFileClick(data);
+  };
+
   const iconContainerClass =
     "md:mr-[20px] relative mr-2 cursor-pointer rounded-full  text-bgTrade hover:bg-bgTrade hover:text-white  border-bgTrade border-2 transition-all duration-100 md:min-h-[40px] md:min-w-[40px] md:w-[40px] md:h-[40px] w-[30px] h-[30px] px-1 md:px-3 flex justify-center items-center";
   const iconStyle = { fontSize: "1em" };
+  const newOpenClass = newOpen
+    ? " bg-bgTrade text-white  animate-bgChange duration-100"
+    : "";
+
   return (
     <div className="w-full md:min-h-[100px] min-h-[60px] bg-white h-[60px] md:shadow-md shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm p-[10px]">
       <div className="w-full h-full flex items-center cursor-pointer ">
         <div
           className={`w-[22px] h-[22px] rounded-full font-extrabold ${
-            data.locked
+            data.locked && !isfileInCache(data.File_Name)
               ? "text-red-600 border-red-600"
               : "text-bgTrade border-bgTrade"
           }  border  flex justify-center items-center`}
         >
-          {data.locked ? (
+          {data.locked && !isfileInCache(data.File_Name) ? (
             <Lock style={iconStyle} />
           ) : (
             <span>{allData.DownloadsLeft}</span>
@@ -92,23 +101,23 @@ export default function ReportCard({ data, allData, handleDownloadClick }) {
             <ShareOutlined style={iconStyle} className="" />
           </div>
         </Tooltip> */}
-        {/* <Tooltip title="Open file">
-          <div
-            onClick={() => openEditPortfolioForm(data?.title)}
-            className={iconContainerClass}
-          >
-            <FileOpenOutlined
-              style={iconStyle}
-              className=""
-            />
-          </div>
-        </Tooltip> */}
+        {isfileInCache(data.File_Name) && (
+          <Tooltip title="Open file">
+            <div
+              onClick={() => handleOpenClick(data?.title)}
+              className={iconContainerClass + newOpenClass}
+            >
+              <FileOpenOutlined style={iconStyle} className="" />
+            </div>
+          </Tooltip>
+        )}
+
         <Tooltip title="Download">
           <div
             onClick={() => handleClick(true)}
             className={`${iconContainerClass}  relative`}
           >
-            {data.locked ? (
+            {data.locked && !isfileInCache(data.File_Name) ? (
               <div className=" absolute top-[-4] right-[-5]">
                 <ClientPay reportData={allData} />
               </div>
@@ -119,7 +128,8 @@ export default function ReportCard({ data, allData, handleDownloadClick }) {
             />
           </div>
         </Tooltip>
-        {drop && (
+
+        {/* {drop && (
           <ClickAwayListener onClickAway={() => showDrop(false)}>
             <div className="w-[170px] z-[20] flex flex-col  absolute bg-white top-[70px]  shadow-neuroFlat animate-rise">
               <div
@@ -132,32 +142,35 @@ export default function ReportCard({ data, allData, handleDownloadClick }) {
               </div>
             </div>
           </ClickAwayListener>
-        )}
+        )} */}
       </div>
       <div className="h-full flex md:hidden  items-center  justify-center">
+        {isfileInCache(data.File_Name) && (
+          <div
+            onClick={(e) => {
+              handleOpenClick(allData);
+            }}
+            className={
+              iconContainerClass +
+              newOpenClass +
+              " mr-[10px] bg-gray-900 text-white border-blue-400 flex justify-center items-center"
+            }
+          >
+            {data.locked && !isfileInCache(data.File_Name) ? (
+              <span className=" absolute top-[-4] right-[-5]">
+                <ClientPay reportData={allData} />
+              </span>
+            ) : null}
+            <FileOpenOutlined style={{ fontSize: 20 }} />
+          </div>
+        )}
         <div
           onClick={(e) => {
             handleClick(allData);
           }}
-          className={
-            iconContainerClass +
-            " bg-gray-900 mr-[10px] text-white border-blue-400 flex justify-center items-center"
-          }
+          className={`${iconContainerClass}  bg-gray-900 mr-[0px] text-white border-blue-400 flex justify-center items-center `}
         >
-          {data.locked ? (
-            <span className=" absolute top-[-4] right-[-5]">
-              <ClientPay reportData={allData} />
-            </span>
-          ) : null}
-          <FileOpenOutlined style={{ fontSize: 20 }} />
-        </div>
-        <div
-          onClick={(e) => {
-            handleClick(allData);
-          }}
-          className={`${iconContainerClass} bg-gray-900 mr-[0px] text-white border-blue-400 flex justify-center items-center `}
-        >
-          {data.locked ? (
+          {data.locked && !isfileInCache(data.File_Name) ? (
             <span className=" absolute top-[-4] right-[-5]">
               <ClientPay reportData={allData} />
             </span>

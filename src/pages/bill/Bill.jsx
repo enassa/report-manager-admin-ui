@@ -122,7 +122,7 @@ export default function Bill() {
       ) : (
         <div className="flex justify-center items-center w-full h-full flex-col">
           <div className="w-[200px] h-[200px]">{svgs.noData}</div>
-          <div>Your bills will soon appear hear!</div>
+          <div>Donations will soon appear hear!</div>
         </div>
       )}
       {/* </GridLayOut> */}

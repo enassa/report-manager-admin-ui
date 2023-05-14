@@ -27,7 +27,7 @@ export default function MPageWrapper({ children }) {
             <div className="h-auto w-full flex">
               <NavBar />
             </div>
-            <div className="h-full overflow-y-auto  w-full flex flex-col justify-start md:max-w-full md:max-h-full  ">
+            <div className="h-full overflow-y-auto overflow-x-hidden  w-full flex flex-col justify-start md:max-w-full md:max-h-full  ">
               {children}
             </div>
           </div>

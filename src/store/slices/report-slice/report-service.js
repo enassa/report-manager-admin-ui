@@ -4,13 +4,19 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { API } from "./../../../App";
 import { END_POINTS } from "./../../../constants/urls";
-import { saveReports, updateReport } from "./report-slice";
+import {
+  saveReports,
+  setDownloadUrl,
+  setReportBlob,
+  updateReport,
+} from "./report-slice";
 import { useActivityService } from "../activity-slice/activity-service";
 import { errorToast, successToast } from "../../../components/toast/toastify";
 
 export const useReportService = () => {
   const { raiseActivity, endActivity } = useActivityService();
   const reportList = useSelector((state) => state?.reportSlice?.reports);
+  const fileBlob = useSelector((state) => state?.reportSlice?.fileBlob);
   const fetchedAllReports = useSelector(
     (state) => state?.reportSlice?.fetchedAllReports
   );
@@ -38,8 +44,23 @@ export const useReportService = () => {
         endActivity();
       });
   };
-
+  const isfileInCache = (fileName) => {
+    console.log(fileName);
+    if (fileName === undefined) return false;
+    return fileBlob?.fileName === fileName;
+  };
   const downloadReportAsync = async (data, allData) => {
+    console.log("download", fileBlob);
+    if (isfileInCache(data.File_Name)) {
+      const url = window.URL.createObjectURL(fileBlob.blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = data.File_Name;
+      link.click();
+      window.URL.revokeObjectURL(url);
+      return;
+    }
+
     raiseActivity("Downloading report");
     setLoading(true);
     return API.POST(END_POINTS.downloadReport, data, "blob")
@@ -57,6 +78,8 @@ export const useReportService = () => {
         if (allData.DownloadsLeft === 1) {
           Locked = true;
         }
+        dispatch(setDownloadUrl(url));
+        dispatch(setReportBlob({ blob, fileName: data.File_Name }));
         dispatch(
           updateReport({
             ...allData,
@@ -76,8 +99,10 @@ export const useReportService = () => {
 
   return {
     getReportsAsync,
+    isfileInCache,
     downloadReportAsync,
     reportList,
+    fileBlob,
     fetchedAllReports,
   };
 };

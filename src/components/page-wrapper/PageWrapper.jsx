@@ -17,7 +17,7 @@ export default function TPageWrapper({ children }) {
           <div className="h-auto w-full flex">
             <NavBar />
           </div>
-          <div className="h-[calc(100%-60px)]  overflow-y-auto  w-full flex flex-col justify-start max-w-full max-h-full  ">
+          <div className="h-[calc(100%-60px)]  overflow-y-auto overflow-x-hidden w-full flex flex-col justify-start max-w-full max-h-full  ">
             {children}
           </div>
         </div>

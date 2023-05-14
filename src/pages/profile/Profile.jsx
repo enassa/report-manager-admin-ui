@@ -107,9 +107,9 @@ export default function Profile() {
     });
   };
 
-  const ejectSchoolInfo = () => {
+  const ejectSCHOOL_INFO = () => {
     console.log(userData);
-    const schoolInfo = [
+    const SCHOOL_INFO = [
       {
         title: "Programme",
         value: userData?.Programme,
@@ -173,11 +173,11 @@ export default function Profile() {
     //   cohort: "Green",
     //   };
     // const userInfo = Object.keys(userData);
-    return schoolInfo.map((item, index) => {
+    return SCHOOL_INFO.map((item, index) => {
       return (
         <div
           key={index + "school"}
-          className=" flex justify-start h-[40px] min-h-[40px] mb-[12%]"
+          className=" flex justify-start h-[40px] min-h-[40px] mb-[12%] "
         >
           <div className="h-full flex justify-center items-center mr-[10px]">
             <span className="rounded-full w-[40px] text-blue-900 h-40px] min-w-[40px] min-h-[40px] shadow-md flex justify-center items-center">
@@ -202,7 +202,7 @@ export default function Profile() {
     });
   };
   return (
-    <div className="w-full h-full flex flex-col md:flex-row bg-gray-100 md:px-0 px-[10px] py-[20px] md:py-[0px]">
+    <div className="w-full h-full animate-rise flex flex-col md:flex-row bg-gray-100 md:px-0 px-[10px] py-[20px] md:py-[0px]">
       <div className="md:w-[400px] md:h-full bw-full h-auto md:max-h-full md:overflow-y-auto md:shadow-none shadow-md md:rounded-none rounded-lg md:mb-0 mb-[40px] bg-gray-50 py-[20px] md:py-0">
         <div className="w-full flex justify-center">
           <div className="w-[80%] flex flex-col justify-center items-center py-[20px] border-dotted border-2 border-gray-200 md:py-[20px]  md:mt-[20px] mt-[5px]">
@@ -221,10 +221,10 @@ export default function Profile() {
         </div>
         <div className="w-full flex justify-center flex-col px-[30px] mt-[10px]">
           <div className="w-full relative">
-            <button className="w-[60px] h-[30px] min-h-[30px] min-w-[30px] hover:bg-gray-500 hover:text-white absolute right-0 top-[0px]  bg-gray-600 text-gray-50  shadow-neumoNav rounded-full  flex items-center justify-center">
+            {/* <button className="w-[60px] h-[30px] min-h-[30px] min-w-[30px] hover:bg-gray-500 hover:text-white absolute right-0 top-[0px]  bg-gray-600 text-gray-50  shadow-neumoNav rounded-full  flex items-center justify-center">
               <span className="mr-[2px] text-sm ">Edit</span>
               <Edit style={{ fontSize: 15 }} />
-            </button>
+            </button> */}
             {/* <button className="w-[60px] h-[30px] min-h-[30px] min-w-[30px] hover:bg-gray-500 hover:text-white absolute right-0 top-[0px]  bg-white text-gray-600 shadow-neumoNav rounded-full  flex items-center justify-center">
               <span className="mr-[2px] text-sm">Edit</span>
               <Edit style={{ fontSize: 20 }} />
@@ -237,7 +237,7 @@ export default function Profile() {
         style={{ justifyContent: "center", alignItems: "start" }}
         className=" md:grid md:grid-cols-3 flex flex-col w-full  md:h-full  h-auto gap-2 p-[30px]  md:shadow-none shadow-md md:rounded-none rounded-lg md:mb-0 mb-[0px] bg-white py-[20px] md:py-[30px]"
       >
-        {ejectSchoolInfo()}
+        {ejectSCHOOL_INFO()}
       </div>
       <div className="h-[30px] min-h-[30px]"></div>
     </div>

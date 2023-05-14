@@ -19,7 +19,7 @@ import { ROUTES } from "../../../constants/route-links";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "react-router";
 import TSelector from "./../../../components/input-selector/Selector";
-import { GRADUATION_YEARS, schoolInfo } from "./../../../constants/ui-data";
+import { GRADUATION_YEARS, SCHOOL_INFO } from "./../../../constants/ui-data";
 import { useAuthService } from "./../../../store/slices/auth-slice/auth-service";
 import { replaceSpaceWithUnderscore } from "./../../../constants/reusable-functions";
 
@@ -32,7 +32,7 @@ export default function Login() {
   const handleSubmit = (data) => {
     loginAsync({
       extraInfo: {
-        ...schoolInfo,
+        ...SCHOOL_INFO,
         className: replaceSpaceWithUnderscore(
           data.graduation_year.toLowerCase()
         ),
