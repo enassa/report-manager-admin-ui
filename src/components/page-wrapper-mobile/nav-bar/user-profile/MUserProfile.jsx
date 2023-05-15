@@ -60,7 +60,7 @@ export default function MUserProfile() {
               </span>
               <span className="text-xs">
                 {" "}
-                {userData?.Surname} ${userData?.Other_Names}
+                {userData?.Surname} {userData?.Other_Names}
               </span>{" "}
             </span>
 
