@@ -23,7 +23,7 @@ export default function MUserProfile() {
           backgroundImage: `url(${userData?.image})`,
         }}
         onClick={() => setDropProfile(true)}
-        className="w-[30px] capitalize h-[30px] cursor-pointer bg-gray-200 text-blue-600 shadow-lg font-extrabold  mr-[10px] rounded-full flex justify-center fit-bg items-center overflow-hidden"
+        className="w-[30px] capitalize h-[30px] cursor-pointer bg-gray-200 text-blue-600 shadow-neuroInsert font-extrabold  mr-[10px] rounded-full flex justify-center fit-bg items-center overflow-hidden"
       >
         {userData?.First_Name?.charAt(0)}
       </span>

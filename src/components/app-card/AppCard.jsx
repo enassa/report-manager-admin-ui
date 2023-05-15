@@ -74,15 +74,21 @@ export default function AppCard({ data, color, backgroundImage }) {
       );
       return;
     }
-    console.log(launchedApps, "fffffffffff");
+    console.log(launchedApps, "fffffffffff", isSubScripedObj);
     if (launchedApps?.includes(data.serviceCode)) {
       navigate(data.url);
       return;
     }
-    if (data.free || verifyServiceAccess(data.serviceCode)) {
+    if (data.free || verifyServiceAccess(data.serviceCode) || isSubScripedObj) {
       launchService({ ...isSubScripedObj, ...SCHOOL_INFO }, data.url);
       return;
     }
+    console.log(
+      "access",
+      activelySubscribed,
+      data.free,
+      verifyServiceAccess(data.serviceCode)
+    );
   };
   return (
     <div
@@ -111,7 +117,7 @@ export default function AppCard({ data, color, backgroundImage }) {
         >
           <InfoOutlined
             style={{ fontSize: 19, color }}
-            className="absolute right-2 top-2 cursor-pointer"
+            className="absolute right-2 top-2 cursor-pointer "
             onClick={() => setShowTooltip(!showTooltip)}
           />
         </Tooltip>
@@ -145,7 +151,7 @@ export default function AppCard({ data, color, backgroundImage }) {
                 style={{
                   borderRadius: "20px 20px 20px 20px",
                 }}
-                className="px-[30px] mb-5 mr-2 py-[10px] bg-bgTrade absolute right-0 text-white rounded-md"
+                className="px-[30px] mb-5 mr-2 py-[10px] pb-3 bg-white shadow-neuroInsert absolute right-0 text-bgTrade rounded-md hover:bg-gray-100 transition-all"
               >
                 {activelySubscribed ||
                 data.free ||
@@ -168,7 +174,7 @@ export default function AppCard({ data, color, backgroundImage }) {
                 publicKey={paystackPublicKey}
                 tag="button"
                 text="Subscribe"
-                className="px-[30px] mb-5 mr-2 py-[10px] bg-gray-600 absolute right-0 text-white rounded-md"
+                className="px-[30px] mb-5 mr-2 py-[10px] bg-black hover:bg-gray-800 transition-all shadow-neuroRaise absolute right-0 text-white rounded-md"
               />
             )}
           </div>

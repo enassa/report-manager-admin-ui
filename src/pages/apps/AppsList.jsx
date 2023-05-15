@@ -84,7 +84,7 @@ export default function AppsList() {
       {bills.length ? (
         <div
           style={{ justifyItems: "center", alignItems: "start" }}
-          className="h-full w-full overflow-y-auto overflow-x-hidden  justify-start  pt-3 flex-col pb-[100px] inline-grid sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-3 xlg:grid-cols-4 gap-4 grid-cols-1"
+          className="h-auto max-h-full w-full overflow-y-auto overflow-x-hidden  justify-start  pt-3 flex-col pb-[100px] inline-grid sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-3 xlg:grid-cols-4 gap-4 grid-cols-1"
         >
           {ejectAppCards()}
         </div>

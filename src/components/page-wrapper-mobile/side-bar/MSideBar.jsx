@@ -29,9 +29,9 @@ export default function MSideBar({ menuItems = [] }) {
         }}
         className={`${
           activeMenu === menuItem.text
-            ? "bg-white  text-blue-500"
-            : "hover:bg-[#F5F7F9] text-[#374F63]"
-        } flex flex-col  w-full items-center justify-center transition-all md:rounded-none rounded-md cursor-pointer hover:text-blue-400 md:h-[63px] `}
+            ? " text-blue-500 "
+            : "hover:bg-[] text-[#374F63] "
+        } flex flex-col  w-full items-center duration-200  text-bgTrade justify-center transition-all md:rounded-none rounded-md cursor-pointer hover:text-blue-400 md:h-[63px] `}
       >
         <div className="flex justify-center items-center ">
           <span style={{ fontSize: 25 }}>{menuItem?.icon}</span>
@@ -60,7 +60,7 @@ export default function MSideBar({ menuItems = [] }) {
   };
 
   return (
-    <div className="shadow-neumoNav md:w-[60px] h-[60px] w-full md:min-w-[60px] md:h-full z-10  bg-xxxx flex md:flex-col ">
+    <div className="shadow-neuroInsert md:w-[60px] h-[60px] w-full md:min-w-[60px] md:h-full z-10  bg-xxxx flex md:flex-col ">
       <div className="w-full justify-center font-exrabold md:mt-[0px] mt-[10px] md:mb-[20px] md:flex hidden">
         {/* <BalanceCard balance={100} /> */}
         <div className="flex w-full  md:flex justify-center bg-blue-300 py-[3px]">

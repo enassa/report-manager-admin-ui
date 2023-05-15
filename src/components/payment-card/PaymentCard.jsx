@@ -39,7 +39,7 @@ export default function PaymentCard({
   return (
     <div
       onClick={() => showDrop(true)}
-      className="w-full cursor-pointer md:min-h-[100px] min-h-[80px] relative bg-white h-[60px] md:shadow-md shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm md:py-[] py-[12px] p-[5px]"
+      className="w-full cursor-pointer md:min-h-[100px] min-h-[80px] relative bg-white h-[60px] md:shadow-sm shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm md:py-[] py-[12px] p-[5px]"
     >
       {data?.new ? (
         <div className="w-[25px] h-[25px] absolute text-[50%] text-white top-[-5px] right-0 rounded-full bg-green-500 flex justify-center items-center">

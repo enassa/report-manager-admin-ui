@@ -163,7 +163,7 @@ span.ripple {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #374f63;
+  background-color: rgb(177, 177, 177);
   border: 2px solid transparent;
   border-radius: 100px;
 }

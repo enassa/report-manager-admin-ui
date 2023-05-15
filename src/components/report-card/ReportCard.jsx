@@ -67,7 +67,7 @@ export default function ReportCard({ data, allData, handleOpenFileClick }) {
     : "";
 
   return (
-    <div className="w-full md:min-h-[100px] min-h-[60px] bg-white h-[60px] md:shadow-md shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm p-[10px]">
+    <div className="w-full md:min-h-[100px] min-h-[60px] bg-white h-[60px] shadow-sm flex items-center  justify-between   mb-[1px] md:p-[20px]  md:rounded-sm p-[10px]">
       <div className="w-full h-full flex items-center cursor-pointer ">
         <div
           className={`w-[22px] h-[22px] rounded-full font-extrabold ${
