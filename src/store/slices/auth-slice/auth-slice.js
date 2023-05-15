@@ -8,6 +8,7 @@ const initialState = {
   userData: undefined,
   authResponse: undefined,
   subscriptions: [],
+  launchedApps: [],
 };
 export const authSlice = createSlice({
   name: "auth_SLICE",
@@ -25,6 +26,7 @@ export const authSlice = createSlice({
       state.authResponse = payload;
     },
     updateSubscriptions: (state, { payload }) => {
+      console.log(payload);
       const allSubscriptions = state.subscriptions;
       const indexOfSubscriptions = allSubscriptions.findIndex(
         (subscription) => subscription._id === payload._id
@@ -37,6 +39,10 @@ export const authSlice = createSlice({
       saveObjectInSession(LOCAL_STORAGE_KEYS.subscriptions, allSubscriptions);
       state.subscriptions = [...allSubscriptions];
     },
+    addToLaunchedApps: (state, { payload }) => {
+      if (state.launchedApps.includes(payload)) return;
+      state.launchedApps.push(payload);
+    },
   },
 });
 export const {
@@ -44,5 +50,6 @@ export const {
   setAuthResponse,
   updateSubscriptions,
   setUpSubscription,
+  addToLaunchedApps,
 } = authSlice.actions;
 export default authSlice.reducer;

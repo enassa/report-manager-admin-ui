@@ -20,7 +20,6 @@ export const reportSlice = createSlice({
       state.downloadUrl = payload;
     },
     updateReport: (state, { payload }) => {
-      console.log(payload);
       const allReports = state.reports;
       const indexOfTransaction = allReports.findIndex(
         (report) => report._id === payload._id

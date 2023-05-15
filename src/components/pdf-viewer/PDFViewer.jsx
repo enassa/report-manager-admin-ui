@@ -19,7 +19,6 @@ export const PDFViewer = ({ handleClose, handleDownload, fileUrl }) => {
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
-  console.log(fileUrl);
   const handleNextClick = () => {
     if (numPages === null) return;
     if (pageNumber < numPages) {

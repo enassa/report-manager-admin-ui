@@ -29,7 +29,6 @@ const BASE_URL =
   import.meta.env.MODE === "development"
     ? import.meta.env.VITE_DEV_BASE_URL
     : import.meta.env.VITE_PROD_BASE_URL;
-console.log(import.meta.env.MODE);
 export const API = new API_HANDLER(BASE_URL);
 
 function App() {

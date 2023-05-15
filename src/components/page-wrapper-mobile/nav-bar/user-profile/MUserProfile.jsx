@@ -12,11 +12,10 @@ import { useAuthService } from "../../../../store/slices/auth-slice/auth-service
 export default function MUserProfile() {
   const { userData, logOut } = useAuthService();
   const [dropProfile, setDropProfile] = useState(false);
-  console.log(userData?.image);
   return (
-    <div className="flex h-full items-center md:px-2 py-3 relative ">
-      <span className="mr-2 capitalize">
-        {userData?.First_Name ?? "Username"}
+    <div className="flex h-full  items-center md:px-2 py-3 relative ">
+      <span className="mr-2 lowercase text-blue-800">
+        @{userData?.First_Name + " " ?? "Username"}
       </span>
 
       <span
@@ -24,7 +23,7 @@ export default function MUserProfile() {
           backgroundImage: `url(${userData?.image})`,
         }}
         onClick={() => setDropProfile(true)}
-        className="w-[30px] h-[30px] cursor-pointer bg-bgTrade text-white font-extrabold capitalize mr-[10px] rounded-full flex justify-center fit-bg items-center overflow-hidden"
+        className="w-[30px] capitalize h-[30px] cursor-pointer bg-gray-200 text-blue-600 shadow-lg font-extrabold  mr-[10px] rounded-full flex justify-center fit-bg items-center overflow-hidden"
       >
         {userData?.First_Name?.charAt(0)}
       </span>
@@ -43,7 +42,7 @@ export default function MUserProfile() {
 
       {dropProfile && (
         <ClickAwayListener onClickAway={() => setDropProfile(false)}>
-          <div className="w-[200px] p-2 animate-rise flex flex-col justify-between items-center h-[200px] bg-white shadow-neumoNav rounded-md absolute top-[70px] md:right-[10px] right-[20px] z-[10]">
+          <div className="w-[200px] p-2 animate-rise flex flex-col justify-between items-center h-[230px] bg-white shadow-neuroRaise rounded-md absolute top-[70px] md:right-[10px] right-[20px] z-[10]">
             <div className="w-full flex justify-center">
               <div
                 style={{ backgroundImage: `url(${""})` }}
@@ -54,9 +53,20 @@ export default function MUserProfile() {
                 </span>
               </div>
             </div>
+            <span className="mr-2 capitalize  text-sm mt-2">
+              <span className="text-blue-600">
+                {" "}
+                {`${userData?.First_Name}, `}
+              </span>
+              <span className="text-xs">
+                {" "}
+                {userData?.Surname} ${userData?.Other_Names}
+              </span>{" "}
+            </span>
+
             <div
               onClick={() => logOut()}
-              className="w-[60%]  cursor-pointer transition-all rounded-md hover:bg-bgTrade text-gray-700 hover:text-white h-[40px] bg-gray-50 flex items-center justify-center"
+              className="w-[60%]  cursor-pointer transition-all rounded-md hover:bg-gray-100  text-gray-500  h-[40px] bg-gray-50 flex items-center justify-center"
             >
               <Logout />
               <span className="ml-2">Logout </span>

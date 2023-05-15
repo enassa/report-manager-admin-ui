@@ -17,7 +17,6 @@ export default function Payment() {
     getTransactionsAsync,
   } = usePaymentService();
   const { userData } = useAuthService();
-  console.log(userData);
   useEffect(() => {
     !!userData &&
       !fetchedAllTransactions &&
@@ -56,12 +55,10 @@ export default function Payment() {
   const [showDetails, setShowDetails] = useState(false);
   const [showComplainForm, setShowComplainForm] = useState(false);
   const ejectTransactions = () => {
-    console.log(transactionsList);
     return transactionsList.map((card, index) => {
       return (
         <PaymentCard
           handleOpenDetails={(data) => {
-            console.log(data);
             setShowDetails({
               Payment_Reference: data.PayementRef,
               Amount_Paid: data.AmountPaid,
@@ -91,7 +88,7 @@ export default function Payment() {
     });
   };
   return (
-    <div className="h-full relative w-full animate-rise overflow-x-hidden overflow-y-auto flex justify-start md:px-[20px] px-[10px] pt-3 flex-col pb-[100px]">
+    <div className="h-full relative w-full  overflow-x-hidden overflow-y-auto flex justify-start md:px-[20px] px-[10px] pt-3 flex-col pb-[100px]">
       {transactionsList?.length ? (
         ejectTransactions()
       ) : (

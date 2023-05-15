@@ -5,6 +5,7 @@ import {
   Assessment,
   AccountBalanceWallet,
   Timelapse,
+  Apps,
 } from "@mui/icons-material";
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import {
@@ -23,20 +24,17 @@ import {
 } from "../../constants/ui-data";
 import { useNavigate } from "react-router-dom";
 import { useActivityService } from "../../store/slices/activity-slice/activity-service";
+import { useReportService } from "../../store/slices/report-slice/report-service";
 
 export default function AppCard({ data, color, backgroundImage }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const navigate = useNavigate();
   const { recordReportSubscription, launchService } = usePaymentService();
-
+  const { reportList } = useReportService();
   const { recordInActiveClick } = useActivityService();
-  const { userData, subscriptions } = useAuthService();
-
-  // console.log(userData);
+  const { userData, subscriptions, launchedApps } = useAuthService();
 
   const handlePaymentSuccess = (response) => {
-    // const activeReport = getAsObjectFromLocalStorage("4351activeReport");
-    console.log(response, userData);
     recordReportSubscription({
       Unique_Id: userData.Unique_Id,
       Graduation_Year: userData.Graduation_Year,
@@ -47,18 +45,15 @@ export default function AppCard({ data, color, backgroundImage }) {
       PaymentMode: `Momo_${response.transaction}`,
       ...SCHOOL_INFO,
     });
-    // setPaymentStatus("Payment successful!");
   };
 
   const handlePaymentError = (error) => {
     // Handle payment error here
-    console.error(error);
   };
 
   const handlePaymentClose = () => {
     // Handle payment modal closed here
   };
-  console.log(subscriptions);
 
   const paystackPublicKey = "pk_test_bc733043a2fa14aaab884ca767c9100508df31f8"; // Replace with your Paystack public key
   const isSubScripedObj =
@@ -66,7 +61,6 @@ export default function AppCard({ data, color, backgroundImage }) {
     subscriptions?.find(
       (subscription) => subscription?.ServiceName === data?.serviceCode
     );
-  // console.log(subscriptions[0].ServiceName);
   const activelySubscribed = data.free ? true : !!isSubScripedObj?.CreditsLeft;
   const handleLaunchClick = () => {
     if (!data.active) {
@@ -80,15 +74,24 @@ export default function AppCard({ data, color, backgroundImage }) {
       );
       return;
     }
-    if (data.free || verifyServiceAccess(data.serviceCode)) {
+    console.log(launchedApps, "fffffffffff");
+    if (launchedApps?.includes(data.serviceCode)) {
       navigate(data.url);
       return;
     }
-    launchService({ ...isSubScripedObj, ...SCHOOL_INFO }, data.url);
+    if (data.free || verifyServiceAccess(data.serviceCode)) {
+      launchService({ ...isSubScripedObj, ...SCHOOL_INFO }, data.url);
+      return;
+    }
   };
   return (
     <div
-      onClick={() => (data.free || activelySubscribed) && handleLaunchClick()}
+      onClick={() =>
+        (data.free ||
+          activelySubscribed ||
+          launchedApps.includes(data.serviceCode)) &&
+        handleLaunchClick()
+      }
       style={{ borderBottomColor: data.color, color: data.color }}
       className="flex border-b-2 relative  shadow-neuroRaise flex-col h-[150px] items-center mb-[5px] rounded-md overflow-hidden md:w-[360px] w-[93%] cursor-pointer transition-all"
     >
@@ -118,7 +121,7 @@ export default function AppCard({ data, color, backgroundImage }) {
             style={{ backgroundColor: getLightRGBColor(data.color, 0.2) }}
             className="h-[30px] w-[30px] bg-[rgb(255,255,255,0.5)] rounded mr-[10px]"
           >
-            <Assessment style={{ fontSize: 35 }} />
+            {<Apps />}
           </span>
           <span className="text-2xl text-left text-gray-700 text-xl">
             {data.name}
@@ -127,22 +130,28 @@ export default function AppCard({ data, color, backgroundImage }) {
         <div className="w-full h-[30px] min-h-[30px] text-whites  text-xs flex items-end">
           {activelySubscribed && !data.free && (
             <span className="flex items-center w-full">
-              <Timelapse style={{ fontSize: 15 }} />
-              <span className="h-full items-center flex text-2xl">
+              <Timelapse className="" style={{ fontSize: 12 }} />
+              <span className="h-full items-center  text-lg flex ">
                 {isSubScripedObj?.CreditsLeft}
               </span>
             </span>
           )}
           <div className="w-[350px] h-[20px] flex items-center">
-            {activelySubscribed || data.free ? (
+            {activelySubscribed ||
+            data.free ||
+            launchedApps.includes(data.serviceCode) ? (
               <button
                 onClick={() => handleLaunchClick()}
                 style={{
                   borderRadius: "20px 20px 20px 20px",
                 }}
-                className="px-[30px] mb-5 mr-2 py-[10px] bg-gray-600 absolute right-0 text-white rounded-md"
+                className="px-[30px] mb-5 mr-2 py-[10px] bg-bgTrade absolute right-0 text-white rounded-md"
               >
-                {activelySubscribed || data.free ? "Launch" : "Subscibe"}
+                {activelySubscribed ||
+                data.free ||
+                launchedApps.includes(data.serviceCode)
+                  ? "Launch"
+                  : "Subscibe"}
               </button>
             ) : (
               <PaystackButton

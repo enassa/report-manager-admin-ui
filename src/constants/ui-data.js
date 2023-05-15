@@ -54,7 +54,6 @@ export const verifyServiceAccess = (serviceCode) => {
     subscriptions?.find(
       (subscription) => subscription?.ServiceName === serviceCode
     );
-  console.log(isSubScriped);
   return isSubScriped;
 };
 

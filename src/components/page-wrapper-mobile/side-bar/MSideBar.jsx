@@ -13,7 +13,6 @@ export default function MSideBar({ menuItems = [] }) {
   const { logOut } = useAuthService();
   // ================ get active route from url ================
   const activeMenu = useLocation().pathname.split("/")[1];
-  console.log(activeMenu);
   const menuList =
     Array.isArray(menuItems) && menuItems.length ? menuItems : defaultMenuList;
   const MenuItem = ({ menuItem }) => {

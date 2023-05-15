@@ -22,13 +22,13 @@ export const useActivityService = () => {
     dispatch(resetActivity());
   };
   const recordInActiveClick = (data, serviceUrl) => {
+    navigate(serviceUrl);
     // raiseActivity("Launching application");
     return API.POST(END_POINTS.inactiveService, data)
       .then(async (response) => {})
       .catch((error) => {})
       .finally(() => {
         // endActivity();
-        navigate(serviceUrl);
       });
   };
   return {

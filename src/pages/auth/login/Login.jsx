@@ -27,7 +27,6 @@ export default function Login() {
   const { loginAsync, loadingAuth, authResponse, userIsLoggedIn, loginMock } =
     useAuthService();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (data) => {
     loginAsync({
@@ -39,7 +38,6 @@ export default function Login() {
       },
       data: { indexNumber: data.index_number, password: data.password },
     });
-    console.log(loadingAuth);
     // return;
     // setLoading(true);
     // setTimeout(() => {
@@ -107,7 +105,7 @@ export default function Login() {
             validationSchema={validationSchema}
             initialValues={initialValues}
             onSubmit={handleSubmit}
-            isSubmitting={loading}
+            isSubmitting={loadingAuth}
             className="mt-[20px] flex justify-center flex-col "
           >
             {({ errors }) => {
@@ -144,7 +142,9 @@ export default function Login() {
                   </TSelector>
                   <TButton
                     styles={{
-                      backgroundColor: `${false ? "#38506494" : "#385064"}`,
+                      backgroundColor: `${
+                        loadingAuth ? "bg-gray-400" : "#385064"
+                      }`,
                     }}
                     className={`max-mt-[40px] mt-[5%]`}
                     icon={<LoginSharp />}

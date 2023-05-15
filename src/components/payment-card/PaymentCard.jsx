@@ -129,7 +129,7 @@ export default function PaymentCard({
                 showDrop(false);
                 handleOpenComplainForm(data);
               }}
-              className=" w-full text-red-500 h-[60px] hover:bg-gray-50 hover:text-red-400  flex items-center justify-start px-[10px]"
+              className=" w-full text-gray-500 h-[60px] hover:bg-gray-50 hover:text-red-400  flex items-center justify-start px-[10px]"
             >
               <Report className=" mr-1" /> <span>Raise a complain</span>
             </div>

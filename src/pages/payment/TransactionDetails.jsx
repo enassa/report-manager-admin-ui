@@ -11,7 +11,6 @@ export default function TransactionDetails({ activeTransaction, handleClose }) {
     return (
       Array.isArray(properties) &&
       properties.map((property, index) => {
-        console.log(property, activeTransaction);
         return (
           <div
             key={index + "profile"}
@@ -40,22 +39,22 @@ export default function TransactionDetails({ activeTransaction, handleClose }) {
     );
   };
   return (
-    <div className="w-full absolute flex justify-center items-center h-full  top-0 right-0 bg-[rgb(0,0,0,0.5)] z-[99999999999909999999] ">
-      <div className="w-[90%] animate-rise bg-white h-[90%] flex p-3 flex-col relative">
+    <div className="w-full fixed flex justify-center items-center h-full  top-0 right-0 bg-[rgb(0,0,0,0.5)] z-[99999999999909999999] ">
+      <div className="w-[88%] max-w-[300px] md:w-[300px] px-5   animate-rise bg-white h-auto flex p-3 flex-col relative">
         <div className="w-full h-[50px] flex justify-end px-2">
           <span
             onClick={handleClose}
-            className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] bg-gray-50 rounded-full flex justify-center items-center"
+            className="min-h-[40px] cursor-pointer  absolute top-0 right-0 min-w-[40px] max-h-[40px] max-w-[40px] rounded-full flex justify-center items-center"
           >
-            <Close className="pointer-events-none" />
+            <Close style={{ fontSize: 15 }} className="pointer-events-none" />
           </span>
         </div>
         <div className="w-full h-full overflow-x-hidden overflow-y-auto  ">
           {ejectDetails()}
         </div>
-        <span className="min-h-[40px] min-w-[40px]  top-[24%] right-[20px] bg-bgTrade text-white rounded-md flex justify-center items-center">
+        <button className="min-h-[40px] min-w-[40px]  top-[24%] right-[20px] bg-gray-100 hover:bg-gray-200 transition-all text-bgTrade rounded-sm flex justify-center items-center">
           <CopyAll /> <span>Copy to Clipboard</span>
-        </span>
+        </button>
       </div>
     </div>
   );

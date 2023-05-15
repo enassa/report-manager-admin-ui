@@ -7,6 +7,7 @@
 
 import React from "react";
 import {
+  Article,
   Assessment,
   CheckCircleOutlineOutlined,
   InfoOutlined,
@@ -40,9 +41,7 @@ export default function AppsList() {
       free: true,
       balance: 100,
       image: images.documents,
-      icon: (color) => (
-        <Assessment style={{ backgroundColor: "rgb(84, 160, 255)" }} />
-      ),
+      icon: <Article style={{ backgroundColor: "rgb(84, 160, 255)" }} />,
       color: "rgb(84, 160, 255)",
       serviceCode: SERVICE_CODES.documentRequest,
       url: ROUTES.documentRequest.url,
@@ -54,9 +53,7 @@ export default function AppsList() {
       free: true,
       balance: 100,
       image: images.market,
-      icon: (color) => (
-        <Assessment style={{ backgroundColor: "rgb(95, 39, 205)" }} />
-      ),
+      icon: <Assessment style={{ backgroundColor: "rgb(95, 39, 205)" }} />,
       color: "rgb(95, 39, 205)",
       serviceCode: SERVICE_CODES.superMarket,
       url: ROUTES.superMarket.url,
@@ -67,10 +64,8 @@ export default function AppsList() {
       description: "Send money to your ward from the comfort of your home",
       free: true,
       balance: 100,
-      image: images.market,
-      icon: (color) => (
-        <Assessment style={{ backgroundColor: "rgb(0, 210, 211)" }} />
-      ),
+      image: images.moneyTostudent,
+      icon: <Assessment style={{ backgroundColor: "rgb(0, 210, 211)" }} />,
       color: "rgb(0, 210, 211)",
       serviceCode: SERVICE_CODES.superMarket,
       url: ROUTES.sendMoney.url,

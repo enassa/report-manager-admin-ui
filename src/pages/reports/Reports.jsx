@@ -43,7 +43,6 @@ export default function Reports() {
       });
   }, []);
 
-  console.log(subscribed);
   const ejectReportCards = () => {
     return (
       Array.isArray(reportList) &&

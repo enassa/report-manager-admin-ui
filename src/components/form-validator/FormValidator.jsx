@@ -103,10 +103,6 @@ export default function TFormValidator({
       });
   };
   useEffect(() => {
-    console.log("validate input", stateCache.current.errors);
-
-    // myErrors = states.errors;
-    // myValues = states.values;
     stateCache.current = states;
   }, [states]);
 
@@ -160,7 +156,6 @@ export default function TFormValidator({
       // ==================== add event listener to all input fields ====================
       let delayId = undefined;
       input.addEventListener("input", (e) => {
-        console.log(myErrors);
         clearTimeout(delayId);
         // ==================== validate input only when user stops typing: debouncing ====================
         delayId = setTimeout(() => {

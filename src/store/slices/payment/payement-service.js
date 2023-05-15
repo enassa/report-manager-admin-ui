@@ -13,7 +13,10 @@ import {
 import { useActivityService } from "../activity-slice/activity-service";
 import { errorToast, successToast } from "./../../../components/toast/toastify";
 import { ROUTES } from "../../../constants/route-links";
-import { updateSubscriptions } from "../auth-slice/auth-slice";
+import {
+  addToLaunchedApps,
+  updateSubscriptions,
+} from "../auth-slice/auth-slice";
 import {
   saveObjectInLocalStorage,
   saveObjectInSession,
@@ -63,7 +66,7 @@ export const usePaymentService = () => {
     raiseActivity("Completing suscription");
     setLoading(true);
     return API.POST(END_POINTS.recordSubscription, data)
-      .then(async (response) => {
+      .then((response) => {
         if (response.data.success) {
           dispatch(addOneTransaction(response.data.data.transactions));
           dispatch(
@@ -77,7 +80,7 @@ export const usePaymentService = () => {
       })
       .catch((error) => {
         errorToast(
-          "Could not complet subscription request. Please contact the school"
+          "Could not complete subscription request. Please contact the school"
         );
       })
       .finally(() => {
@@ -96,7 +99,6 @@ export const usePaymentService = () => {
           dispatch(addTransactions(response.data.data));
           successToast("Checked for transaction history succesfully");
         }
-        console.log(response, response.data.data);
       })
       .catch((error) => {
         errorToast(
@@ -109,19 +111,21 @@ export const usePaymentService = () => {
       });
   };
 
-  const launchService = (subscriptionData, serviceUrl) => {
-    console.log(subscriptionData);
+  const launchService = async (subscriptionData, serviceUrl) => {
     raiseActivity("Launching application");
     setLoading(true);
     return API.POST(END_POINTS.launchService, subscriptionData)
       .then(async (response) => {
+        console.log(response.data.success);
         if (response.data.success) {
           dispatch(
             updateSubscriptions({
               ...response.data.data.subscriptions,
             })
           );
+          dispatch(addToLaunchedApps(subscriptionData.ServiceName));
           navigate(serviceUrl);
+          console.log(subscriptionData.ServiceName);
         }
       })
       .catch((error) => {
@@ -133,7 +137,7 @@ export const usePaymentService = () => {
       });
   };
 
-  const raiseComplaint = (data) => {
+  const raiseComplaint = async (data) => {
     raiseActivity("Submiting your complaint");
     return API.POST(END_POINTS.raisComplaint, data)
       .then(async (response) => {

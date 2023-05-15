@@ -8,24 +8,17 @@ import {
   removeItemsFromLocalStorage,
   removeItemsFromSessionStorage,
 } from "../../../constants/reusable-functions";
-import {
-  setAuthResponse,
-  setUpSubscription,
-  setUpUser,
-  updateSubscriptions,
-} from "./auth-slice";
+import { setAuthResponse, setUpSubscription, setUpUser } from "./auth-slice";
 import { API } from "./../../../App";
-import { saveObjectInLocalStorage } from "./../../../constants/reusable-functions";
 import { ROUTES } from "../../../constants/route-links";
 import { END_POINTS } from "./../../../constants/urls";
-import { useReportService } from "../report-slice/report-service";
-import { LOCAL_STORAGE_KEYS, SCHOOL_INFO } from "../../../constants/ui-data";
+import { LOCAL_STORAGE_KEYS } from "../../../constants/ui-data";
 
 export const useAuthService = () => {
-  const { getReports, downloadReport, reportList } = useReportService();
   const userData = useSelector((state) => state?.authSlice?.userData);
   const authResponse = useSelector((state) => state?.authSlice?.authResponse);
   const subscriptions = useSelector((state) => state?.authSlice?.subscriptions);
+  const launchedApps = useSelector((state) => state?.authSlice?.launchedApps);
 
   const { showModal } = useModal();
   const navigate = useNavigate();
@@ -119,16 +112,11 @@ export const useAuthService = () => {
   const logOut = (data) => {
     showModal("Do you really want to logout?", (response) => {
       if (response) {
-        // localStorage.removeItem(LOCAL_STORAGE_KEYS.userData);
-        // localStorage.removeItem(LOCAL_STORAGE_KEYS.activeReport);
-        // localStorage.removeItem(LOCAL_STORAGE_KEYS.subscriptions);
-        console.log(getAsObjectFromLocalStorage(LOCAL_STORAGE_KEYS.userData));
         const clearAction1 = removeItemsFromLocalStorage([
           LOCAL_STORAGE_KEYS.userData,
           LOCAL_STORAGE_KEYS.activeReport,
           LOCAL_STORAGE_KEYS.subscriptions,
         ]);
-        console.log(getAsObjectFromLocalStorage(LOCAL_STORAGE_KEYS.userData));
 
         const clearAction2 = removeItemsFromSessionStorage([
           LOCAL_STORAGE_KEYS.subscriptions,
@@ -175,6 +163,7 @@ export const useAuthService = () => {
     loadingAuth,
     authResponse,
     userData,
+    launchedApps,
     subscriptions,
     resetAuthResponse,
   };

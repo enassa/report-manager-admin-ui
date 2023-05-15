@@ -21,6 +21,7 @@ import report from "./report.png";
 import documents from "./documents.jpeg";
 import documents2 from "./document2.jpg";
 import market from "./market.jpg";
+import moneyTostudent from "./moneyTostudent.jpg";
 export const images = {
   logoPng,
   logoIco,
@@ -44,4 +45,5 @@ export const images = {
   report,
   documents,
   market,
+  moneyTostudent,
 };

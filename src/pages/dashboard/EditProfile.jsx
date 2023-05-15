@@ -7,7 +7,6 @@ export default function EditProfile() {
     let ejectProfile = () => {
       let { studentInfo } = this.props;
       let properties = Object.keys(studentInfo);
-      // console.log(properties)
       if (Array.isArray(properties)) {
         return properties.map((item, index) => {
           if (item === "image") {

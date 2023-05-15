@@ -33,15 +33,9 @@ export default class Admin extends Component {
     this.inputReportFile = React.createRef();
   }
 
-  // const worksheet = workbook.Sheets[sheetName];
-  //             const json = XLSX.utils.sheet_to_json(worksheet);
-  //             console.log(json);
-
   uploadStudentData = () => {
-    // alert('hello')
     var formData = new FormData();
-    // console.log(this.state.file)
-    // var excelFile = this.inputRefExcel;
+
     formData.append(
       "extraInfo",
       JSON.stringify({
@@ -73,8 +67,7 @@ export default class Admin extends Component {
     // alert('hello')
     // return;
     var formData = new FormData();
-    // console.log(this.state.file)
-    // var excelFile = this.inputRefExcel;
+
     formData.append(
       "extraInfo",
       JSON.stringify({
@@ -152,7 +145,6 @@ export default class Admin extends Component {
     this.setState({ selectedWorkSheet: item }, () => {
       const { workBook, selectedWorkSheet } = this.state;
       if (selectedWorkSheet === "") return;
-      // console.log(workBook.Sheets[selectedWorkSheet])
     });
   };
   ejectWorkSheets = () => {

@@ -108,7 +108,6 @@ export default function Profile() {
   };
 
   const ejectSCHOOL_INFO = () => {
-    console.log(userData);
     const SCHOOL_INFO = [
       {
         title: "Programme",

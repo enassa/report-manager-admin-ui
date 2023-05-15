@@ -35,7 +35,6 @@ export const useReportService = () => {
           dispatch(saveReports(response.data.data));
           successToast("Checked for reports succesfully");
         }
-        console.log(response, response.data.success);
       })
       .catch((error) => {
         errorToast("Could not unlock report. Please contact the school");
@@ -45,12 +44,10 @@ export const useReportService = () => {
       });
   };
   const isfileInCache = (fileName) => {
-    console.log(fileName);
     if (fileName === undefined) return false;
     return fileBlob?.fileName === fileName;
   };
   const downloadReportAsync = async (data, allData) => {
-    console.log("download", fileBlob);
     if (isfileInCache(data.File_Name)) {
       const url = window.URL.createObjectURL(fileBlob.blob);
       const link = document.createElement("a");
