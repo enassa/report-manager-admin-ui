@@ -17,8 +17,8 @@ export default function MPageWrapper({ children }) {
         } flex w-full h-full max-w-full justify-center`}
       >
         <Modal />
-        <div className="md:w-[10px] w-[4px] bg-blue-400 fixed left-0 h-full top-0 xx:hidden md:flex"></div>
-        <div className="md:w-[10px] w-[4px] bg-blue-400 fixed right-0 h-full top-0  xx:hidden md:flex"></div>
+        <div className="md:w-[10px] w-[4px] bg-blue-400 fixed left-0 h-full top-0 hidden md:flex"></div>
+        <div className="md:w-[10px] w-[4px] bg-blue-400 fixed right-0 h-full top-0  hidden md:flex"></div>
         <div className="flex w-full  h-full max-w-full overflow-hidden items-start md:justify-start md:flex-row flex-col-reverse justify-between">
           <div className="md:w-auto w-full  h-full items-center">
             <SideBar />
