@@ -23,7 +23,7 @@ import { ROUTES } from "../../constants/route-links";
 export default function AppsList() {
   const bills = [
     {
-      name: "Check Report",
+      name: "Access report card",
       description: "Access your wards report cards",
       free: false,
       balance: 100,
@@ -48,7 +48,7 @@ export default function AppsList() {
       active: false,
     },
     {
-      name: "Student Super Market",
+      name: "Access student market",
       description: "Buy and deliver items to your ward",
       free: true,
       balance: 100,
