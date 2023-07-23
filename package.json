@@ -1,5 +1,5 @@
 {
-  "name": "report-manager",
+  "name": "report-manager-admin",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,6 +14,8 @@
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.9",
     "@reduxjs/toolkit": "^1.9.2",
+    "ag-grid-community": "^30.0.3",
+    "ag-grid-react": "^30.0.4",
     "axios": "^1.3.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

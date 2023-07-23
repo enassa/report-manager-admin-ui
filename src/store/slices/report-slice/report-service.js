@@ -23,7 +23,7 @@ export const useReportService = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [loadinReports, setLoading] = useState(false);
+  const [loadingReports, setLoading] = useState(false);
 
   // MOCKED FUNCTIONALITY
   const getReportsAsync = async (data) => {
@@ -94,12 +94,31 @@ export const useReportService = () => {
       });
   };
 
+  const uploadReportsAsync = async (data) => {
+    setLoading(true);
+    return API.POST(END_POINTS.uploadSingleReport, data)
+      .then(async (response) => {
+        if (response.data.success) {
+          dispatch(saveReports(response.data.data));
+          successToast("Checked for reports succesfully");
+        }
+      })
+      .catch((error) => {
+        errorToast("Could not unlock report. Please contact the school");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return {
     getReportsAsync,
     isfileInCache,
     downloadReportAsync,
     reportList,
     fileBlob,
+    loadingReports,
+    uploadReportsAsync,
     fetchedAllReports,
   };
 };

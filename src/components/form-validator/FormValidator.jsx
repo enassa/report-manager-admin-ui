@@ -64,10 +64,17 @@ export default function TFormValidator({
     if (calledFrom === "initial") {
       myValues = { ...myValues, [fieldName]: inputElement.value };
     } else {
-      myValues = {
-        ...stateCache.current.values,
-        [fieldName]: inputElement.value,
-      };
+      if (inputElement.type === "file") {
+        myValues = {
+          ...stateCache.current.values,
+          [fieldName]: inputElement.files,
+        };
+      } else {
+        myValues = {
+          ...stateCache.current.values,
+          [fieldName]: inputElement.value,
+        };
+      }
     }
     //  ================== set errors for input ===========================
 
@@ -166,8 +173,12 @@ export default function TFormValidator({
   };
 
   useEffect(() => {
-    let allInputs = [...formRef.current.querySelectorAll("input")];
-
+    let allInputs = [
+      ...formRef.current.querySelectorAll("input"),
+      ...formRef.current.querySelectorAll("select"),
+      ...formRef.current.querySelectorAll("textarea"),
+    ];
+    // let allSelects = [...formRef.current.querySelectorAll("select")];
     let allButtons = [
       ...formRef.current.querySelectorAll("button"),
       ...formRef.current.querySelectorAll(`input[type="submit"]`),

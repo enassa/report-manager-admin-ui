@@ -29,9 +29,9 @@ export const ROUTES = {
 
   //===============  PROTECTED ROUTES ===============
 
-  donations: {
-    route: "/donations",
-    url: "/donations",
+  request: {
+    route: "/request",
+    url: "/request",
   },
   payment: {
     route: "/payment",
@@ -45,13 +45,17 @@ export const ROUTES = {
     route: "/pay",
     url: "/pay",
   },
+  list: {
+    route: "/list",
+    url: "/list",
+  },
   apps: {
     route: "/apps",
     url: "/apps",
   },
-  profile: {
-    route: "/profile",
-    url: "/profile",
+  settings: {
+    route: "/settings",
+    url: "/settings",
   },
 
   //===============  SERVICE/APPS ROUTES ===============
@@ -84,3 +88,52 @@ export const ROUTES = {
 
   notFound: "*",
 };
+
+// {
+//   title: "List",
+//   url: ROUTES.apps.url,
+//   route: ROUTES.apps.route,
+//   icon: <Apps />,
+//   group: 1,
+//   text: "list",
+// },
+// {
+//   title: "Request",
+//   url: ROUTES.donations.url,
+//   route: ROUTES.donations.route,
+//   icon: <RequestQuote />,
+//   group: 1,
+//   text: "request",
+// },
+// {
+//   title: "Payment",
+//   url: ROUTES.payment.url,
+//   route: ROUTES.payment.route,
+//   icon: <AccountBalanceWalletOutlined />,
+//   group: 1,
+//   text: "payment",
+// },
+// {
+//   title: "Actions",
+//   url: ROUTES.apps.url,
+//   route: ROUTES.apps.route,
+//   icon: <Apps />,
+//   group: 1,
+//   text: "actions",
+// },
+// {
+//   title: "Settings",
+//   url: ROUTES.profile.url,
+//   route: ROUTES.profile.route,
+//   icon: <Settings />,
+//   group: 1,
+//   text: "profile",
+// },
+
+// {
+//   title: "Logout",
+//   url: ROUTES.base.url,
+//   route: ROUTES.base.route,
+//   icon: <Logout />,
+//   group: 2,
+// },

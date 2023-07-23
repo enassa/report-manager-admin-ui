@@ -7,11 +7,16 @@ import MPageWrapper from "../page-wrapper-mobile/PageWrapperMobile";
 
 export function ProtectedRoutes() {
   const { userIsLoggedIn } = useAuthService();
-  return userIsLoggedIn() ? (
+  // return userIsLoggedIn() ? (
+  //   <MPageWrapper>
+  //     <Outlet />
+  //   </MPageWrapper>
+  // ) : (
+  //   <Navigate to={ROUTES.base.url} />
+  // );
+  return (
     <MPageWrapper>
       <Outlet />
     </MPageWrapper>
-  ) : (
-    <Navigate to={ROUTES.base.url} />
   );
 }

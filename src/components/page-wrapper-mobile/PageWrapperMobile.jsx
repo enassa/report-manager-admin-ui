@@ -14,7 +14,7 @@ export default function MPageWrapper({ children }) {
       <div
         className={`${
           false ? "bg-[#222222] " : "bg-white"
-        } flex w-full h-full max-w-full justify-center`}
+        } flex w-full h-full max-w-full justify-center `}
       >
         <Modal />
         <div className="md:w-[10px] w-[4px] bg-blue-400 fixed left-0 h-full top-0 hidden md:flex"></div>

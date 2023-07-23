@@ -24,6 +24,7 @@ import { ClientPay } from "./pages/payment/ClientPay";
 import { useActivityService } from "./store/slices/activity-slice/activity-service";
 import AppsList from "./pages/apps/AppsList";
 import ServiceUnvailable from "./pages/service-unavailble/ServiceUnvailable";
+import List from "./pages/list/List";
 
 const BASE_URL =
   import.meta.env.MODE === "development"
@@ -43,11 +44,12 @@ function App() {
 
         <Route element={<ProtectedRoutes />}>
           <Route path={ROUTES.dashboard.route} element={<Dashboard />} />
-          <Route path={ROUTES.donations.route} element={<Bill />} />
-          <Route path={ROUTES.profile.route} element={<Profile />} />
+          <Route path={ROUTES.request.route} element={<Bill />} />
+          <Route path={ROUTES.settings.route} element={<Profile />} />
           <Route path={ROUTES.payment.route} element={<Payment />} />
           <Route path={ROUTES.admin.route} element={<Admin />} />
           <Route path={ROUTES.apps.route} element={<AppsList />} />
+          <Route path={ROUTES.list.route} element={<List />} />
 
           {/* Services Routes */}
           <Route path={ROUTES.reports.route} element={<Reports />} />

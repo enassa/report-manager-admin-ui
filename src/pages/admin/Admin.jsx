@@ -198,6 +198,7 @@ export default class Admin extends Component {
     const { workBook, selectedWorkSheet } = this.state;
     if (selectedWorkSheet === "") return;
     let selectedSheet = workBook.Sheets[selectedWorkSheet];
+    if (selectedSheet === undefined) return;
     const data = XLSX.utils.sheet_to_json(selectedSheet, { header: 1 });
     let rows = data;
     let columns = make_cols(selectedSheet["!ref"]);

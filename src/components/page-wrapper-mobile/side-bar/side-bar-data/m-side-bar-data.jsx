@@ -11,25 +11,29 @@ import {
   AccountCircleOutlined,
   Menu,
   Apps,
+  RequestPage,
+  RequestQuote,
+  Settings,
+  List,
 } from "@mui/icons-material";
 import { ROUTES } from "../../../../constants/route-links";
 
 export const MSideBarData = [
   {
-    title: "Apps",
-    url: ROUTES.apps.url,
-    route: ROUTES.apps.route,
-    icon: <Apps />,
+    title: "List",
+    url: ROUTES.list.url,
+    route: ROUTES.list.route,
+    icon: <List />,
     group: 1,
-    text: "apps",
+    text: "list",
   },
   {
-    title: "Donations",
-    url: ROUTES.donations.url,
-    route: ROUTES.donations.route,
-    icon: <MoneyOutlined />,
+    title: "Request",
+    url: ROUTES.request.url,
+    route: ROUTES.request.route,
+    icon: <RequestQuote />,
     group: 1,
-    text: "donations",
+    text: "request",
   },
   {
     title: "Payment",
@@ -40,13 +44,22 @@ export const MSideBarData = [
     text: "payment",
   },
   {
-    title: "Profile",
-    url: ROUTES.profile.url,
-    route: ROUTES.profile.route,
-    icon: <AccountCircleOutlined />,
+    title: "More...",
+    url: ROUTES.apps.url,
+    route: ROUTES.apps.route,
+    icon: <Apps />,
     group: 1,
-    text: "profile",
+    text: "actions",
   },
+  {
+    title: "Settings",
+    url: ROUTES.settings.url,
+    route: ROUTES.settings.route,
+    icon: <Settings />,
+    group: 1,
+    text: "settings",
+  },
+
   {
     title: "Logout",
     url: ROUTES.base.url,

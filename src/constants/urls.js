@@ -5,13 +5,17 @@ export const END_POINTS = {
   home: "/api/v1/home",
 
   // OTHERS
-  getAllReports: "/api/reports",
-  downloadReport: "/api/dr",
-  payWithPayStack: "https://api.paystack.co/checkout/request_inline",
-  recordTransation: "/api/recp",
-  getTransactions: "/api/transactions",
-  recordSubscription: "/api/subscribe",
-  launchService: "/api/launch",
-  inactiveService: "/api/isc",
-  raisComplaint: "/api/complain",
+  getStudentsByClass: "/api/students-list",
+  updateStudents: "/api/upload-student-data",
+  clearClassData: "/api/clear-class-data",
+  deleteClass: "/api/delete-class",
+  uploadReports: "/api/upload-reports",
+  deleteReport: "/api/delete-report",
+  clearClassReports: "/api/clear-reports",
+  updateStudentInfo: "/api/update-student-info",
+  uploadSingleReport: "/api/upload-single-report",
+  sendReportMessages: "/api/send-report-messages",
+  sendMessages: "/api/send-messages",
+
+  downloadReport: "/api/download-report",
 };

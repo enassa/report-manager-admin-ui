@@ -33,7 +33,7 @@ export default function Login() {
       extraInfo: {
         ...SCHOOL_INFO,
         className: replaceSpaceWithUnderscore(
-          data.graduation_year.toLowerCase()
+          data.graduation_year?.toLowerCase()
         ),
       },
       data: { indexNumber: data.index_number, password: data.password },
@@ -62,11 +62,11 @@ export default function Login() {
       maxCharLength: 10,
       minCharLength: 10,
     },
-    graduation_year: {
-      required: true,
-      maxCharLength: 30,
-      minCharLength: 1,
-    },
+    // graduation_year: {
+    //   required: true,
+    //   maxCharLength: 30,
+    //   minCharLength: 1,
+    // },
   };
   const initialValues = {};
   console.log(authResponse);
@@ -82,7 +82,7 @@ export default function Login() {
             />
             {svgs.loginSvg}
             <div className="absolute top-[300px]">{svgs.ladySvg}</div>
-            <div className="absolute top-[300px] right-[40px] animate-rotate">
+            <div className="absolute top-[300px] right-[40px] anim/ate-rotate">
               {svgs.spinTarget}
             </div>
           </div>
@@ -132,14 +132,14 @@ export default function Login() {
                     className="shadow-neuroInsert border-0"
                     rightIcon={<RemoveRedEyeOutlined />}
                   />
-                  <TSelector
+                  {/* <TSelector
                     placeholder="Select graduation type"
                     label="Graduation year"
                     name="graduation_year"
                     className="bg-[#F5F7F9] border-0"
                   >
                     {ejectGraduationYears()}
-                  </TSelector>
+                  </TSelector> */}
                   <TButton
                     styles={{
                       backgroundColor: `${

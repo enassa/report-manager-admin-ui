@@ -5,7 +5,7 @@ import {
   KeyboardDoubleArrowRight,
   Search,
 } from "@mui/icons-material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { replaceUnderscoreWithSpace } from "../../constants/reusable-functions";
@@ -36,9 +36,12 @@ export default function DynamicTable({
   hidePagination,
   defaultFIlterIndex,
 }) {
-  const [data] = useState(!!tableData ? tableData : []);
+  const [data, setThisData] = useState(!!tableData ? tableData : []);
   const headers = Object.keys(!!data[0] ? data[0] : {});
 
+  useEffect(() => {
+    setThisData(tableData);
+  }, [tableData]);
   // ========================  Handle Action  ===========================
   const getActions = (row) => {
     if (actions.length > 1) {
@@ -66,12 +69,8 @@ export default function DynamicTable({
 
   // ======================== Dynamic style s========================
   const getcellStyless = (headerName) => {
-    const styledColumns = cellStyles.find(
-      (item) => item.columnName === headerName
-    );
-    const styleForAllCoumns = cellStyles.find(
-      (item) => item.columnName === "*"
-    );
+    const styledColumns = cellStyles.find((item) => item.column === headerName);
+    const styleForAllCoumns = cellStyles.find((item) => item.column === "*");
     if (!!styledColumns || !!styleForAllCoumns) {
       return {
         styles: !!styledColumns ? styledColumns.styles : {},
@@ -120,8 +119,8 @@ export default function DynamicTable({
       return columnsToInsert.columns.map((item, index) => {
         return (
           <th key={index}>
-            {item.headerComponent
-              ? item.headerComponent()
+            {item.headerComponent()
+              ? item.headerComponent
               : getHeaderName(item.header)}
           </th>
         );
@@ -138,7 +137,15 @@ export default function DynamicTable({
     );
     if (!!columnsToInsert) {
       return columnsToInsert.columns.map((item, index) => {
-        return <th key={index}>{getHeaderName(item.header)}</th>;
+        return (
+          <th key={index}>
+            {item.headerComponent
+              ? item.headerComponent()
+              : getHeaderName(item.header)}
+          </th>
+          //Calling getHeaderName  so that if replaced it can be replaced
+        );
+
         // =====  getHeaderName is defined below with var =====
       });
     }
@@ -220,7 +227,7 @@ export default function DynamicTable({
           >
             {replaceUnderscoreWithSpace(getHeaderName(head))}
           </th>
-          {replaceUnderscoreWithSpace(getHeadersAfter(head))}
+          {getHeadersAfter(head)}
         </>
       );
     });
@@ -398,15 +405,15 @@ export default function DynamicTable({
     });
   };
   return (
-    <div className="w-full h-full bg-white flex flex-col">
+    <div className="w-full h-full flex flex-col">
       {/* ======================== Search and filter  bar ======================== */}
       {!hideActionBar && (
         <div className="w-full">
-          <div className=" flex justify-between h-[60px]  items-center mb-[30px] bg-gray-50 rounded-md px-[20px]">
-            <div className="flex items-center">
-              <span className="mr-2  text-[#364E62] text-xl ">Filter by |</span>
+          <div className=" flex bg-white justify-between h-[40px] text-sm   items-center mb-[0px] rounded-md px-[20px]">
+            <div className="flex items-center ">
+              <span className="mr-2  text-[#364E62] ">Filter by |</span>
               <select
-                className="cursor-pointer text-xl capitalize outline-none bg-transparent "
+                className="cursor-pointer  capitalize outline-none bg-transparent "
                 onChange={(e) => {
                   setFilter(e.target.value);
                 }}
@@ -416,14 +423,12 @@ export default function DynamicTable({
             </div>
             <div className="flex justify-end items-center">
               <div className="mr-2">
-                <span className="mr-2 text-xl  text-[#364E62]">
-                  Search by |
-                </span>
+                <span className="mr-2  text-[#364E62]">Search by |</span>
                 <select
                   onChange={(e) => {
                     setSearchFilter(e.target.value);
                   }}
-                  className="cursor-pointer text-xl capitalize text-[#364E62] outline-none bg-transparent "
+                  className="cursor-pointer capitalize text-[#364E62] outline-none bg-transparent "
                 >
                   {ejectSearchFilters()}
                 </select>
@@ -434,7 +439,7 @@ export default function DynamicTable({
                 onChange={(e) => {
                   executeLocalSearch(e.target.value);
                 }}
-                className=" mr-1 p-2 outline-none w-[300px]  h-[40px] text-xl bg-transparent"
+                className=" mr-1 text-sm  p-2 outline-none w-[300px]  h-[40px] bg-transparent"
               />
               <Search />
             </div>
@@ -443,9 +448,9 @@ export default function DynamicTable({
       )}
 
       {/* ======================== Table entry point area  ======================== */}
-      <div className="w-full h-full overflow-auto">
+      <div className="w-full h-full overflow-auto rounded-md p-4 bg-white ">
         <table className="w-full">
-          <thead className="w-full sticky top-0 bg-white z-[2]">
+          <thead className="w-full sticky top-[-16px]  z-[2]">
             <tr>{getTableHeads()}</tr>
           </thead>
           <tbody className="w-full">{getTableRows()}</tbody>
@@ -454,7 +459,7 @@ export default function DynamicTable({
 
       {/* ======================== Pagination  area ======================== */}
       {!hidePagination && (
-        <div className="flex justify-between items-center text-xl text-[#364E62]">
+        <div className="flex justify-between items-center text-sm px-4 bg-white text-[#364E62]">
           <div className="flex items-center">
             <span className="mr-2">Page</span>
             <span className="mr-2">{currentPageNumber}</span>

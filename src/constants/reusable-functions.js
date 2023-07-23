@@ -184,6 +184,7 @@ export const removeItemsFromLocalStorage = (itemsArr) => {
   }
   return false;
 };
+
 export const removeItemsFromSessionStorage = (itemsArr) => {
   if (!!itemsArr) {
     for (let i = 0; i < itemsArr.length; i++) {
@@ -192,4 +193,9 @@ export const removeItemsFromSessionStorage = (itemsArr) => {
     return true;
   }
   return false;
+};
+
+export const getDurationOfStudies = (year) => {
+  // I will write this function defintion to accomodate for varius use cases
+  return 3;
 };

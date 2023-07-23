@@ -18,6 +18,7 @@ export default function TSelector({
   children,
   label,
   noBorder,
+  outerClassName,
 }) {
   const [dropOptions, setDropOptions] = useState();
   const [error, setError] = useState(false);
@@ -35,6 +36,7 @@ export default function TSelector({
       return (
         <div
           onClick={() => {
+            onChange && onChange(option.props.children);
             setSelected(option.props.children);
             if (option.props.children === selected) return;
             error && setError(false);
@@ -61,7 +63,9 @@ export default function TSelector({
   const errorClass = "text-red-400 text-xs mt-1 ";
 
   return (
-    <div className="w-full flex flex-col justify-start relative">
+    <div
+      className={`w-full flex flex-col justify-start relative ${outerClassName}`}
+    >
       <label
         htmlFor={name}
         className="w-full text-gray-900 relative b-[30px] text-[18px]"
