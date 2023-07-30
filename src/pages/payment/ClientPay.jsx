@@ -1,27 +1,16 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { PaystackButton } from "react-paystack";
 import {
   generateSuperShortId,
   getAsObjectFromLocalStorage,
 } from "../../constants/reusable-functions";
 import { usePaymentService } from "../../store/slices/payment/payement-service";
-import {
-  LOCAL_STORAGE_KEYS,
-  RATE_AMOUNTS,
-  SCHOOL_INFO,
-} from "../../constants/ui-data";
+import { LOCAL_STORAGE_KEYS, RATE_AMOUNTS } from "../../constants/ui-data";
 import { useAuthService } from "../../store/slices/auth-slice/auth-service";
 
 export const ClientPay = () => {
-  const {
-    recordReportPayment,
-    getTransactions,
-    transactionsList,
-    activeReport,
-  } = usePaymentService();
+  const { recordReportPayment, activeReport } = usePaymentService();
   const { userData } = useAuthService();
-
-  console.log(activeReport);
 
   const handlePaymentSuccess = (response) => {
     const activeReport = getAsObjectFromLocalStorage(
@@ -35,7 +24,7 @@ export const ClientPay = () => {
       AmountPaid: RATE_AMOUNTS.downloadReport,
       PaymentMode: `Momo_${response.transaction}`,
       Graduation_Year: userData.Graduation_Year,
-      ...SCHOOL_INFO,
+      ...userData,
     });
     // setPaymentStatus("Payment successful!");
   };

@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PaymentCard from "../../components/payment-card/PaymentCard";
-import ReportCard from "../../components/report-card/ReportCard";
 import { usePaymentService } from "../../store/slices/payment/payement-service";
 import { useAuthService } from "../../store/slices/auth-slice/auth-service";
-import { SCHOOL_INFO } from "../../constants/ui-data";
 import { svgs } from "../../assets/svg/svg";
 import TransactionDetails from "./TransactionDetails";
 import ComplainForm from "./ComplainForm";
-import { Description } from "@mui/icons-material";
 
 export default function Payment() {
   const {
@@ -23,7 +20,7 @@ export default function Payment() {
       getTransactionsAsync({
         Unique_Id: userData?.Unique_Id,
         className: `class_of_${userData?.Graduation_Year}`,
-        ...SCHOOL_INFO,
+        ...userData,
       });
   }, []);
   const cards = [
@@ -112,7 +109,7 @@ export default function Payment() {
             raiseComplaint({
               Complain: complain,
               ...showComplainForm,
-              ...SCHOOL_INFO,
+              ...userData,
               DateOfTransaction: showComplainForm.Date,
               ActivityDesc: showComplainForm.Description,
               PayementRef: showComplainForm.Payment_Reference,

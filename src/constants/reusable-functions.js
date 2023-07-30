@@ -199,3 +199,37 @@ export const getDurationOfStudies = (year) => {
   // I will write this function defintion to accomodate for varius use cases
   return 3;
 };
+
+export const isOfFileType = (filePath, fileExtension) => {
+  const extension = filePath.slice(filePath.lastIndexOf(".")).toLowerCase();
+  if (fileExtension.includes(extension)) {
+    return true;
+  }
+  return false;
+};
+export const formatYearToClassGroup = (admissionYear) => {
+  const enrollmentYear = parseInt(admissionYear.split(" ")[2]);
+  console.log(enrollmentYear);
+  const className = `class_of_${
+    enrollmentYear + getDurationOfStudies(enrollmentYear)
+  }`;
+  return className;
+};
+export const formatFormToClassGroup = (admissionYear) => {
+  const enrollmentYear = parseInt(admissionYear.split(" ")[1]);
+  console.log(enrollmentYear);
+  const className = `class_of_${
+    enrollmentYear + getDurationOfStudies(enrollmentYear)
+  }`;
+  return className;
+};
+export const formatFormToNumber = (admissionYear) => {
+  const formNumber = parseInt(admissionYear.split(" ")[1]);
+  return formNumber;
+};
+
+export const formatSemester = (semester) => {
+  // console.log(semester);
+  const formatedSemester = parseInt(semester.split(" ")[1]);
+  return formatedSemester;
+};

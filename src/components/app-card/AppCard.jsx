@@ -1,16 +1,8 @@
-import React, { useRef, useState } from "react";
-import {
-  WatchLaterOutlined,
-  InfoOutlined,
-  Assessment,
-  AccountBalanceWallet,
-  Timelapse,
-  Apps,
-} from "@mui/icons-material";
-import { ClickAwayListener, Tooltip } from "@mui/material";
+import React, { useState } from "react";
+import { InfoOutlined, Timelapse, Apps } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
 import {
   generateSuperShortId,
-  getAsObjectFromLocalStorage,
   getLightRGBColor,
 } from "../../constants/reusable-functions";
 import { PaystackButton } from "react-paystack";
@@ -18,19 +10,16 @@ import { usePaymentService } from "../../store/slices/payment/payement-service";
 import { useAuthService } from "../../store/slices/auth-slice/auth-service";
 import {
   RATE_AMOUNTS,
-  SCHOOL_INFO,
   SERVICE_CODES,
   verifyServiceAccess,
 } from "../../constants/ui-data";
 import { useNavigate } from "react-router-dom";
 import { useActivityService } from "../../store/slices/activity-slice/activity-service";
-import { useReportService } from "../../store/slices/report-slice/report-service";
 
 export default function AppCard({ data, color, backgroundImage }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const navigate = useNavigate();
   const { recordReportSubscription, launchService } = usePaymentService();
-  const { reportList } = useReportService();
   const { recordInActiveClick } = useActivityService();
   const { userData, subscriptions, launchedApps } = useAuthService();
 
@@ -43,7 +32,7 @@ export default function AppCard({ data, color, backgroundImage }) {
       AmountPaid: RATE_AMOUNTS.reportService,
       UserID: userData._id,
       PaymentMode: `Momo_${response.transaction}`,
-      ...SCHOOL_INFO,
+      ...userData,
     });
   };
 
@@ -68,19 +57,18 @@ export default function AppCard({ data, color, backgroundImage }) {
         {
           serviceCode: data.serviceCode,
           Unique_Id: userData.Unique_Id,
-          ...SCHOOL_INFO,
+          ...userData,
         },
         data.url
       );
       return;
     }
-    console.log(launchedApps, "fffffffffff", isSubScripedObj);
     if (launchedApps?.includes(data.serviceCode)) {
       navigate(data.url);
       return;
     }
     if (data.free || verifyServiceAccess(data.serviceCode) || isSubScripedObj) {
-      launchService({ ...isSubScripedObj, ...SCHOOL_INFO }, data.url);
+      launchService({ ...isSubScripedObj, ...userData }, data.url);
       return;
     }
     console.log(

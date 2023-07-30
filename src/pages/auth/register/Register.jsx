@@ -1,10 +1,6 @@
 import React from "react";
-import TFormValidator from "./../../../components/form-validator/FormValidator";
-import { images } from "./../../../assets/images/images";
-import { svgs } from "./../../../assets/svg/svg";
-import SlimLoader from "./../../../components/slim-loader/SlimLoader";
-import TAuthInput from "./../../../components/auth-input/AuthInput";
-import TButton from "./../../../components/button/Button";
+import { images } from "../../../assets/images/images";
+import { svgs } from "../../../assets/svg/svg";
 import {
   RemoveRedEyeOutlined,
   AlternateEmailOutlined,
@@ -13,21 +9,26 @@ import {
   Error,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { GRADUATION_YEARS } from "./../../../constants/ui-data";
-import { useAuthService } from "./../../../store/slices/auth-slice/auth-service";
+import { GRADUATION_YEARS } from "../../../constants/ui-data";
+import { useAuthService } from "../../../store/slices/auth-slice/auth-service";
+import SlimLoader from "../../../components/slim-loader/SlimLoader";
+import TFormValidator from "../../../components/form-validator/FormValidator";
+import TAuthInput from "../../../components/auth-input/AuthInput";
+import TSelector from "../../../components/input-selector/Selector";
+import TButton from "../../../components/button/Button";
 
-export default function Login() {
-  const { loginAsync, loadingAuth, authResponse } = useAuthService();
+export default function Register() {
+  const {
+    registerOrganization,
+    loadingAuth,
+    authResponse,
+    userIsLoggedIn,
+    loginMock,
+  } = useAuthService();
   const navigate = useNavigate();
 
   const handleSubmit = (data) => {
-    loginAsync(data);
-    // return;
-    // setLoading(true);
-    // setTimeout(() => {
-    //   navigate(ROUTES.reports.url);
-    // }, 3000);
-    // mockMode ? loginMock(data) : loginAsync(data)();
+    registerOrganization(data);
   };
   const ejectGraduationYears = () => {
     return GRADUATION_YEARS.map((year, index) => {
@@ -38,17 +39,26 @@ export default function Login() {
   const validationSchema = {
     schoolCode: {
       required: true,
-      // maxCharLength: 7,
-      // minCharLength: 7,
+
+      //   regexPattern: emailRegex(),zz
+    },
+    schoolName: {
+      required: true,
+
+      //   regexPattern: emailRegex(),zz
+    },
+    adminId: {
+      required: true,
+
+      //   regexPattern: emailRegex(),zz
+    },
+    adminType: {
+      required: true,
+
       //   regexPattern: emailRegex(),zz
     },
     password: {
       required: true,
-      // minCharLength: 1,
-    },
-    adminId: {
-      required: true,
-      // minCharLength: 1,
     },
     // graduation_year: {
     //   required: true,
@@ -97,36 +107,50 @@ export default function Login() {
             className="mt-[20px] flex justify-center flex-col "
           >
             {({ errors }) => {
-              // console.log(errors);
               return (
                 <div className="w">
+                  <TAuthInput
+                    leftIcon={<AlternateEmailOutlined />}
+                    label="School Name"
+                    required={true}
+                    // regexPattern={emailRegex(5)}
+
+                    name="schoolName"
+                    className="mb-[5px] shadow-neuroInsert border-0 outline-none"
+                  />
                   <TAuthInput
                     leftIcon={<AlternateEmailOutlined />}
                     label="School code"
                     required={true}
                     // regexPattern={emailRegex(5)}
-                    // minCharLength={7}
-                    // maxCharLength={7}
+
                     name="schoolCode"
                     className="mb-[5px] shadow-neuroInsert border-0 outline-none"
                   />
-
                   <TAuthInput
                     leftIcon={<AlternateEmailOutlined />}
-                    label="Admin Id"
+                    label="Admin ID"
                     required={true}
                     // regexPattern={emailRegex(5)}
-                    // minCharLength={7}
-                    // maxCharLength={7}
+
                     name="adminId"
                     className="mb-[5px] shadow-neuroInsert border-0 outline-none"
                   />
+                  <TSelector
+                    onChange={(selectedAdmissionDate) => {}}
+                    placeholder="Select Form"
+                    label="Admin Type"
+                    name="adminType"
+                    className="bg-[#F5F7F9] border-0 flex "
+                    outerClassName="mb-[10px] w-[80%]"
+                  >
+                    <option>super</option>
+                    <option>sub</option>
+                  </TSelector>
 
                   <TAuthInput
                     leftIcon={<LockOutlined />}
                     label="Password*"
-                    // minCharLength={10}
-                    // maxCharLength={10}
                     required={true}
                     type="password"
                     name="password"
@@ -150,7 +174,7 @@ export default function Login() {
                     className={`max-mt-[40px] mt-[5%]`}
                     icon={<LoginSharp />}
                   >
-                    Login
+                    Register
                   </TButton>
                   <div className="w-full mt-[20px] h-[5px]">
                     {authResponse?.message !== undefined &&

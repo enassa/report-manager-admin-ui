@@ -10,6 +10,7 @@ import { useAuthService } from "./../../../../store/redux/slices/auth-slice/auth
 export default function TUserProfile() {
   const { userData } = useAuthService();
   const [dropProfile, setDropProfile] = useState(false);
+  console.log(userData, "===");
   return (
     <div className="flex h-full items-center px-2 py-3 relative">
       {userData?.image === undefined && (
@@ -19,12 +20,13 @@ export default function TUserProfile() {
           }}
           className="w-[30px] h-[30px] bg-blue-400 text-white font-extrabold capitalize mr-[10px] rounded-full flex justify-center fit-bg items-center overflow-hidden"
         >
-          {userData?.firstName?.charAt(0)}
+          {userData?.Admin_Id?.charAt(0)}
         </span>
       )}
 
       <span>
-        {userData?.firstName} {userData?.lastName}
+        {userData?.Admin_Id}
+        {/* {userData?.lastName} */}
       </span>
 
       {dropProfile ? (

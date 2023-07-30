@@ -9,13 +9,15 @@ import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
 
 import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
+import SlimLoader from "../slim-loader/SlimLoader";
+import "ag-grid-enterprise";
 
 const AppGrid = ({ tableData, colDef }) => {
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const [rowData, setRowData] = useState(); // Set rowData to Array of Objects, one Object per Row
 
   // Each Column Definition results in one Column.
-  console.log(tableData);
+  // console.log(tableData);
   const [columnDefs, setColumnDefs] = useState([
     { field: "make", filter: true },
     { field: "model", filter: true },
@@ -25,12 +27,16 @@ const AppGrid = ({ tableData, colDef }) => {
   // DefaultColDef sets props common to all Columns
   const defaultColDef = useMemo(() => {
     return {
-      flex: 1,
-      minWidth: 100,
-      sortable: true,
+      resizable: true,
+      filter: true,
     };
   }, []);
 
+  const autoGroupColumnDef = useMemo(() => {
+    return {
+      minWidth: 300,
+    };
+  }, []);
   // Example of consuming Grid Event
   const cellClickedListener = useCallback((event) => {
     // console.log("cellClicked", event);
@@ -46,13 +52,41 @@ const AppGrid = ({ tableData, colDef }) => {
     gridRef.current.api.deselectAll();
   }, []);
 
-  return (
-    <div className="w-full h-full flex bg-red-400">
-      {/* Example using Grid's API */}
+  const sideBar = {
+    toolPanels: [
+      {
+        id: "columns",
+        labelDefault: "Columns",
+        labelKey: "columns",
+        iconKey: "columns",
+        toolPanel: "agColumnsToolPanel",
+        minWidth: 225,
+        maxWidth: 225,
+        width: 225,
+      },
+      {
+        id: "filters",
+        labelDefault: "Filters",
+        labelKey: "filters",
+        iconKey: "filter",
+        toolPanel: "agFiltersToolPanel",
+        minWidth: 180,
+        maxWidth: 400,
+        width: 250,
+      },
+    ],
+    position: "right",
+  };
 
+  const rowGroupPanelShow = "always";
+
+  console.log("reloaded");
+  return (
+    <div className="w-full h-full flex flex-col overflow-hidden">
       {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
       <div className="ag-theme-alpine w-full h-full">
         <AgGridReact
+          autoGroupColumnDef={autoGroupColumnDef}
           ref={gridRef} // Ref for accessing Grid's API
           rowData={rowData} // Row Data for Rows
           columnDefs={colDef || columnDefs} // Column Defs for Columns
@@ -61,6 +95,12 @@ const AppGrid = ({ tableData, colDef }) => {
           rowSelection="multiple" // Options - allows click selection of rows
           onCellClicked={cellClickedListener} // Optional - registering for Grid Event
           className="w-full h-full"
+          animateRows={true}
+          sideBar={sideBar}
+          rememberGroupStateWhenNewData={true}
+          suppressScrollOnNewData={true}
+          rowGroupPanelShow={rowGroupPanelShow}
+          pagination={true}
         />
       </div>
     </div>

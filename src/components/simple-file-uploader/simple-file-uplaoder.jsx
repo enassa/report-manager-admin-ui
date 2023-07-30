@@ -1,56 +1,45 @@
-// import React from "react";
-
-// export default function TSimpleFileUplaoder() {
-//   return (
-//     <div className="w-full h-full flex items-center justify-center">
-//       <div className="border-2 border-dashed border-blue-400 w-[200px] h-[200px]"></div>
-//     </div>
-//   );
-// }
-import { FileUploadOutlined } from "@mui/icons-material";
+import {
+  Delete,
+  DescriptionOutlined,
+  FileUploadOutlined,
+  LibraryAddOutlined,
+} from "@mui/icons-material";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import TButton from "../button/Button";
+import { isOfFileType } from "../../constants/reusable-functions";
 
 export default function TSimpleFileUplaoder({
-  type,
   name,
-  onChange,
-  errorMessage,
   placeholder,
-  value,
   description,
-  styles,
   className,
-  required = false,
   disabled = false,
-  children,
-  label,
   multiple,
-  noBorder,
   outerClassName,
-  accept = [],
+  filesAccepted = [],
+  buttonIcon,
+  buttonText = "Submit",
+  handleButtonClick,
+  hideButton,
+  onChange,
+  hideFileSize,
 }) {
-  const [error, setError] = useState(false);
   const [selectedFiles, setFiles] = useState();
+  const [key, setKey] = useState(Date.now());
+  // Array(100).fill({ name: "Name", size: 200 })
   const inputFile = React.createRef();
-  console.count("cpmponent");
-  const errorClass = "text-red-400 text-xs mt-1 ";
 
-  useEffect(() => {
-    // console.log(selectedFiles);
-  }, [selectedFiles?.length]);
+  useEffect(() => {}, [selectedFiles?.length]);
 
   const processFiles = (e) => {
-    // onChange && onChange(e);
-    console.count("processFiles files");
-    console.log(e.target.files);
-    // if (!selectedFiles) {
-    // setFiles(e.target.files);
-    // }
+    onChange && onChange(Array.from(e.target.files));
+    setFiles(Array.from(e.target.files));
+    console.log(e.target);
   };
 
-  const browseFiles = (e) => {
-    console.count("browse files");
+  const browseFiles = () => {
+    setFiles([]);
     let reportInput = inputFile.current;
     reportInput.click();
   };
@@ -58,58 +47,147 @@ export default function TSimpleFileUplaoder({
   const handleBrowseClick = () => {
     !disabled && browseFiles();
   };
+  const handleFilesDrop = (ev) => {
+    ev.preventDefault();
+    const arrayFromFiles = Array.from(ev.dataTransfer.files)?.filter((file) =>
+      isOfFileType(file.name, filesAccepted)
+    );
+    onChange && onChange(arrayFromFiles);
+    setFiles(Array.from(arrayFromFiles));
+  };
+
+  function convertFileSize(fileSizeInBytes) {
+    const kilobyte = 1024;
+    const megabyte = kilobyte * 1024;
+
+    if (fileSizeInBytes >= megabyte) {
+      return `${(fileSizeInBytes / megabyte).toFixed(2)} MB`;
+    } else if (fileSizeInBytes >= kilobyte) {
+      return `${(fileSizeInBytes / kilobyte).toFixed(2)} KB`;
+    } else {
+      return `${fileSizeInBytes} bytes`;
+    }
+  }
 
   const ejectFiles = () => {
-    console.log(selectedFiles);
     const allFiles = [];
-    // console.log(selectedFiles);
     for (let i = 0; i < selectedFiles?.length; i++) {
       allFiles.push({
         name: selectedFiles[i].name,
         size: selectedFiles[i].size,
       });
     }
-    // console.log(allFiles);
     return allFiles.map((file, index) => {
+      if (index >= 20) return;
       return (
         <div
           key={`${index}-file`}
-          className="flex items-center w-full h-[50px] min-h-[40px] shadow-md mb-2 bg-white px-2"
+          className="flex items-center justify-between animate-rise w-full h-[50px] min-h-[40px] shadow-sm mb-2 bg-white px-2"
         >
-          <span className="w-[80%] whitespace-nowrap text-ellipsis overflow-hidden text-xs">
-            {file.name}
-          </span>
+          <div className="w-full h-full flex items-center">
+            <DescriptionOutlined />
+            <span className="w-[80%] text-left  ml-1 whitespace-nowrap text-ellipsis overflow-hidden text-xs">
+              {file.name}
+            </span>
+          </div>
+          {!hideFileSize && (
+            <div className="w-[60px] h-[30px]  flex rounded-full justify-center items-center text-xs overflow-hidden">
+              <span className="text-blue-600 text-sm">
+                {convertFileSize(file.size || 0)}
+              </span>
+            </div>
+          )}
         </div>
       );
     });
   };
-
   return (
     <div
-      className={`w-full h-full flex flex-col justify-center items-center relative ${outerClassName}`}
+      className={`w-full h-full flex flex-col justify-start items-center relative ${outerClassName}`}
     >
       {selectedFiles?.length ? (
-        <div className="w-[80%] h-[80%] overflow-scroll flex items-center rounded-md flex-col bg-gray-50 p-2">
-          {ejectFiles()}
+        <div className="w-full h-full justify-between overflow-hidden flex flex-col p-4 relative">
+          <div className="w-full h-[30px]  text-red-500 justify-end flex mb-2   bg-[#F9FAFB] ">
+            <button
+              onClick={(e) => {
+                inputFile.current.value = null;
+                inputFile.current.file = null;
+                onChange && onChange(undefined);
+
+                // setKey(Date.now());
+                e.preventDefault();
+
+                // document.getElementById(name).value = "";
+                setFiles([]);
+              }}
+              className="max-w-[100px] bg-transparent text-red-500"
+            >
+              <Delete />
+              Clear All
+            </button>
+          </div>
+          <div className="w-full overflow-y-auto overflow-x-hidden flex items-center rounded-md flex-col h-[calc(100%-80px)]">
+            {ejectFiles()}
+          </div>
+
+          <div className="w-full text-violet-500 h-auto items-center justify-between flex sticky top-0 bg-[#F9FAFB] ">
+            <div className="w-full flex justify-start">
+              <span className="mr-4">
+                <LibraryAddOutlined />
+                Total:
+                {selectedFiles.length}
+              </span>
+
+              {selectedFiles.length - 20 > 0 && (
+                <span className="mr-2">
+                  <LibraryAddOutlined />
+                  {selectedFiles.length - 20}
+                </span>
+              )}
+            </div>
+            {!hideButton && (
+              <div className="w-[100px] h-[30px]">
+                <TButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick && handleButtonClick(selectedFiles);
+                  }}
+                  className="w-auto ma-x-h-[10px]"
+                >
+                  {buttonIcon}
+                  {buttonText}
+                </TButton>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
-        <div
-          onClick={() => {
-            handleBrowseClick();
-          }}
-          className="border-4 border-dashed cursor-pointer border-blue-200 w-[80%] h-[80%] flex justify-center items-center rounded-md flex-col"
-        >
-          <FileUploadOutlined
-            style={{ fontSize: 100 }}
-            className="text-3xl text-blue-400"
-          />
-          <span>
-            Drop file here or{" "}
-            <b className="text-blue-400 cursor-pointer">browse</b>{" "}
-          </span>
-          {/* <div className="w-[80%] h-[80%] overflow-scroll flex items-center rounded-md flex-col bg-gray-50 p-2">
-            {ejectFiles()}
-          </div> */}
+        <div className="w-full h-full flex items-center justify-center">
+          <div
+            onClick={() => {
+              handleBrowseClick();
+            }}
+            draggable={true}
+            onDrop={(e) => {
+              e.preventDefault();
+              handleFilesDrop(e);
+            }}
+            // ondragOver="dragOverHandler(event)"
+            onDragOver={(e) => {
+              e.preventDefault();
+              // handleFilesDrop(e);
+            }}
+            className="border-4  border-dashed cursor-pointer animate-rise border-blue-200 w-[80%] h-[80%] flex justify-center items-center rounded-md flex-col"
+          >
+            <FileUploadOutlined
+              style={{ fontSize: 100 }}
+              className="text-3xl "
+            />
+            <span>
+              Drop files here or{" "}
+              <b className="text-blue-400 cursor-pointer">browse</b>{" "}
+            </span>
+          </div>
         </div>
       )}
 
@@ -119,25 +197,29 @@ export default function TSimpleFileUplaoder({
         } h-[40px] hidden bg-red-400  flex-row items-center  w-full border-[#8b8b8b] border-[1px] rounded-[5px] outline-none cursor-pointer`}
       >
         <input
+          key={key}
           type="file"
           multiple={multiple}
-          accept={`${accept.join(",")}`}
+          accept={`${filesAccepted.join(",")}`}
           className="flex"
           ref={inputFile}
           onFocusCapture={() => {}}
           onChange={(e) => processFiles(e)}
+          onInput={(e) => {
+            console.log(e.target);
+          }}
           placeholder={placeholder}
           name={name}
-          value={"" || ""}
+          value={""}
           disabled={disabled}
           id={name}
         />
       </div>
-      {description && <span className={errorClass}>{description}</span>}
-
+      {/* {description && <span className={errorClass}>{description}</span>} */}
+      {/* 
       <span className={`${errorClass}`}>
         {error && `${name || "This field"} is required`}
-      </span>
+      </span> */}
     </div>
   );
 }

@@ -18,6 +18,7 @@ export const useActivityService = () => {
       })
     );
   };
+
   const endActivity = () => {
     dispatch(resetActivity());
   };

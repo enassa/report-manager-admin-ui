@@ -15,6 +15,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUpUser: (state, { payload }) => {
+      console.log(payload);
       saveObjectInLocalStorage(LOCAL_STORAGE_KEYS.userData, payload);
       state.userData = payload;
     },

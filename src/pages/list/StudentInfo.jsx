@@ -47,17 +47,7 @@ export default function StudentInfo() {
         icon: <LocationOnOutlined />,
       },
     ];
-    //   first_name: "Nathaniel",
-    //   last_name: "Assan",
-    //   date_Of_birth: "11 January 2022",
-    //   programme: "General Science",
-    //   classNumber: "6",
-    //   formNumber: "2",
-    //   enrollMentYear: 2019,
-    //   graduationYear: 2021,
-    //   cohort: "Green",
-    //   };
-    // const userInfo = Object.keys(userData);
+
     return userInfo.map((item, index) => {
       return (
         <div

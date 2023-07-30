@@ -1,52 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { GRADUATION_YEARS, STUDENT_ACTION_TABS } from "../../constants/ui-data";
 import {
-  GRADUATION_YEARS,
-  SCHOOL_INFO,
-  STUDENT_ACTION_TABS,
-  dummyStudents,
-  openTrades,
-} from "../../constants/ui-data";
-import DynamicTable from "./../../components/dynamic-table/DynamicTable";
-import {
-  AccountBalanceOutlined,
   AccountCircle,
-  AccountCircleOutlined,
-  Close,
-  DeleteOutline,
   FileDownloadOutlined,
   FileUploadOutlined,
-  House,
-  More,
-  Refresh,
-  SyncAlt,
+  HourglassBottom,
 } from "@mui/icons-material";
-import { Tooltip } from "@mui/material";
 import TSelector from "../../components/input-selector/Selector";
-import TButton from "../../components/button/Button";
 import { getDurationOfStudies } from "../../constants/reusable-functions";
 import { useStudentDataService } from "./../../store/slices/students-slice/student-service";
 import AppGrid from "../../components/app-grid/AppGrid";
-import StudentDataRowActions from "./StudentDataRowActions";
+import StudentDataRowActions from "./StudentDataRowActions.jsx";
 import StudentInfo from "./StudentInfo";
 import ReportUpoader from "./ReportUpoader";
 import ReportDownloader from "./ReportDownloader";
+import SlimLoader from "../../components/slim-loader/SlimLoader";
+import NoOption from "./NoOption";
+import NoStudentData from "./NoStudentData";
+import { useReportService } from "../../store/slices/report-slice/report-service";
+import Loader from "../../components/loader/Loader";
+import { useAuthService } from "../../store/slices/auth-slice/auth-service";
 
 export default function List() {
-  const defaultClassName = `class_of_${new Date().getFullYear() + 1}`;
   const {
     studentList,
+    fetchStudentList,
+    activeStudent,
     activeStudentActionTab,
     setActiveStudentActionTabsAsync,
     getAllstudentsAsync,
   } = useStudentDataService();
-
+  const { loadingReports } = useReportService();
+  const { userData } = useAuthService();
   const colDef = [
-    {
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
-      width: 50,
-      pinned: "left",
-    },
+    // {
+    //   headerCheckboxSelection: true,
+    //   checkboxSelection: true,
+    //   width: 50,
+    //   pinned: "left",
+    // },
+    { field: "Programme", enableRowGroup: true },
+    { field: "Class", enableRowGroup: true },
     {
       field: "Name",
       filter: true,
@@ -54,35 +48,24 @@ export default function List() {
       cellStyle: { textAlign: "left" },
     },
     { field: "BECE_Index" },
-    { field: "Programme" },
-    { field: "Class" },
+    { field: "Unique_Id" },
+    { field: "Track", enableRowGroup: true },
+    { field: "House" },
     { field: "Guardians_Contact" },
     { field: "Call_Contact" },
-    { field: "Track" },
-    { field: "House" },
     { field: "Graduation_Year" },
     { field: "Current_Year" },
     {
       field: "Action",
       pinned: "right",
-      width: 200,
+      width: 50,
       cellRenderer: StudentDataRowActions,
     },
   ];
 
-  useEffect(() => {
-    if (!studentList.length) {
-      getAllstudentsAsync({
-        className: `class_of_2021`,
-        ...SCHOOL_INFO,
-      });
-    }
-    // console.log(studentList);
-  }, []);
-
   const ejectGraduationYears = () => {
     return GRADUATION_YEARS.map((year, index) => {
-      return <option key={index + "options"}>{"Admitted in " + year}</option>;
+      return <option key={index + "options"}>{"Enrolled in " + year}</option>;
     });
   };
 
@@ -95,7 +78,7 @@ export default function List() {
     getAllstudentsAsync({
       className: className,
       enrollmentYear: enrollmentYear,
-      ...SCHOOL_INFO,
+      ...userData,
     });
   };
 
@@ -106,6 +89,7 @@ export default function List() {
   ];
 
   const getActiveStudentActionPage = () => {
+    if (!!activeStudent == false) return <NoOption />;
     switch (activeStudentActionTab) {
       case STUDENT_ACTION_TABS.profile:
         return <StudentInfo />;
@@ -114,7 +98,7 @@ export default function List() {
       case STUDENT_ACTION_TABS.downloads:
         return <ReportDownloader />;
       default:
-        return <StudentInfo />;
+        return <NoOption />;
     }
   };
 
@@ -122,6 +106,7 @@ export default function List() {
     return studentActions.map((item, index) => {
       return (
         <div
+          key={index}
           onClick={() => {
             setActiveStudentActionTabsAsync(item.title);
           }}
@@ -139,46 +124,72 @@ export default function List() {
   };
 
   return (
-    <div className="w-full h-full p-2 flex  overflow-hidden">
-      <div className="flex w-full h-full flex-col">
-        <div className="flex w-full h-[50px] justify-end">
-          <div></div>
-          <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
-            Delete Class
-          </TButton>
-          <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
-            Clear Data
-          </TButton>
-          <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
-            Upload Reports
-          </TButton>
-          <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
-            Upload Data
-          </TButton>
-          <div className="w-[200px]">
-            <TSelector
-              onChange={(selectedAdmissionDate) => {
-                changeClass(selectedAdmissionDate);
-              }}
-              placeholder="Select graduation type"
-              label=""
-              name="admission_year"
-              className="bg-[#F5F7F9] border-0 flex"
-            >
-              {ejectGraduationYears()}
-            </TSelector>
+    <div className="w-full h-full flex flex-col  overflow-hidden">
+      <div className="w-full h-full p-2 flex  overflow-hidden">
+        <div className="flex w-full h-full flex-col">
+          <div className="flex w-full h-[50px] justify-end">
+            {/* <div></div>
+            <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
+              Delete Class
+            </TButton>
+            <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
+              Clear Data
+            </TButton>
+            <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
+              Upload Reports
+            </TButton>
+            <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
+              Upload Data
+            </TButton> */}
+            <div className="w-[200px]">
+              <TSelector
+                onChange={(selectedAdmissionDate) => {
+                  changeClass(selectedAdmissionDate);
+                }}
+                placeholder="Select graduation type"
+                label=""
+                name="admission_year"
+                className="bg-[#F5F7F9] border-0 flex"
+              >
+                {ejectGraduationYears()}
+              </TSelector>
+            </div>
           </div>
+          <div className=""></div>
+          {fetchStudentList ? (
+            <AppGrid colDef={colDef} tableData={[...studentList]} />
+          ) : (
+            <NoStudentData />
+          )}
         </div>
-        <div className=""></div>
-        <AppGrid colDef={colDef} tableData={[...studentList]} />
-      </div>
-      <div className="w-[300px] h-full flex">
-        <div className="w-[300px] h-full ">
-          <div className="w-full h-[60px] flex px-2">
-            {ejectStudentActions()}
-          </div>
-          <div className="w-full h-[calc(100%-60px)] max-w-[100%] max-h-[100%] overflow-hidden pl-2">
-            {getActiveStudentActionPage()}
+        <div className="w-[300px] h-full flex">
+          <div className="w-[300px] h-full ">
+            <div className="w-full h-[60px] flex px-2">
+              {ejectStudentActions()}
+            </div>
+            <div className="w-full h-[calc(100%-60px)] max-w-[100%] max-h-[100%]  pl-2 relative">
+              {/* <SlimLoader /> */}
+              {loadingReports ? <SlimLoader /> : null}
+              {/* {activeStudent?.Unique_Id ? (
+                <div className=" text-grey-500 flex flex-col w-full text-bold shadow-md bg-white border-blue-500 border-2 text-blue-700 rounded-lg left-[-150px] top-[300px] rotate-[-90deg] bottom absolute">
+                  <span className=" text-grey-500  w-full text-bold  ">
+                    Report Id:{" "}
+                    <b className="text-bold"> {activeStudent?.Unique_Id}</b>
+                  </span>
+                </div>
+              ) : null} */}
+              {loadingReports ? (
+                <div className="w-full h-full flex justify-center items-center">
+                  <Loader
+                    loaderColor="rgb(55,79,99)"
+                    loaderIcon={
+                      <HourglassBottom style={{ color: "rgb(55,79,99)" }} />
+                    }
+                  />
+                </div>
+              ) : null}
+              {getActiveStudentActionPage()}
+            </div>
           </div>
         </div>
       </div>

@@ -5,13 +5,22 @@ import { useState } from "react";
 import { API } from "./../../../App";
 import { END_POINTS } from "./../../../constants/urls";
 import {
+  clearReportsList,
+  endReportActivity,
+  raiseReportActivity,
   saveReports,
   setDownloadUrl,
   setReportBlob,
   updateReport,
 } from "./report-slice";
 import { useActivityService } from "../activity-slice/activity-service";
-import { errorToast, successToast } from "../../../components/toast/toastify";
+import {
+  errorToast,
+  successToast,
+  warningToast,
+} from "../../../components/toast/toastify";
+import axios from "axios";
+import { BASE_URL } from "../../../constants/ui-data";
 
 export const useReportService = () => {
   const { raiseActivity, endActivity } = useActivityService();
@@ -20,29 +29,35 @@ export const useReportService = () => {
   const fetchedAllReports = useSelector(
     (state) => state?.reportSlice?.fetchedAllReports
   );
+  const loadingReports = useSelector(
+    (state) => state?.reportSlice?.loadingReports
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [loadingReports, setLoading] = useState(false);
-
   // MOCKED FUNCTIONALITY
   const getReportsAsync = async (data) => {
-    setLoading(true);
-    raiseActivity("Fetching reports");
-    return API.POST(END_POINTS.getAllReports, data)
+    dispatch(raiseReportActivity());
+
+    return API.POST(END_POINTS.getReportForStudent, data)
       .then(async (response) => {
+        console.log(response.data.data);
         if (response.data.success) {
           dispatch(saveReports(response.data.data));
-          successToast("Checked for reports succesfully");
         }
+        successToast("Checked for reports succesfully");
       })
       .catch((error) => {
         errorToast("Could not unlock report. Please contact the school");
       })
       .finally(() => {
-        endActivity();
+        dispatch(endReportActivity());
       });
   };
+
+  const clearReportsAsync = () => {
+    dispatch(clearReportsList());
+  };
+
   const isfileInCache = (fileName) => {
     if (fileName === undefined) return false;
     return fileBlob?.fileName === fileName;
@@ -57,9 +72,7 @@ export const useReportService = () => {
       window.URL.revokeObjectURL(url);
       return;
     }
-
-    raiseActivity("Downloading report");
-    setLoading(true);
+    dispatch(raiseReportActivity());
     return API.POST(END_POINTS.downloadReport, data, "blob")
       .then(async (response) => {
         return response.data;
@@ -90,24 +103,55 @@ export const useReportService = () => {
         console.error("File download error:", error);
       })
       .finally(() => {
+        dispatch(endReportActivity());
+      });
+  };
+
+  const uploadReportAsync = async (formData) => {
+    raiseActivity("Uploading reports");
+    axios
+      .post(BASE_URL + END_POINTS.uploadSingleReport, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res.data?.failedUploads);
+        successToast("Report uploaded successfuly");
+        console.log(res);
+      })
+      .catch((error) => {
+        errorToast("Reports upload failed");
+        console.log(error);
+      })
+      .finally(() => {
         endActivity();
       });
   };
 
-  const uploadReportsAsync = async (data) => {
-    setLoading(true);
-    return API.POST(END_POINTS.uploadSingleReport, data)
-      .then(async (response) => {
-        if (response.data.success) {
-          dispatch(saveReports(response.data.data));
-          successToast("Checked for reports succesfully");
+  const uploadBulkReportsAsync = async (formData) => {
+    raiseActivity("Uploading reports");
+    axios
+      .post(BASE_URL + "/api/upload-reportss", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res.data?.failedUploads);
+        if (res.data?.data?.failedUploads?.length) {
+          warningToast("Some duplicates were skipped");
+          return;
         }
+        successToast("Reports upload successfuly");
+        console.log(res);
       })
       .catch((error) => {
-        errorToast("Could not unlock report. Please contact the school");
+        errorToast("Reports upload failed");
+        console.log(error);
       })
       .finally(() => {
-        setLoading(false);
+        endActivity();
       });
   };
 
@@ -118,7 +162,9 @@ export const useReportService = () => {
     reportList,
     fileBlob,
     loadingReports,
-    uploadReportsAsync,
+    uploadReportAsync,
     fetchedAllReports,
+    uploadBulkReportsAsync,
+    clearReportsAsync,
   };
 };

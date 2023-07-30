@@ -1,43 +1,30 @@
-import {
-  Article,
-  CloudDownloadOutlined,
-  Details,
-  Download,
-  DownloadDoneOutlined,
-  DownloadOutlined,
-  FileDownload,
-  FileDownloadOutlined,
-  FileUpload,
-  FileUploadOutlined,
-  MoreVert,
-  OpenInFull,
-  ReadMore,
-  Upload,
-  UploadFile,
-  UploadOutlined,
-  ViewAgenda,
-  Visibility,
-} from "@mui/icons-material";
-import React from "react";
+import { ReadMore } from "@mui/icons-material";
+import React, { useCallback } from "react";
 import { useStudentDataService } from "../../store/slices/students-slice/student-service";
 
-const StudentDataRowActions = (props) => {
-  const { setActiveStudentAsync } = useStudentDataService();
+export default (props) => {
+  const { setActiveStudentAsync, activeStudent } = useStudentDataService();
 
-  const buttonClicked = () => {
-    // alert(`${cellValue} medals won!`);
+  const buttonClicked = useCallback((event) => {
     setActiveStudentAsync(props.data);
     console.log(props);
-  };
+    // console.log("cellClicked", event);
+  }, []);
 
-  return (
-    <div className="w-full h-full flex justify-center">
+  return !!props?.data ? (
+    <div
+      className={`w-full h-full items-center flex justify-center ${
+        activeStudent?.Unique_Id === props?.data?.Unique_Id
+          ? "bg--400 text"
+          : ""
+      }`}
+    >
       {/* <span>{cellValue}</span>&nbsp; */}
       {/* <button onClick={() => buttonClicked()}>
         <Details />
       </button> */}
 
-      <button
+      {/* <button
         className="mr-4 rounded-full text-gray-600 bg-gray-0 flex justify-center items-center max-w-[30px] max-h-[30px]  min-w-[30px] min-h-[30px]"
         onClick={(e) => {
           e.stopPropagation();
@@ -54,9 +41,13 @@ const StudentDataRowActions = (props) => {
         }}
       >
         <FileDownloadOutlined className="" />
-      </button>
+      </button> */}
       <button
-        className="mr-4 rounded-full text-gray-600  flex justify-center items-center max-w-[30px] max-h-[30px]  min-w-[30px] min-h-[30px]"
+        className={`  ${
+          activeStudent?.Unique_Id === props?.data?.Unique_Id
+            ? "bg-blue-400 text-white"
+            : ""
+        } rounded-full text-gray-600  flex justify-center items-center max-w-[30px] max-h-[30px]  min-w-[30px] min-h-[30px]`}
         onClick={(e) => {
           e.stopPropagation();
           buttonClicked();
@@ -68,6 +59,5 @@ const StudentDataRowActions = (props) => {
         <MoreVert />
       </button> */}
     </div>
-  );
+  ) : null;
 };
-export default StudentDataRowActions;

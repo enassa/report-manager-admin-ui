@@ -10,24 +10,27 @@ import {
   setActiveStuentActionTabs,
 } from "./student-slice";
 import { useEffect, useState } from "react";
-import {
-  LOCAL_STORAGE_KEYS,
-  SCHOOL_INFO,
-  STUDENT_ACTION_TABS,
-} from "../../../constants/ui-data";
+import { BASE_URL, LOCAL_STORAGE_KEYS } from "../../../constants/ui-data";
 import {
   getAsObjectFromLocalStorage,
   saveObjectInLocalStorage,
 } from "../../../constants/reusable-functions";
+import axios from "axios";
+import { useReportService } from "../report-slice/report-service";
 
 export const useStudentDataService = () => {
   const { raiseActivity, endActivity } = useActivityService();
-  const [loadingStudentAction, setStudentAction] = useState(false);
+  const { clearReportsAsync } = useReportService();
+  const [loadingStudentAction] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const studentList = useSelector(
     (state) => state?.StudentsDataSlice.studentList
+  );
+
+  const fetchStudentList = useSelector(
+    (state) => state?.StudentsDataSlice.fetchStudentList
   );
   const activeStudent = useSelector(
     (state) => state?.StudentsDataSlice?.activeStudent
@@ -42,16 +45,6 @@ export const useStudentDataService = () => {
   const storedActiveStudentActionTab = getAsObjectFromLocalStorage(
     LOCAL_STORAGE_KEYS.activeStudentActionTab
   );
-  useEffect(() => {
-    if (storedActiveStudent && !activeStudent) {
-      dispatch(setActiveStudent(storedActiveStudent));
-      dispatch(
-        setActiveStuentActionTabs(
-          storedActiveStudentActionTab || STUDENT_ACTION_TABS.profile
-        )
-      );
-    }
-  }, []);
 
   const getAllstudentsAsync = async (data) => {
     // console.log(data);
@@ -62,8 +55,10 @@ export const useStudentDataService = () => {
           console.log(response.data.data);
           //   setSomeData(response.data.data);
           //   console.log(response.data.data);
+
           dispatch(updateStudentList(response.data.data));
-          successToast("Students report downloaded succesfully");
+          clearReportsAsync();
+          successToast(`Fetched student data successfully `);
         }
       })
       .catch((error) => {
@@ -87,6 +82,27 @@ export const useStudentDataService = () => {
     dispatch(setActiveStuentActionTabs(activeTab));
   };
 
+  const uploadBulkStudentDataAsync = (formData) => {
+    raiseActivity("Uploading Student data");
+    axios
+      .post(BASE_URL + "/api/students", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        successToast("Data uploaded successfully");
+        console.log(res);
+      })
+      .catch((error) => {
+        errorToast("Data upload failed");
+        console.log(error);
+      })
+      .finally(() => {
+        endActivity();
+      });
+  };
+
   return {
     getAllstudentsAsync,
     studentList,
@@ -95,5 +111,7 @@ export const useStudentDataService = () => {
     loadingStudentAction,
     setActiveStudentAsync,
     setActiveStudentActionTabsAsync,
+    uploadBulkStudentDataAsync,
+    fetchStudentList,
   };
 };

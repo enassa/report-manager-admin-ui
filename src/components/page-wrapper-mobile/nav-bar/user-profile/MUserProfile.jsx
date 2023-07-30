@@ -8,6 +8,7 @@ import { ClickAwayListener } from "@mui/material";
 import React, { useState } from "react";
 import { images } from "../../../../assets/images/images";
 import { useAuthService } from "../../../../store/slices/auth-slice/auth-service";
+import { SCHOOL_INFO } from "../../../../constants/ui-data";
 
 export default function MUserProfile() {
   const { userData, logOut } = useAuthService();
@@ -15,7 +16,7 @@ export default function MUserProfile() {
   return (
     <div className="flex h-full  items-center md:px-2 py-3 relative ">
       <span className="mr-2 lowercase text-blue-800">
-        @{userData?.First_Name + " " ?? "Username"}
+        @{userData?.adminId + " " ?? "Username"}
       </span>
 
       <span
@@ -25,7 +26,7 @@ export default function MUserProfile() {
         onClick={() => setDropProfile(true)}
         className="w-[30px] capitalize h-[30px] cursor-pointer bg-gray-200 text-blue-600 shadow-neuroInsert font-extrabold  mr-[10px] rounded-full flex justify-center fit-bg items-center overflow-hidden"
       >
-        {userData?.First_Name?.charAt(0)}
+        {userData?.adminId?.charAt(0)}
       </span>
 
       {/* {dropProfile ? (

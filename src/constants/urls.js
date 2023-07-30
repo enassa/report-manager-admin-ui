@@ -1,7 +1,7 @@
 export const END_POINTS = {
   // AUTH
   login: "/api/login",
-  register: "/api/v1/auth/register",
+  register: "/api/register",
   home: "/api/v1/home",
 
   // OTHERS
@@ -18,4 +18,5 @@ export const END_POINTS = {
   sendMessages: "/api/send-messages",
 
   downloadReport: "/api/download-report",
+  getReportForStudent: "/api/reports",
 };

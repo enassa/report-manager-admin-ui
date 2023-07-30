@@ -6,6 +6,7 @@ const initialState = {
   activeStudent: undefined,
   reports: [],
   activeStudentActionTab: STUDENT_ACTION_TABS.profile,
+  fetchStudentList: false,
 };
 export const StudentsDataSlice = createSlice({
   name: "studentList",
@@ -16,6 +17,8 @@ export const StudentsDataSlice = createSlice({
     },
     updateStudentList: (state, { payload }) => {
       // console.log(payload);
+      state.activeStudent = undefined;
+      state.fetchStudentList = true;
       state.studentList = payload;
     },
     updateStudentInfo: (state, { payload }) => {

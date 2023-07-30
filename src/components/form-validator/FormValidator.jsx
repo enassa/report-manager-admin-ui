@@ -9,6 +9,7 @@ export default function TFormValidator({
   className,
   onSubmit,
   isSubmitting,
+  handleSubmitWithoutValidation,
 }) {
   const [states, setStates] = useState({ errors: {}, values: {} });
   const [listenForSubmit, setListenForSubmit] = useState(0);
@@ -25,7 +26,7 @@ export default function TFormValidator({
   let myErrors = { ...states.errors };
   let myValues = { ...states.values };
 
-  const validateInput = (inputElement, calledFrom) => {
+  const validateInput = (inputElement, calledFrom, filesIfAny) => {
     // myErrors = stateCache.current.errors;
     // myValues = stateCache.current.values;
     const fieldsToValidate = Object.keys(validationSchema);
@@ -34,7 +35,11 @@ export default function TFormValidator({
     const shouldValidate = fieldsToValidate.includes(fieldName);
     if (!shouldValidate) return;
 
-    const inputValue = inputElement.value;
+    let inputValue = inputElement.value;
+    if (filesIfAny) {
+      inputValue = filesIfAny;
+    }
+
     let errorLog = {};
 
     let fieldValidationSchema = validationSchema[fieldName];
@@ -64,17 +69,10 @@ export default function TFormValidator({
     if (calledFrom === "initial") {
       myValues = { ...myValues, [fieldName]: inputElement.value };
     } else {
-      if (inputElement.type === "file") {
-        myValues = {
-          ...stateCache.current.values,
-          [fieldName]: inputElement.files,
-        };
-      } else {
-        myValues = {
-          ...stateCache.current.values,
-          [fieldName]: inputElement.value,
-        };
-      }
+      myValues = {
+        ...stateCache.current.values,
+        [fieldName]: inputElement.value || filesIfAny,
+      };
     }
     //  ================== set errors for input ===========================
 
@@ -119,6 +117,8 @@ export default function TFormValidator({
       !isSubmitting &&
       !errorState &&
       onSubmit(states.values);
+
+    // handleSubmitWithoutValidation(states.values);
   }, [listenForSubmit]);
 
   const processButton = (buttons) => {
@@ -163,10 +163,13 @@ export default function TFormValidator({
       // ==================== add event listener to all input fields ====================
       let delayId = undefined;
       input.addEventListener("input", (e) => {
+        const files = e.target?.files ? Array.from(e.target.files) : "";
+        console.log(files);
         clearTimeout(delayId);
         // ==================== validate input only when user stops typing: debouncing ====================
         delayId = setTimeout(() => {
-          input?.name !== undefined && validateInput(input, "eventListener");
+          input?.name !== undefined &&
+            validateInput(input, "eventListener", files);
         }, 190);
       });
     });
@@ -197,7 +200,7 @@ export default function TFormValidator({
     <FormConText.Provider value={{}}>
       {/* ==================== use this if user wrapped this around a form to  ====================*/}
       {/* ==================== this is done to prvent react DOMNesting validation from throwing an error ==================== */}
-      {childComponents[0].type === "form" ? (
+      {childComponents[0]?.type === "form" ? (
         <div className={className} style={style} ref={formRef}>
           {childComponents}
         </div>

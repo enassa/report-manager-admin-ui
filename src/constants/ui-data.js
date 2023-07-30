@@ -5,6 +5,21 @@ export const STUDENT_ACTION_TABS = {
   downloads: "Downloads",
   uploads: "Uploads",
 };
+
+export const BULK_UPLOAD_OPTIONS = {
+  reportCards: "Report Cards",
+  excelData: "Student Excel File",
+};
+
+export const PROGRAMMES = [
+  "General Science",
+  "General Arts",
+  "Visual Arts",
+  "Home Economics",
+  "Business",
+  "Agricultural Science",
+];
+export const SEMESTERS = [1, 2, 3, 4];
 export const GRADUATION_YEARS = [
   "2026",
   "2025",
@@ -33,6 +48,10 @@ export const GRADUATION_YEARS = [
   "2001",
   "2000",
 ];
+export const BASE_URL =
+  import.meta.env.MODE === "development"
+    ? import.meta.env.VITE_DEV_BASE_URL
+    : import.meta.env.VITE_PROD_BASE_URL;
 
 export const REPORT_META_INFO = {
   years: [1, 2, 3, 4],

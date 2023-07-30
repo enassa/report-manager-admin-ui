@@ -13,13 +13,13 @@ import { API } from "./../../../App";
 import { ROUTES } from "../../../constants/route-links";
 import { END_POINTS } from "./../../../constants/urls";
 import { LOCAL_STORAGE_KEYS } from "../../../constants/ui-data";
+import { errorToast, successToast } from "../../../components/toast/toastify";
 
 export const useAuthService = () => {
   const userData = useSelector((state) => state?.authSlice?.userData);
   const authResponse = useSelector((state) => state?.authSlice?.authResponse);
   const subscriptions = useSelector((state) => state?.authSlice?.subscriptions);
   const launchedApps = useSelector((state) => state?.authSlice?.launchedApps);
-
   const { showModal } = useModal();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,26 +31,21 @@ export const useAuthService = () => {
     const localUserData = getAsObjectFromLocalStorage(
       LOCAL_STORAGE_KEYS.userData
     );
-    const subscriptions = getAsObjectFromLocalStorage(
-      LOCAL_STORAGE_KEYS.subscriptions
-    );
+    console.log(localUserData);
     !!localUserData && dispatch(setUpUser(localUserData));
-    !!subscriptions && dispatch(setUpSubscription(subscriptions));
-    !!localUserData && API.setToken(localUserData.token);
+    // !!localUserData && API.setToken(localUserData.token);
     return !!localUserData;
   };
 
-  const processLoginSuccess = (response) => {
+  const processLoginSuccess = (user) => {
     dispatch(
       setUpUser({
-        ...response.data.userData,
-        token: response?.data?.token,
+        ...user,
+        // token: response?.data,
       })
     );
-    dispatch(setUpSubscription(response.data.subscriptions));
-    API.setToken(response.data.token);
-
-    navigate(ROUTES.reports.url);
+    // API.setToken(response.data.token);
+    navigate(ROUTES.list.url);
   };
 
   const processFailedAuth = (error, response, page) => {
@@ -78,43 +73,12 @@ export const useAuthService = () => {
     );
   };
 
-  const registerAsync = async (data) => {
-    setLoading(true);
-    return API.POST(END_POINTS.register, {
-      firstName: data.first_name,
-      lastName: data.last_name,
-      email: data.email,
-      password: data.password,
-    })
-      .then(async (response) => {
-        if (response?.data?.success === true) {
-          dispatch(
-            setAuthResponse({
-              message: "Registeration was succesfull",
-              ok: true,
-              success: true,
-              page: "register",
-            })
-          );
-          return;
-        } else {
-          processFailedAuth("credentials", response.data, "register");
-        }
-      })
-      .catch((error) => {
-        processFailedAuth("unknown", error, "register");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   const logOut = (data) => {
     showModal("Do you really want to logout?", (response) => {
       if (response) {
         const clearAction1 = removeItemsFromLocalStorage([
           LOCAL_STORAGE_KEYS.userData,
-          LOCAL_STORAGE_KEYS.activeReport,
+          LOCAL_STORAGE_KEYS.activeStudent,
           LOCAL_STORAGE_KEYS.subscriptions,
         ]);
 
@@ -139,10 +103,8 @@ export const useAuthService = () => {
     return API.POST(END_POINTS.login, data)
       .then(async (response) => {
         if (response.data.success) {
-          processLoginSuccess(response.data);
-          if (callBack) {
-            callBack(response.data);
-          }
+          console.log(response.data);
+          processLoginSuccess(response.data.data);
         } else {
           processFailedAuth("credentials", response.data);
         }
@@ -155,10 +117,29 @@ export const useAuthService = () => {
       });
   };
 
+  const registerOrganization = async (data, callBack) => {
+    setLoading(true);
+    return API.POST(END_POINTS.register, data)
+      .then(async (response) => {
+        if (response.data.success) {
+          successToast("Organisation was created succesfully");
+        } else {
+          errorToast(response.data.message);
+        }
+      })
+      .catch((error) => {
+        errorToast(error.message);
+        processFailedAuth("unknown", "login");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return {
     logOut,
     loginAsync,
-    registerAsync,
+    registerOrganization,
     userIsLoggedIn,
     loadingAuth,
     authResponse,

@@ -29,6 +29,10 @@ export const ROUTES = {
 
   //===============  PROTECTED ROUTES ===============
 
+  uploads: {
+    route: "/uploads",
+    url: "/uploads",
+  },
   request: {
     route: "/request",
     url: "/request",
