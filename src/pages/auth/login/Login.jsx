@@ -12,18 +12,25 @@ import {
   LockOutlined,
   Error,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import { ADMIN_BASE_URL, GRADUATION_YEARS } from "./../../../constants/ui-data";
+import { Navigate, useNavigate } from "react-router-dom";
+import {
+  ADMIN_BASE_URL,
+  GRADUATION_YEARS,
+  LOCAL_STORAGE_KEYS,
+} from "./../../../constants/ui-data";
 import { useAuthService } from "./../../../store/slices/auth-slice/auth-service";
 import { API } from "../../../App";
+import { ROUTES } from "./../../../constants/route-links";
+import { getAsObjectFromLocalStorage } from "../../../constants/reusable-functions";
 
 export default function Login() {
   const { loginAsync, loadingAuth, authResponse, selectedSchool } =
     useAuthService();
 
   const handleSubmit = (data) => {
-    loginAsync({ data, ...selectedSchool });
+    loginAsync({ ...data, ...selectedSchool });
   };
+  const naigate = useNavigate();
 
   const validationSchema = {
     password: {
@@ -39,7 +46,10 @@ export default function Login() {
   }, []);
 
   const initialValues = {};
-  return (
+  return !selectedSchool &&
+    !getAsObjectFromLocalStorage(LOCAL_STORAGE_KEYS.selectedSchool) ? (
+    <Navigate to={ROUTES.base.url} />
+  ) : (
     <div className="w-full h-full flex justify-center items-center ">
       <div className="md:w-[80%] md:h-[80%] w-[95%] h-[95%] flex">
         <div className="w-[65%] h-full bg-[#F2F3F3] md:flex justify-center items-center flex-col hidden  ">

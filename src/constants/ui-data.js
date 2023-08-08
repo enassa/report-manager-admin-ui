@@ -84,12 +84,12 @@ export const ADMIN_BASE_URL =
   "https://superadmin-shs-report-31a042526be6.herokuapp.com";
 
 export const LOCAL_STORAGE_KEYS = {
-  selectedSchool: "234hghj3SelectedSchool",
-  userData: "tfx3213UserData",
-  subscriptions: "tfx3213Subscriptions",
-  activeReport: "4351activeReport",
-  activeStudent: "64543activeStudent",
-  activeStudentActionTab: "23432activeStudentActionTab",
+  selectedSchool: "234hgh234j3Se32ctedSchool",
+  userData: "tfx3213dsdUserData",
+  subscriptions: "tfxsd32122343Subscriptions",
+  activeReport: "4351actiasdfveReport",
+  activeStudent: "64543achjktiveStudent",
+  activeStudentActionTab: "23432actgdfiveStudentActionTab",
 };
 export const verifyServiceAccess = (serviceCode) => {
   const subscriptions = getAsObjectFromSession(
