@@ -45,9 +45,12 @@ export default function Login() {
     API.setBaseURL(ADMIN_BASE_URL);
   }, []);
 
+  const loginNotAccesible =
+    !selectedSchool &&
+    !getAsObjectFromLocalStorage(LOCAL_STORAGE_KEYS.selectedSchool);
+
   const initialValues = {};
-  return !selectedSchool &&
-    !getAsObjectFromLocalStorage(LOCAL_STORAGE_KEYS.selectedSchool) ? (
+  return loginNotAccesible ? (
     <Navigate to={ROUTES.base.url} />
   ) : (
     <div className="w-full h-full flex justify-center items-center ">
