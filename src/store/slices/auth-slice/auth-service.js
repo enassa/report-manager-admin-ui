@@ -88,7 +88,7 @@ export const useAuthService = () => {
     dispatch(
       setAuthResponse({
         error: error,
-        message: response.data.message,
+        message: response.error,
         ok: false,
         success: false,
         page,
