@@ -95,7 +95,6 @@ const AppGrid = ({ tableData, colDef }) => {
           rowSelection="multiple" // Options - allows click selection of rows
           onCellClicked={cellClickedListener} // Optional - registering for Grid Event
           className="w-full h-full"
-          animateRows={true}
           sideBar={sideBar}
           rememberGroupStateWhenNewData={true}
           suppressScrollOnNewData={true}

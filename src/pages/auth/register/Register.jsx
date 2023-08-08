@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { images } from "../../../assets/images/images";
 import { svgs } from "../../../assets/svg/svg";
 import {
@@ -9,13 +9,14 @@ import {
   Error,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { GRADUATION_YEARS } from "../../../constants/ui-data";
+import { ADMIN_BASE_URL, GRADUATION_YEARS } from "../../../constants/ui-data";
 import { useAuthService } from "../../../store/slices/auth-slice/auth-service";
 import SlimLoader from "../../../components/slim-loader/SlimLoader";
 import TFormValidator from "../../../components/form-validator/FormValidator";
 import TAuthInput from "../../../components/auth-input/AuthInput";
 import TSelector from "../../../components/input-selector/Selector";
 import TButton from "../../../components/button/Button";
+import { API } from "../../../App";
 
 export default function Register() {
   const {
@@ -30,11 +31,10 @@ export default function Register() {
   const handleSubmit = (data) => {
     registerOrganization(data);
   };
-  const ejectGraduationYears = () => {
-    return GRADUATION_YEARS.map((year, index) => {
-      return <option key={index + "options"}>{"Class of " + year}</option>;
-    });
-  };
+
+  useEffect(() => {
+    API.setBaseURL(ADMIN_BASE_URL);
+  }, []);
 
   const validationSchema = {
     schoolCode: {
@@ -70,16 +70,16 @@ export default function Register() {
   console.log(authResponse);
   return (
     <div className="w-full h-full flex justify-center items-center ">
-      <div className="md:w-[80%] md:h-[80%] w-[95%] h-[95%] flex">
+      <div className="md:w-[80%] md:h-[90%] w-[95%] h-[95%] flex">
         <div className="w-[65%] h-full bg-[#F2F3F3] md:flex justify-center items-center flex-col hidden  ">
           <div className="relative">
             <img
               alt="toukanya logo"
               className="h-[15%]"
-              src={images.koinoReportMgr}
+              src={images.shsReportMgr}
             />
-            {svgs.loginSvg}
-            <div className="absolute top-[300px]">{svgs.ladySvg}</div>
+            {svgs.statsReport}
+            <div className="absolute top-[300px]"></div>
             <div className="absolute top-[300px] right-[40px] anim/ate-rotate">
               {svgs.spinTarget}
             </div>
@@ -95,16 +95,13 @@ export default function Register() {
           <div className="w-full absolute top-0 left-0  h-[5px]">
             {loadingAuth && <SlimLoader />}
           </div>
-          <h1 className="md:text-3xl text-2xl font-bold">Welcome back!</h1>
-          <span className="md:text-xl text-sm">
-            Please fill in your credentials to continue
-          </span>
+
           <TFormValidator
             validationSchema={validationSchema}
             initialValues={initialValues}
             onSubmit={handleSubmit}
             isSubmitting={loadingAuth}
-            className="mt-[20px] flex justify-center flex-col "
+            className="mt-[20px] flex justify-start flex-col "
           >
             {({ errors }) => {
               return (
@@ -116,7 +113,7 @@ export default function Register() {
                     // regexPattern={emailRegex(5)}
 
                     name="schoolName"
-                    className="mb-[5px] shadow-neuroInsert border-0 outline-none"
+                    className=" shadow-neuroInsert border-0 outline-none"
                   />
                   <TAuthInput
                     leftIcon={<AlternateEmailOutlined />}
@@ -125,7 +122,7 @@ export default function Register() {
                     // regexPattern={emailRegex(5)}
 
                     name="schoolCode"
-                    className="mb-[5px] shadow-neuroInsert border-0 outline-none"
+                    className=" shadow-neuroInsert border-0 outline-none"
                   />
                   <TAuthInput
                     leftIcon={<AlternateEmailOutlined />}
@@ -134,7 +131,7 @@ export default function Register() {
                     // regexPattern={emailRegex(5)}
 
                     name="adminId"
-                    className="mb-[5px] shadow-neuroInsert border-0 outline-none"
+                    className=" shadow-neuroInsert border-0 outline-none"
                   />
                   <TSelector
                     onChange={(selectedAdmissionDate) => {}}
@@ -142,7 +139,7 @@ export default function Register() {
                     label="Admin Type"
                     name="adminType"
                     className="bg-[#F5F7F9] border-0 flex "
-                    outerClassName="mb-[10px] w-[80%]"
+                    outerClassName=" w-[80%]"
                   >
                     <option>super</option>
                     <option>sub</option>

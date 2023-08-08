@@ -90,7 +90,7 @@ export default function TSelector({
           type={type}
           placeholder={placeholder}
           name={name}
-          value={selected || ""}
+          value={selected || value || ""}
           disabled={disabled}
           id={name}
         />

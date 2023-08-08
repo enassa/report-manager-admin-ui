@@ -9,11 +9,20 @@ const initialState = {
   authResponse: undefined,
   subscriptions: [],
   launchedApps: [],
+  selectedSchool: undefined,
+  registeredSchools: [],
 };
 export const authSlice = createSlice({
   name: "auth_SLICE",
   initialState,
   reducers: {
+    setSelectedSchool: (state, { payload }) => {
+      saveObjectInLocalStorage(LOCAL_STORAGE_KEYS.selectedSchool, payload);
+      state.selectedSchool = payload;
+    },
+    setSchools: (state, { payload }) => {
+      state.registeredSchools = payload;
+    },
     setUpUser: (state, { payload }) => {
       console.log(payload);
       saveObjectInLocalStorage(LOCAL_STORAGE_KEYS.userData, payload);
@@ -51,6 +60,8 @@ export const {
   setAuthResponse,
   updateSubscriptions,
   setUpSubscription,
+  setSelectedSchool,
+  setRegisteredSchools,
   addToLaunchedApps,
 } = authSlice.actions;
 export default authSlice.reducer;

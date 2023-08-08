@@ -30,6 +30,9 @@ export class API_HANDLER {
   setToken(token) {
     this.#token = token;
   }
+  setBaseURL(myURl) {
+    this.#baseURL = myURl;
+  }
   #REQUEST = async (endpoint, data, responseType, method) => {
     let url = `${this.#baseURL}${endpoint}`;
     return fetch(url, {

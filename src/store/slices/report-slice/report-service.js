@@ -110,13 +110,22 @@ export const useReportService = () => {
   const uploadReportAsync = async (formData) => {
     raiseActivity("Uploading reports");
     axios
-      .post(BASE_URL + END_POINTS.uploadSingleReport, formData, {
+      .post(BASE_URL() + END_POINTS.uploadSingleReport, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
         console.log(res.data?.failedUploads);
+        if (!res.success) {
+          errorToast("Report upload failed");
+        } else {
+          successToast("Report uploaded successfully");
+        }
+        if (!res.success) {
+          errorToast("Report upload failed");
+          return;
+        }
         successToast("Report uploaded successfuly");
         console.log(res);
       })
@@ -132,7 +141,7 @@ export const useReportService = () => {
   const uploadBulkReportsAsync = async (formData) => {
     raiseActivity("Uploading reports");
     axios
-      .post(BASE_URL + "/api/upload-reportss", formData, {
+      .post(BASE_URL() + END_POINTS.uploadReports, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -143,7 +152,11 @@ export const useReportService = () => {
           warningToast("Some duplicates were skipped");
           return;
         }
-        successToast("Reports upload successfuly");
+        if (res.data.success) {
+          successToast("Reports upload successfuly");
+          return;
+        }
+        errorToast("Report upload failed");
         console.log(res);
       })
       .catch((error) => {

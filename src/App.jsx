@@ -11,6 +11,7 @@ import List from "./pages/list/List";
 import Uploads from "./pages/uploads/Uploads";
 import { BASE_URL } from "./constants/ui-data";
 import Register from "./pages/auth/register/Register";
+import LandingPage from "./pages/landing/LandingPage";
 // import LandingPage from "./pages/landing/LandingPage";
 // import Admin from "./pages/admin/Admin";
 // import Home from "./pages/home/Home";
@@ -26,14 +27,14 @@ import Register from "./pages/auth/register/Register";
 // import AppsList from "./pages/apps/AppsList";
 // import ServiceUnvailable from "./pages/service-unavailble/ServiceUnvailable";
 
-export const API = new API_HANDLER(BASE_URL);
+export const API = new API_HANDLER(BASE_URL());
 
 function App() {
   return (
     <Router>
       <ToastContainer />
       <Routes>
-        <Route path={ROUTES.base.route} element={<Login />} />
+        <Route path={ROUTES.base.route} element={<LandingPage />} />
         <Route path={ROUTES.login.route} element={<Login />} />
         <Route path={ROUTES.register.route} element={<Register />} />
         {/* <Route path={ROUTES.pay.route} element={<ClientPay />} /> */}

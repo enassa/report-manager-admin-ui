@@ -12,7 +12,7 @@ export default function BulkDataUpload({ handleUploadClick }) {
       field: "Name",
     },
     {
-      field: "JHS No.",
+      field: "JHS No",
     },
     {
       field: "Unique ID",
@@ -170,7 +170,6 @@ export default function BulkDataUpload({ handleUploadClick }) {
       />
     );
   };
-
   return (
     <div className="w-full h-full flex flex-col  overflow-hidden">
       <div className="w-full h-full p-2 flex  overflow-hidden">
@@ -218,7 +217,8 @@ export default function BulkDataUpload({ handleUploadClick }) {
                 </TButton>
                 <TButton
                   onClick={() => {
-                    handleUploadClick && handleUploadClick(excelDataState.file);
+                    handleUploadClick &&
+                      handleUploadClick(excelDataState.gridData);
                   }}
                   className="w-auto  rounded-none border-0"
                 >

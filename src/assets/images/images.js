@@ -22,6 +22,13 @@ import documents from "./documents.jpeg";
 import documents2 from "./document2.jpg";
 import market from "./market.jpg";
 import moneyTostudent from "./moneyTostudent.jpg";
+import achimota from "./achimotaImage.jpg";
+import ghanata from "./ghanata.jpg";
+import waves from "./slopes.webp";
+import studentImage from "./studentImage.jpg";
+import halllowedLogo from "./hallowedLogo.png";
+import ghanataLogo from "./ghanataLogo.png";
+import shsReportMgr from "./shsreportmgr.png";
 export const images = {
   logoPng,
   logoIco,
@@ -46,4 +53,11 @@ export const images = {
   documents,
   market,
   moneyTostudent,
+  achimota,
+  ghanata,
+  waves,
+  studentImage,
+  halllowedLogo,
+  ghanataLogo,
+  shsReportMgr,
 };

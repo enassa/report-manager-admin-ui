@@ -5,6 +5,7 @@ import {
   BULK_UPLOAD_OPTIONS,
   GRADUATION_YEARS,
   PROGRAMMES,
+  REPORT_META_INFO,
   SEMESTERS,
 } from "../../constants/ui-data";
 import {
@@ -22,7 +23,8 @@ import { useAuthService } from "../../store/slices/auth-slice/auth-service";
 
 export default function Uploads() {
   const { uploadBulkReportsAsync } = useReportService();
-  const { uploadBulkStudentDataAsync } = useStudentDataService();
+  const { uploadBulkStudentDataAsync, uploadStudentDataJsonAsync } =
+    useStudentDataService();
   const { userData } = useAuthService();
   const ejectGraduationYears = () => {
     return GRADUATION_YEARS.map((year, index) => {
@@ -34,6 +36,12 @@ export default function Uploads() {
       return <option key={index + "options"}>{"Semester " + semester}</option>;
     });
   };
+  const ejectYears = () => {
+    return REPORT_META_INFO.years.map((year, index) => {
+      return <option key={index + "class-years"}>{`Form ${year}`}</option>;
+    });
+  };
+
   const ejectProgrammes = () => {
     return PROGRAMMES.map((programme, index) => {
       return (
@@ -93,6 +101,7 @@ export default function Uploads() {
     year: null,
     semester: null,
     programme: null,
+    formNumber: null,
   });
   const validateInput = () => {
     const errorArr = [];
@@ -104,6 +113,12 @@ export default function Uploads() {
       metadData.semester === null
     ) {
       errorArr.push("Semester");
+    }
+    if (
+      activeUploadOption === BULK_UPLOAD_OPTIONS.reportCards &&
+      metadData.formNumber === null
+    ) {
+      errorArr.push("FormNumber");
     }
     if (
       activeUploadOption === BULK_UPLOAD_OPTIONS.excelData &&
@@ -123,9 +138,6 @@ export default function Uploads() {
 
   const handleReportUpload = (reportFiles) => {
     if (validateInput()) {
-      // alert("");
-      // alert('hello')
-      // return;
       var formData = new FormData();
 
       formData.append(
@@ -134,7 +146,7 @@ export default function Uploads() {
           className: formatYearToClassGroup(metadData.year),
           ...userData,
           semester: formatSemester(metadData.semester),
-          formNumber: 2,
+          formNumber: metadData.formNumber,
         })
       );
       for (let i = 0; i < reportFiles.length; i++) {
@@ -142,7 +154,6 @@ export default function Uploads() {
       }
 
       uploadBulkReportsAsync(formData);
-      // formData.append("file", this.state.reportCards);
     }
   };
 
@@ -156,12 +167,26 @@ export default function Uploads() {
           className: formatYearToClassGroup(metadData.year),
           ...userData,
           programme: metadData.programme,
-          formNumber: 2,
         })
       );
-      formData.append("file", excelFile);
-      uploadBulkStudentDataAsync(formData);
+      // formData.append("file", excelFile);
+      uploadBulkStudentDataAsync(excelFile);
     }
+    // console.log(excelFile);
+  };
+  const handleExcelJsonUpload = (studJsonObj) => {
+    if (validateInput()) {
+      // formData.append("file", excelFile);
+      uploadStudentDataJsonAsync({
+        data: studJsonObj,
+        extraInfo: {
+          className: formatYearToClassGroup(metadData.year),
+          programme: metadData.programme,
+          ...userData,
+        },
+      });
+    }
+    // console.log(excelFile);
   };
 
   const getActiveUploadAction = () => {
@@ -177,16 +202,21 @@ export default function Uploads() {
       case BULK_UPLOAD_OPTIONS.excelData:
         return (
           <BulkDataUpload
-            handleUploadClick={(excelFile) => {
-              handleExcelDataUpload(excelFile);
+            handleUploadClick={(studJasonObj) => {
+              handleExcelJsonUpload(studJasonObj);
             }}
           />
+          // <BulkDataUpload
+          //   handleUploadClick={(excelFile) => {
+          //     handleExcelDataUpload(excelFile);
+          //   }}
+          // />
         );
       default:
         return (
           <BulkDataUpload
-            handleUploadClick={(excelFile) => {
-              handleExcelDataUpload(excelFile);
+            handleUploadClick={(studJsonObject) => {
+              handleExcelJsonUpload(studJsonObject);
             }}
           />
         );
@@ -207,8 +237,9 @@ export default function Uploads() {
           <TSelector
             onChange={(yearSelected) => {
               setMetaData({ ...metadData, year: yearSelected });
+              setErrors({ state: false, errors: [] });
             }}
-            placeholder="Select Admission Year"
+            placeholder="Select Enrollment Year"
             label=""
             name="year"
             value={metadData.year}
@@ -219,6 +250,19 @@ export default function Uploads() {
           </TSelector>
           {activeUploadOption === BULK_UPLOAD_OPTIONS.reportCards ? (
             <>
+              <TSelector
+                onChange={(formSelected) => {
+                  setMetaData({ ...metadData, formNumber: formSelected });
+                  setErrors({ state: false, errors: [] });
+                }}
+                placeholder="Select Form"
+                label=""
+                name="formNumber"
+                className="bg-[#F5F7F9] border-0 flex w-[80%]"
+                outerClassName={"mr-4 "}
+              >
+                {ejectYears()}
+              </TSelector>
               <TSelector
                 onChange={(semesterSelected) => {
                   setMetaData({ ...metadData, semester: semesterSelected });

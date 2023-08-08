@@ -146,7 +146,7 @@ export default function List() {
                 onChange={(selectedAdmissionDate) => {
                   changeClass(selectedAdmissionDate);
                 }}
-                placeholder="Select graduation type"
+                placeholder="Select Enrollment Year"
                 label=""
                 name="admission_year"
                 className="bg-[#F5F7F9] border-0 flex"

@@ -2,17 +2,22 @@ import { useSelector } from "react-redux";
 import { useModal } from "../../../components/modal/modal-context";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getAsObjectFromLocalStorage,
   removeItemsFromLocalStorage,
   removeItemsFromSessionStorage,
 } from "../../../constants/reusable-functions";
-import { setAuthResponse, setUpSubscription, setUpUser } from "./auth-slice";
+import {
+  setAuthResponse,
+  setSelectedSchool,
+  setUpSubscription,
+  setUpUser,
+} from "./auth-slice";
 import { API } from "./../../../App";
 import { ROUTES } from "../../../constants/route-links";
 import { END_POINTS } from "./../../../constants/urls";
-import { LOCAL_STORAGE_KEYS } from "../../../constants/ui-data";
+import { BASE_URL, LOCAL_STORAGE_KEYS } from "../../../constants/ui-data";
 import { errorToast, successToast } from "../../../components/toast/toastify";
 
 export const useAuthService = () => {
@@ -20,13 +25,23 @@ export const useAuthService = () => {
   const authResponse = useSelector((state) => state?.authSlice?.authResponse);
   const subscriptions = useSelector((state) => state?.authSlice?.subscriptions);
   const launchedApps = useSelector((state) => state?.authSlice?.launchedApps);
+  const selectedSchool = useSelector(
+    (state) => state?.authSlice?.selectedSchool
+  );
+  const registeredSchools = useSelector(
+    (state) => state?.authSlice?.registeredSchools
+  );
+
   const { showModal } = useModal();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [loadingAuth, setLoading] = useState(false);
 
+  const getActiveSchool = () =>
+    getAsObjectFromLocalStorage(LOCAL_STORAGE_KEYS.selectedSchool);
   const userIsLoggedIn = () => {
+    const school = getActiveSchool();
+    !!school && API.setBaseURL(BASE_URL());
     if (!!userData) return true;
     const localUserData = getAsObjectFromLocalStorage(
       LOCAL_STORAGE_KEYS.userData
@@ -36,6 +51,11 @@ export const useAuthService = () => {
     // !!localUserData && API.setToken(localUserData.token);
     return !!localUserData;
   };
+
+  useEffect(() => {
+    const school = getActiveSchool();
+    !!school && dispatch(setSelectedSchool(school));
+  }, []);
 
   const processLoginSuccess = (user) => {
     dispatch(
@@ -103,7 +123,6 @@ export const useAuthService = () => {
     return API.POST(END_POINTS.login, data)
       .then(async (response) => {
         if (response.data.success) {
-          console.log(response.data);
           processLoginSuccess(response.data.data);
         } else {
           processFailedAuth("credentials", response.data);
@@ -135,6 +154,13 @@ export const useAuthService = () => {
         setLoading(false);
       });
   };
+  const setSelectedSchoolAsync = (selected) => {
+    API.setBaseURL(selected.url);
+    dispatch(setSelectedSchool(selected));
+  };
+  const setRegisteredSchoolsAsync = (schools) => {
+    dispatch(setSelectedSchool(schools));
+  };
 
   return {
     logOut,
@@ -142,10 +168,14 @@ export const useAuthService = () => {
     registerOrganization,
     userIsLoggedIn,
     loadingAuth,
+    selectedSchool,
+    registeredSchools,
     authResponse,
     userData,
     launchedApps,
     subscriptions,
+    setSelectedSchoolAsync,
+    setRegisteredSchoolsAsync,
     resetAuthResponse,
   };
 };

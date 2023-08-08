@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TFormValidator from "./../../../components/form-validator/FormValidator";
 import { images } from "./../../../assets/images/images";
 import { svgs } from "./../../../assets/svg/svg";
@@ -13,51 +13,32 @@ import {
   Error,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { GRADUATION_YEARS } from "./../../../constants/ui-data";
+import { ADMIN_BASE_URL, GRADUATION_YEARS } from "./../../../constants/ui-data";
 import { useAuthService } from "./../../../store/slices/auth-slice/auth-service";
+import { API } from "../../../App";
 
 export default function Login() {
-  const { loginAsync, loadingAuth, authResponse } = useAuthService();
-  const navigate = useNavigate();
+  const { loginAsync, loadingAuth, authResponse, selectedSchool } =
+    useAuthService();
 
   const handleSubmit = (data) => {
-    loginAsync(data);
-    // return;
-    // setLoading(true);
-    // setTimeout(() => {
-    //   navigate(ROUTES.reports.url);
-    // }, 3000);
-    // mockMode ? loginMock(data) : loginAsync(data)();
-  };
-  const ejectGraduationYears = () => {
-    return GRADUATION_YEARS.map((year, index) => {
-      return <option key={index + "options"}>{"Class of " + year}</option>;
-    });
+    loginAsync({ data, ...selectedSchool });
   };
 
   const validationSchema = {
-    schoolCode: {
-      required: true,
-      // maxCharLength: 7,
-      // minCharLength: 7,
-      //   regexPattern: emailRegex(),zz
-    },
     password: {
       required: true,
-      // minCharLength: 1,
     },
     adminId: {
       required: true,
-      // minCharLength: 1,
     },
-    // graduation_year: {
-    //   required: true,
-    //   maxCharLength: 30,
-    //   minCharLength: 1,
-    // },
   };
+
+  useEffect(() => {
+    API.setBaseURL(ADMIN_BASE_URL);
+  }, []);
+
   const initialValues = {};
-  console.log(authResponse);
   return (
     <div className="w-full h-full flex justify-center items-center ">
       <div className="md:w-[80%] md:h-[80%] w-[95%] h-[95%] flex">
@@ -66,10 +47,10 @@ export default function Login() {
             <img
               alt="toukanya logo"
               className="h-[15%]"
-              src={images.koinoReportMgr}
+              src={images.shsReportMgr}
             />
-            {svgs.loginSvg}
-            <div className="absolute top-[300px]">{svgs.ladySvg}</div>
+            {svgs.statsReport}
+            <div className="absolute top-[300px]"></div>
             <div className="absolute top-[300px] right-[40px] anim/ate-rotate">
               {svgs.spinTarget}
             </div>
@@ -100,17 +81,6 @@ export default function Login() {
               // console.log(errors);
               return (
                 <div className="w">
-                  <TAuthInput
-                    leftIcon={<AlternateEmailOutlined />}
-                    label="School code"
-                    required={true}
-                    // regexPattern={emailRegex(5)}
-                    // minCharLength={7}
-                    // maxCharLength={7}
-                    name="schoolCode"
-                    className="mb-[5px] shadow-neuroInsert border-0 outline-none"
-                  />
-
                   <TAuthInput
                     leftIcon={<AlternateEmailOutlined />}
                     label="Admin Id"
