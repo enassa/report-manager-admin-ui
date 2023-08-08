@@ -76,10 +76,10 @@ export default function LandingPage() {
       {/* <div className="flex flex-col w-full bg-white  min-h-[100px]"></div> */}
       <div className="w-full  h-full flex  flex-col justify-between items-center z-[500]">
         <div className="w-full flex justify-start items-center font-extrabold md:text-bgTrade text-white p-[10px] z-[600] ml-2 ">
-          <div className="min-w-[30px] min-h-[30px] max-w-[50px] max-h-[50px] border-2 border-bgTrade mr-2 rounded-full flex justify-center items-center bg-white">
-            <img src={images.halllowedLogo} className="w-[20px] h-[20px]" />
+          <div className="min-w-[30px] min-h-[30px] max-w-[50px] max-h-[50px] border-2 border-bgTrade mr-2 rounded-full flex justify-center items-center bg-bgTrade">
+            <img src={images.shsReportLogo} className="w-[20px] h-[20px]" />
           </div>
-          <span>SHS-Reports</span>
+          <span className="text-2xl">SHS Reports</span>
         </div>
         <div className="w-full p-4 h-full flex flex-col md:flex-row justify-center md:justify-start items-center">
           <div className="w-full h-full md:flex hidden flex-col items-center justify-center  ">

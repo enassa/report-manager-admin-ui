@@ -29,6 +29,7 @@ import studentImage from "./studentImage.jpg";
 import halllowedLogo from "./hallowedLogo.png";
 import ghanataLogo from "./ghanataLogo.png";
 import shsReportMgr from "./shsreportmgr.png";
+import shsReportLogo from "./shsreportIcon.ico";
 export const images = {
   logoPng,
   logoIco,
@@ -60,4 +61,5 @@ export const images = {
   halllowedLogo,
   ghanataLogo,
   shsReportMgr,
+  shsReportLogo,
 };

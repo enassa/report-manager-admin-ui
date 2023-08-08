@@ -16,8 +16,8 @@ export class API_HANDLER {
     callBack = () => {},
     generalToken = ""
   ) {
-    baseURL === undefined &&
-      alert("you have not provided a base url for your API_HANDLER instance");
+    // baseURL === undefined &&
+    //   alert("you have not provided a base url for your API_HANDLER instance");
 
     this.#baseURL = baseURL;
     this.#contentType = contentType;

@@ -42,12 +42,15 @@ export const useAuthService = () => {
   const userIsLoggedIn = () => {
     const school = getActiveSchool();
     !!school && API.setBaseURL(BASE_URL());
+
     if (!!userData) return true;
     const localUserData = getAsObjectFromLocalStorage(
       LOCAL_STORAGE_KEYS.userData
     );
     console.log(localUserData);
-    !!localUserData && dispatch(setUpUser(localUserData));
+    !!localUserData &&
+      Object.keys(localUserData)?.length &&
+      dispatch(setUpUser(localUserData));
     // !!localUserData && API.setToken(localUserData.token);
     return !!localUserData;
   };
