@@ -57,7 +57,7 @@ export const useStudentDataService = () => {
         }
       })
       .catch((error) => {
-        errorToast("Could not unlock report. Please contact the school");
+        errorToast("Could not fetch student data");
       })
       .finally(() => {
         endActivity();
