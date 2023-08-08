@@ -89,7 +89,7 @@ export default function List() {
   ];
 
   const getActiveStudentActionPage = () => {
-    if (!!activeStudent == false) return <NoOption />;
+    if (!!activeStudent === false) return <NoOption />;
     switch (activeStudentActionTab) {
       case STUDENT_ACTION_TABS.profile:
         return <StudentInfo />;

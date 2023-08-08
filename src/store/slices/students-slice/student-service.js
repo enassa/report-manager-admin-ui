@@ -30,7 +30,6 @@ export const useStudentDataService = () => {
   const studentList = useSelector(
     (state) => state?.StudentsDataSlice.studentList
   );
-
   const fetchStudentList = useSelector(
     (state) => state?.StudentsDataSlice.fetchStudentList
   );
