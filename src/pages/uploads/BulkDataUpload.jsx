@@ -12,9 +12,6 @@ export default function BulkDataUpload({ handleUploadClick }) {
       field: "Name",
     },
     {
-      field: "JHS No",
-    },
-    {
       field: "Unique ID",
     },
     {
@@ -28,6 +25,9 @@ export default function BulkDataUpload({ handleUploadClick }) {
     },
     {
       field: "Track",
+    },
+    {
+      field: "JHS No.",
     },
     {
       field: "Class Stream",
@@ -162,7 +162,7 @@ export default function BulkDataUpload({ handleUploadClick }) {
     //   }
     //   rowData.push(rowObj);
     // });
-
+    console.log(gridData, staticCcolumns);
     return (
       <AppGrid
         colDef={staticCcolumns}
