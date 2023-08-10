@@ -75,9 +75,9 @@ export default function LandingPage() {
       style={{ backgroundImage: `url(${imageForBackGround.image})` }}
       className="relative w-[100vw] h-[100vh] flex fit-bg justify-center  items-center flex-col overflow-hidden"
     >
-      <div className="w-full h-full fixed top-0 right-0 z-[99999] flex justify-center bg-white">
+      {/* <div className="w-full h-full fixed top-0 right-0 z-[99999] flex justify-center bg-white">
         <SMSSender />
-      </div>
+      </div> */}
       <div className="w-full h-full absolute flex top-0 right-0 bg-[#1515159a] "></div>
       {/* <div className="flex flex-col w-full bg-white  min-h-[100px]"></div> */}
       <div className="w-full  h-full flex  flex-col justify-between items-center z-[500]">
