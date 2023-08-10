@@ -39,7 +39,7 @@ export default function List() {
     //   width: 50,
     //   pinned: "left",
     // },
-    { field: "Programme", enableRowGroup: true },
+    { field: "Programme", enableRowGroup: true, rowGroup: true },
     { field: "Class", enableRowGroup: true },
     {
       field: "Name",
