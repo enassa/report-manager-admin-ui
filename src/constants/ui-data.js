@@ -80,8 +80,8 @@ export const SERVICE_CODES = {
   superMarket: "marketg76rd7fg86fr37",
   documentRequest: "document7dbdydf58d6d5",
 };
-export const ADMIN_BASE_URL =
-  "https://superadmin-shs-report-31a042526be6.herokuapp.com";
+export const ADMIN_BASE_URL = "https://super-admin-shs-report.ey.r.appspot.com";
+// "https://superadmin-shs-report-31a042526be6.herokuapp.com";
 
 export const LOCAL_STORAGE_KEYS = {
   selectedSchool: "234hgh234j3Se32ctedSchool",

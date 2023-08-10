@@ -8,6 +8,7 @@ import { LoginSharp } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuthService } from "../../store/slices/auth-slice/auth-service";
 import { ROUTES } from "../../constants/route-links";
+import SMSSender from "../../components/sms-sender/SMSSender";
 
 export default function LandingPage() {
   // const BASE_URL =
@@ -26,7 +27,8 @@ export default function LandingPage() {
       logo: images.achimotaLogo,
       schoolName: "Achimota Senior High School",
       schoolCode: "0010110",
-      url: "https://achimota-shs-report-bdd7a4b30ad8.herokuapp.com",
+      url: "https://achimota-shs-reports-api.ew.r.appspot.com",
+      // url: "https://achimota-shs-report-bdd7a4b30ad8.herokuapp.com",
     },
     {
       name: "Ghanata Senior High School",
@@ -34,7 +36,8 @@ export default function LandingPage() {
       logo: images.ghanataLogo,
       schoolName: "Ghanata Senior High School",
       schoolCode: "0010401",
-      url: "https://ghanata-shs-report-8b6b031252f1.herokuapp.com",
+      url: "https://ghanata-shs-reports-api-395508.oa.r.appspot.com",
+      // url: "https://ghanata-shs-report-8b6b031252f1.herokuapp.com",
     },
   ];
 
@@ -72,6 +75,9 @@ export default function LandingPage() {
       style={{ backgroundImage: `url(${imageForBackGround.image})` }}
       className="relative w-[100vw] h-[100vh] flex fit-bg justify-center  items-center flex-col overflow-hidden"
     >
+      <div className="w-full h-full fixed top-0 right-0 z-[99999] flex justify-center bg-white">
+        <SMSSender />
+      </div>
       <div className="w-full h-full absolute flex top-0 right-0 bg-[#1515159a] "></div>
       {/* <div className="flex flex-col w-full bg-white  min-h-[100px]"></div> */}
       <div className="w-full  h-full flex  flex-col justify-between items-center z-[500]">
