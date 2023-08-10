@@ -156,6 +156,7 @@ export default function TAuthInput({
             style={{ ...styles }}
             disabled={disabled}
             required={required}
+            autocomplete="off"
           />
           {rightIcon && (
             <span
