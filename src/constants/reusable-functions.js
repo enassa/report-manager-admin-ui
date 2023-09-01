@@ -233,3 +233,138 @@ export const formatSemester = (semester) => {
   const formatedSemester = parseInt(semester.split(" ")[1]);
   return formatedSemester;
 };
+export const getCaretCoordinates = () => {
+  let x = 0,
+    y = 0;
+  const isSupported = typeof window.getSelection !== "undefined";
+  if (isSupported) {
+    const selection = window.getSelection();
+    console.log(selection);
+    // Check if there is a selection (i.e. cursor in place)
+    if (selection.rangeCount !== 0) {
+      // Clone the range
+      const range = selection.getRangeAt(0).cloneRange();
+      // Collapse the range to the start, so there are not multiple chars selected
+      range.collapse(true);
+      // getCientRects returns all the positioning information we need
+      const rect = range.getClientRects();
+      console.log("====", rect);
+      if (rect) {
+        x = rect.left; // since the caret is only 1px wide, left == right
+        y = rect.top; // top edge of the caret
+      }
+    }
+  }
+  return { x, y };
+};
+
+export const getCaretIndex = (element) => {
+  let position = 0;
+  const isSupported = typeof window.getSelection !== "undefined";
+  if (isSupported) {
+    const selection = window.getSelection();
+    // Check if there is a selection (i.e. cursor in place)
+    if (selection.rangeCount !== 0) {
+      // Store the original range
+      const range = window.getSelection().getRangeAt(0);
+      // Clone the range
+      const preCaretRange = range.cloneRange();
+      // Select all textual contents from the contenteditable element
+      preCaretRange.selectNodeContents(element);
+      // And set the range end to the original clicked position
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      // Return the text length from contenteditable start to the range end
+      position = preCaretRange.toString().length;
+    }
+  }
+  return position;
+};
+
+export const updateIndex = (event, element) => {
+  const textPosition = document.getElementById("caretIndex");
+  if (element.contains(event.target)) {
+    textPosition.innerText = getCaretIndex(element).toString();
+  } else {
+    textPosition.innerText = "–";
+  }
+};
+
+// export const toggleTooltip = (event, contenteditable) => {
+//   const tooltip = document.getElementById("tooltip");
+//   if (contenteditable.contains(event.target)) {
+//     const { x, y } = getCaretCoordinates();
+//     tooltip.setAttribute("aria-hidden", "false");
+//     tooltip.setAttribute(
+//       "style",
+//       `display: inline-block; left: ${x - 32}px; top: ${y - 36}px`
+//     );
+//   } else {
+//     tooltip.setAttribute("aria-hidden", "true");
+//     tooltip.setAttribute("style", "display: none;");
+//   }
+// };
+
+export const setNativeValue = (element, value) => {
+  const valueSetter = Object.getOwnPropertyDescriptor(element, "value").set;
+  const prototype = Object.getPrototypeOf(element);
+  const prototypeValueSetter = Object.getOwnPropertyDescriptor(
+    prototype,
+    "value"
+  ).set;
+
+  if (valueSetter && valueSetter !== prototypeValueSetter) {
+    prototypeValueSetter.call(element, value);
+  } else {
+    valueSetter.call(element, value);
+  }
+};
+
+export const dynamicReplace = (inputString, pattern, replacement) => {
+  const regex = new RegExp(pattern, "g");
+  return inputString.replace(regex, replacement);
+};
+
+export const extractWordFromDelimiter = (word, delimiterLength) => {
+  const myWord = word.split("");
+  myWord.splice(0, delimiterLength || 1).join("");
+  myWord.splice(-(delimiterLength || 1));
+  return myWord.join("");
+};
+
+export const replaceWordInPhrase = (inputString, pattern, replacement) => {
+  const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // Escape special characters
+  const regex = new RegExp(escapedPattern, "g");
+  return inputString.replace(regex, replacement);
+};
+
+export const extractWordsInCustomSymbols = (
+  sentence,
+  openSymbol,
+  closeSymbol
+) => {
+  const pattern = new RegExp(
+    `${escapeRegExp(openSymbol)}([^${escapeRegExp(
+      closeSymbol
+    )}]+)${escapeRegExp(closeSymbol)}`,
+    "g"
+  );
+  const matches = [];
+
+  let match;
+  while ((match = pattern.exec(sentence)) !== null) {
+    matches.push(match[1]);
+  }
+
+  return matches;
+};
+
+export const escapeRegExp = (string) => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+};
+
+//prettier-ignore
+export const wordIsSurroundedBy = (word, openSymbol, closeSymbol) => {
+  console.log(word, openSymbol, closeSymbol)
+  const pattern = new RegExp(`${escapeRegExp(openSymbol)}([^${escapeRegExp(closeSymbol)}]+)${escapeRegExp(closeSymbol)}`, 'g');
+   return pattern.test(word)
+}

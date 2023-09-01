@@ -19,6 +19,8 @@ export default function TSelector({
   label,
   noBorder,
   outerClassName,
+  popUpDirection,
+  selectedImage,
 }) {
   const [dropOptions, setDropOptions] = useState();
   const [error, setError] = useState(false);
@@ -31,36 +33,41 @@ export default function TSelector({
   }, [selected]);
 
   const getOptions = () => {
-    return children.map((option, index) => {
-      if (option.type !== "option") return;
-      return (
-        <div
-          onClick={() => {
-            onChange && onChange(option.props.children);
-            setSelected(option.props.children);
-            if (option.props.children === selected) return;
-            error && setError(false);
-            setDropOptions(false);
-          }}
-          key={index}
-          className="w-full min-h-[40px] h-[40px] px-4 cursor-pointer hover:bg-gray-50 flex items-center"
-        >
-          {option.props?.icon && (
-            <div className="mr-3">{option.props?.icon}</div>
-          )}
-          {option.props?.image && (
-            <img alt="" className="h-[50%] mr-3" src={option.props?.image} />
-          )}
+    return (
+      Array.isArray(children) &&
+      children.map((option, index) => {
+        if (option.type !== "option") return;
+        return (
+          <div
+            onClick={() => {
+              onChange && onChange(option.props.children);
+              setSelected(option.props.children);
+              if (option.props.children === selected) return;
+              error && setError(false);
+              setDropOptions(false);
+            }}
+            key={index}
+            className="w-full min-h-[40px] h-[40px] px-4 cursor-pointer hover:bg-gray-50 flex items-center"
+          >
+            {option.props?.icon && (
+              <div className="mr-3">{option.props?.icon}</div>
+            )}
+            {option.props?.image && (
+              <img alt="" className="h-[50%] mr-3" src={option.props?.image} />
+            )}
 
-          <span className="w-full whitespace-nowrap text-ellipsis overflow-hidden">
-            {option.props.children}
-          </span>
-        </div>
-      );
-    });
+            <span className="w-full whitespace-nowrap text-ellipsis overflow-hidden">
+              {option.props.children}
+            </span>
+          </div>
+        );
+      })
+    );
   };
 
-  const errorClass = "text-red-400 text-xs mt-1 ";
+  const errorClass = `text-red-400 text-xs mt-1 ${
+    error ? " h-auto" : "hidden"
+  }`;
 
   return (
     <div
@@ -80,6 +87,9 @@ export default function TSelector({
           disabled && "bg-gray-100"
         } h-[40px] flex flex-row items-center w-full border-[#8b8b8b] border-[1px] rounded-[5px] outline-none cursor-pointer`}
       >
+        {selectedImage ? (
+          <img src={selectedImage} className="h-[15px] m-0 mt-[2px]" />
+        ) : null}
         <input
           ref={inputRef}
           onFocusCapture={() => {
@@ -114,9 +124,9 @@ export default function TSelector({
           }}
         >
           <div
-            className={`w-full rounded-md animate-rise bg-white shadow-neumoNav z-[10] max-h-[160px] overflow-y-auto  flex flex-col absolute top-[110%]   ${
-              !noBorder && "border-t-black border-t-4"
-            } `}
+            className={`w-full rounded-md animate-rise bg-white shadow-neumoNav z-[10] max-h-[160px] overflow-y-auto  flex flex-col absolute  ${
+              popUpDirection === "top" ? "bottom-[110%]" : "top-[110%]"
+            }   ${!noBorder && "border-t-black border-t-4"} `}
           >
             {getOptions()}
           </div>
@@ -125,9 +135,9 @@ export default function TSelector({
 
       {description && <span className={errorClass}>{description}</span>}
 
-      <span className={`${errorClass}`}>
+      <div className={`${errorClass}`}>
         {error && `${name || "This field"} is required`}
-      </span>
+      </div>
     </div>
   );
 }

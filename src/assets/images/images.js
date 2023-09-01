@@ -30,6 +30,14 @@ import halllowedLogo from "./hallowedLogo.png";
 import ghanataLogo from "./ghanataLogo.png";
 import shsReportMgr from "./shsreportmgr.png";
 import shsReportLogo from "./shsreportIcon.ico";
+import excelFile from "./excel.png";
+import pdfFile from "./pdf.png";
+import contactBook from "./contact-book.png";
+import contactBook1 from "./contacts.png";
+import contactBook2 from "./contact-book (1).png";
+import message from "./message.png";
+import ghana from "./ghana.png";
+import nigeria from "./nigeria.png";
 export const images = {
   logoPng,
   logoIco,
@@ -62,4 +70,12 @@ export const images = {
   ghanataLogo,
   shsReportMgr,
   shsReportLogo,
+  excelFile,
+  pdfFile,
+  contactBook,
+  contactBook1,
+  contactBook2,
+  message,
+  ghana,
+  nigeria,
 };

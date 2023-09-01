@@ -111,7 +111,7 @@ export default function TAuthInput({
       </span>
       {value ? (
         <div
-          className={` ${className} h-[40px] max-h-[40px]  flex w-full border-[#8b8b8b]  border-[1px] rounded-[5px] outline-none  items-center`}
+          className={` h-[40px] max-h-[40px]  flex w-full border-[#8b8b8b]  border rounded-[5px] outline-none  items-center ${className} `}
         >
           {leftIcon && (
             <span className="mr-2 text-gray-500 cursor-pointer">
@@ -156,7 +156,7 @@ export default function TAuthInput({
             style={{ ...styles }}
             disabled={disabled}
             required={required}
-            autocomplete="off"
+            autoComplete="off"
           />
           {rightIcon && (
             <span

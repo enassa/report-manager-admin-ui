@@ -107,7 +107,7 @@ export default function LandingPage() {
           </div>
           <div className="w-full h-full flex flex-col justify-center items-center animate-rise">
             <div className="w-full h-full md:max-w-[300px] flex justify-center items-center flex-col z-[600]">
-              <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+              <h5 className="mb-2 text-3xl font-bold text-white">
                 Please select a school
               </h5>
               <TSelector
