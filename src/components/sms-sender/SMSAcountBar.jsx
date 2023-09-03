@@ -12,11 +12,11 @@ export default function SMSAcountBar() {
   const { isBuyingCredit, setIsBuyingCredit } = useSMS();
 
   return (
-    <div className="w-full h-[60px] bg-transparent flex justify-between items-center px-2">
+    <div className="w-full h-[30px] bg-transparent flex justify-between items-center px-2">
       <div className="flex items-center text-white">
-        <div className="w-[30px] h-[30px] mr-2 bg-gray-400 rounded-full"></div>
+        {/* <div className="w-[30px] h-[30px] mr-2 bg-gray-400 rounded-full"></div> */}
         <span className="text-gray-500 font-bold">
-          Achimota Senior High School
+          {/* Achimota Senior High School */}
         </span>
       </div>
       <div className="text-gray-500 flex items-center  whitespace-nowrap">

@@ -12,6 +12,7 @@ import Uploads from "./pages/uploads/Uploads";
 import { BASE_URL } from "./constants/ui-data";
 import Register from "./pages/auth/register/Register";
 import LandingPage from "./pages/landing/LandingPage";
+import SMSSender from "./components/sms-sender/SMSSender";
 // import LandingPage from "./pages/landing/LandingPage";
 // import Admin from "./pages/admin/Admin";
 // import Home from "./pages/home/Home";
@@ -48,6 +49,7 @@ function App() {
           {/* <Route path={ROUTES.admin.route} element={<Admin />} /> */}
           {/* <Route path={ROUTES.apps.route} element={<AppsList />} /> */}
           <Route path={ROUTES.list.route} element={<List />} />
+          <Route path={ROUTES.sms.route} element={<SMSSender />} />
 
           {/* Services Routes */}
           {/* <Route

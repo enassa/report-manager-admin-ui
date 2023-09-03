@@ -58,7 +58,7 @@ export default function ReportCard({ data, allData, handleOpenFileClick }) {
   return (
     <div className="w-full min-h-[60px] bg-white h-[60px] shadow-sm flex items-center  justify-between   mb-[1px]  rounded-sm p-[10px]">
       <div className="w-full h-full flex items-center cursor-pointer ">
-        <span className="ml-3 text-xs ">Year {data?.year}</span>
+        <span className="ml-3 text-xs ">{data?.year}</span>
         <span className="ml-3 text-xs ">Semester {data?.semester}</span>
       </div>
       <div className="w-full cursor-pointer h-full md:flex items-center justify-end relative ">

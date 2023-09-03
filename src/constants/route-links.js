@@ -41,6 +41,10 @@ export const ROUTES = {
     route: "/payment",
     url: "/payment",
   },
+  sms: {
+    route: "/sms",
+    url: "/sms",
+  },
   dashboard: {
     route: "/dashboard",
     url: "/dashboard",

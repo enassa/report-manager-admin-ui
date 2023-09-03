@@ -10,6 +10,7 @@ import { AgGridReact } from "ag-grid-react"; // the AG Grid React Component
 import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css"; // Optional theme CSS
 import "ag-grid-enterprise";
+import { Search } from "@mui/icons-material";
 
 const AppGrid = React.memo(
   ({ tableData, colDef }) => {
@@ -74,11 +75,28 @@ const AppGrid = React.memo(
       position: "right",
     };
 
+    const executeLocalSearch = (value) => {
+      gridRef.current.api.setQuickFilter(value);
+    };
+
     const rowGroupPanelShow = "always";
 
     console.log("reloaded");
     return (
-      <div className="w-full h-full flex flex-col overflow-hidden">
+      <div className="w-full h-full flex flex-col overflow-hidden relative">
+        <div className="whitespace-nowrap w-[40%] justify-end right-0 mr-2 h-[60px] max-h-[] flex items-center min-w-[150px] absolute top-[-10px] z-[600] ">
+          <b className=" text-xl text-[#364E62] h-full flex items-center">|</b>
+          <input
+            type="search"
+            disabled={!rowData?.length}
+            placeholder="Type here to search..."
+            onChange={(e) => {
+              executeLocalSearch(e.target.value);
+            }}
+            className=" mr-1 text-sm  p-2 outline-nonew-full  h-[40px] bg-transparent outline-none"
+          />
+          <Search />
+        </div>
         {/* On div wrapping Grid a) specify theme CSS Class Class and b) sets Grid size */}
         <div className="ag-theme-alpine w-full h-full">
           <AgGridReact

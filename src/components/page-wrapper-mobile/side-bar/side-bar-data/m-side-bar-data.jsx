@@ -16,6 +16,9 @@ import {
   Settings,
   List,
   FileUploadOutlined,
+  Message,
+  MessageOutlined,
+  FileOpenSharp,
 } from "@mui/icons-material";
 import { ROUTES } from "../../../../constants/route-links";
 
@@ -36,6 +39,22 @@ export const MSideBarData = [
     group: 1,
     text: "uploads",
   },
+  {
+    title: "sms",
+    url: ROUTES.sms.url,
+    route: ROUTES.sms.route,
+    icon: <MessageOutlined />,
+    group: 1,
+    text: "uploads",
+  },
+  // {
+  //   title: "docs",
+  //   url: ROUTES.sms.url,
+  //   route: ROUTES.sms.route,
+  //   icon: <FileOpenSharp />,
+  //   group: 1,
+  //   text: "uploads",
+  // },
   // {
   //   title: "Request",
   //   url: ROUTES.request.url,
