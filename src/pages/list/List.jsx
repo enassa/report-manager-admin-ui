@@ -127,7 +127,7 @@ export default function List() {
     <div className="w-full h-full flex flex-col  overflow-hidden">
       <div className="w-full h-full p-2 flex  overflow-hidden">
         <div className="flex w-full h-full flex-col">
-          <div className="flex w-full h-[50px] justify-end">
+          <div className="flex w-full h-[50px] justify-start">
             {/* <div></div>
             <TButton className="max-w-[150px] max-h-[40px] mr-[10px]">
               Delete Class

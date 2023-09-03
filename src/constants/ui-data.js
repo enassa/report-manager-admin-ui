@@ -24,9 +24,6 @@ export const PROGRAMMES = [
 ];
 export const SEMESTERS = [1, 2, 3, 4];
 export const GRADUATION_YEARS = [
-  "2026",
-  "2025",
-  "2024",
   "2023",
   "2022",
   "2021",

@@ -45,7 +45,7 @@ export const MSideBarData = [
     route: ROUTES.sms.route,
     icon: <MessageOutlined />,
     group: 1,
-    text: "uploads",
+    text: "sms",
   },
   // {
   //   title: "docs",

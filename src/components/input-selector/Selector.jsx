@@ -96,7 +96,7 @@ export default function TSelector({
             !disabled && setDropOptions(true);
           }}
           onChange={(e) => onChange && onChange(e.target.value)}
-          className={` ${className} h-full p-3 w-full  rounded-[5px] outline-none pointer-events-none`}
+          className={` ${className} h-full p-3 w-full mb-2  rounded-[5px] outline-none pointer-events-none`}
           type={type}
           placeholder={placeholder}
           name={name}

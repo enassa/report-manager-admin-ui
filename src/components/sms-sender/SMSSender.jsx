@@ -14,7 +14,7 @@ import CursorPositionPopUp from "../cursor-position-popup/CursorPositionPopUp";
 import SMSAcountBar from "./SMSAcountBar";
 import SMSSalesBoard from "./SMSSalesBoard";
 import SMSPreview from "./SMSPreview";
-
+import "./sms.css";
 const SMSSenderMain = () => {
   const {
     activePage,

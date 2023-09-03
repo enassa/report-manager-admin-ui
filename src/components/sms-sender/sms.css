@@ -1,0 +1,5 @@
+.ag-theme-alpine {
+  --ag-borders: none;
+  --ag-row-border-width: 0px;
+  --ag-row-border-color: rgb(150, 150, 200);
+}

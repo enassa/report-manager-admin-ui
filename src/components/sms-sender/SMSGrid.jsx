@@ -149,8 +149,8 @@ const SMSGrid = React.memo(
 
     return (
       <div className="w-full h-full flex flex-col overflow-hidden relative">
-        <div className="w-full h-[40px] pointer-events-none flex justify-end  absolute right-0 top-[0px] z-[2]">
-          <div className="px-2 py-2 whitespace-nowrap w-[40%] justify-end h-full flex items-center min-w-[150px]  pointer-events-none  ">
+        <div className="w-full h-[50px] pointer-events-none flex justify-end  absolute right-0 top-[0px] z-[2]">
+          <div className="px-2 py-2 whitespace-nowrap w-[40%] justify-end h-full flex items-center min-w-[150px] mb-2 pointer-events-none  ">
             <div
               onClick={(e) => {
                 resetExcelEntry();
